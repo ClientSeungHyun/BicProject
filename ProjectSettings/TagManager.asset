@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - AccelPosition
+  - RoomLight
+  - SamplesInfoPanel
+  - Enemy
   layers:
   - Default
   - TransparentFX

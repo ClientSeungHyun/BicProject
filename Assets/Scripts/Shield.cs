@@ -66,7 +66,7 @@ public class Shield : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isShieldActive && other.CompareTag("enemy"))
+        if (isShieldActive && other.CompareTag("Enemy"))
         {
             // 적 오브젝트를 쉴드 방향으로 밀어냄
             Vector3 pushDirection = other.transform.position - transform.position;
