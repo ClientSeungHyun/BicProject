@@ -31,13 +31,15 @@ public class VRRig : MonoBehaviour
     void Start()
     {
         headBodyOffest = transform.position - headConstraint.position;
+        headBodyOffest.z = -0.18f;
     }
 
     void FixedUpdate()
     {
         transform.position = headConstraint.position + headBodyOffest;
-        transform.forward = Vector3.Lerp(transform.forward,
-            Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime * 0.1f);
+        transform.forward = Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized;
+        //transform.forward = Vector3.Lerp(transform.forward,
+        //    Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime * 0.8f);
 
         head.Map();
         leftHand.Map();
