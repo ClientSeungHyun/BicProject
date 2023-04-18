@@ -48,11 +48,13 @@ public class GunController : MonoBehaviour
         {
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
-        }*/
+        }
+        */
+
         if(Input.GetKeyDown(KeyCode.W)) 
         {
             Fire();
-        }
+        }   
     }
 
     private void Fire()
