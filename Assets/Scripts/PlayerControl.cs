@@ -1,43 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class PlayerControl : MonoBehaviour
 {
+    public GameObject UIM;
+    UIManager UIManagerScript;
+
     float moveSpeed;     //이동 속도
     float sightAngle; //시야각 범위
 
     GameObject[] AccelPosition;     //엑셀 도착 지점
-    NavMeshAgent playerAgent;   //네비게이션
     Rigidbody playerRigidbody;  //리짓바디
 
-    public int maxplayerHP = 100;  //플레이어 개인정보 피 에너지 웨폰레벨 쉴드레벨
-    public int playerHP = 100;
+    public int maxPlayerHP = 10;  //플레이어 개인정보 피 에너지 웨폰레벨 쉴드레벨
+    public int playerHP = 10;
     public float playerEg = 100.0f;
     public int weaponLV = 1;
     public int shieldLV = 1;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        UIManagerScript = UIM.GetComponent<UIManager>();
         moveSpeed = 5.0f;
         sightAngle = 80f;
-        playerAgent = GetComponent<NavMeshAgent>();
         AccelPosition = GameObject.FindGameObjectsWithTag("AccelPosition");
         playerRigidbody = GetComponent<Rigidbody>();
+        playerHP = maxPlayerHP;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //네비게이션 기능을 이용한 포인트 이동(엑셀기능)
+
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Vector3 destination = AccelPosition[0].transform.position;
-            playerAgent.destination = destination;
+            
             playerEg -= 20; //이동시 에너지 20까임
         }
+
         Thumb();
         if (playerEg < 100) // 에너지 까이면 지속적으로 채우기
         {
@@ -86,6 +89,27 @@ public class PlayerControl : MonoBehaviour
         //transform.LookAt(transform.position + inputDir);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyWeapon")
+        {
+            if (playerHP > 0)
+            {
+                playerHP--;
+                UIManagerScript.healths[playerHP].gameObject.SetActive(false);
+            }
+        }
+
+        if (collision.gameObject.tag == "Juice")
+        {
+            if (playerHP < 10)
+            {
+                UIManagerScript.healths[playerHP].gameObject.SetActive(true);
+                playerHP++;
+            }
+        }
+    }
+
     //타겟이 시야 내에 있는가??
     bool IsTargetInSight()
     {
@@ -107,6 +131,10 @@ public class PlayerControl : MonoBehaviour
         return false;
 
     }
+
+
+
+
     public void GunLevelUp()
     {
         if (weaponLV >= 3) //최대 3레벨 제한
@@ -120,13 +148,13 @@ public class PlayerControl : MonoBehaviour
     }
     public void HPLevelUp()
     {
-        if(maxplayerHP >= 160) //최대 3레벨 제한
+        if(maxPlayerHP >= 160) //최대 3레벨 제한
         {
-            maxplayerHP = 160;
+            maxPlayerHP = 160;
         }
         else //최대 레벨 아닐 시 렙업
         {
-            maxplayerHP += 20;
+            maxPlayerHP += 20;
         }
     }
     public void ShieldLevelUp()
