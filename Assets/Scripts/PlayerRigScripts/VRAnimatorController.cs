@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VRAnimatorController : MonoBehaviour
 {
-    public float speedTreshold = 0.1f;
+    public float speedTreshold = 0.01f;
     [Range (0,1)]
     public float smoothing = 1;
     private Animator animator;

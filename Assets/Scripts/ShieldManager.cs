@@ -6,9 +6,9 @@ public class ShieldManager : MonoBehaviour
 {
     private int currenShieldLV;
     private float maxShieldSize;
-    private float shieldGrowSpeed;
+    [SerializeField] private float shieldGrowSpeed;
     private float shieldPushForce;
-    private float currentShieldSize = 0.0f;
+    [SerializeField] private float currentShieldSize = 0.0f;
     
     private bool isGenereShieldActive;
     private bool isAccelShieldActive;
@@ -49,6 +49,7 @@ public class ShieldManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z) && player.PlayerEg() >= 50f) 
         {
             isAccelShieldActive = true;
+            shieldGrowSpeed += 20;
             player.PlayerEg(player.PlayerEg() - 50f);
         }
         if (Input.GetKeyDown(KeyCode.B) && isAccelShieldActive == false && player.PlayerEg() > 10f) 
@@ -64,7 +65,7 @@ public class ShieldManager : MonoBehaviour
 
             if (currentShieldSize == maxShieldSize && isAccelShieldActive == true) 
             {
-                Invoke("ShieldDestroy", 1);
+                Invoke("ShieldDestroy", 1.0f);
             }
         }
 
@@ -81,15 +82,19 @@ public class ShieldManager : MonoBehaviour
     //Invoke용 쉴드 off
     void ShieldDestroy()
     {
+        if(isAccelShieldActive == true) shieldGrowSpeed -= 20;
         isAccelShieldActive = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((isAccelShieldActive || isGenereShieldActive) && other.CompareTag("Enemy")) 
+        if (other.CompareTag("Enemy")) 
         {
             // 적 오브젝트를 쉴드 방향으로 밀어냄
             Vector3 pushDirection = other.transform.position - transform.position;
+            if(isAccelShieldActive == true)
+                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce * 2, ForceMode.Impulse);
+            if (isGenereShieldActive == true)
             other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce, ForceMode.Impulse);
         }
     }
@@ -99,20 +104,20 @@ public class ShieldManager : MonoBehaviour
         switch (currenShieldLV) //쉴드 레벨에 따른 크기와 속도 차이
         {
             case 1:
-                maxShieldSize = 5;
-                shieldGrowSpeed = 5;
+                maxShieldSize = 25;
+                shieldGrowSpeed = 15;
                 break;
             case 2:
-                maxShieldSize = 7;
-                shieldGrowSpeed = 7;
+                maxShieldSize = 30;
+                shieldGrowSpeed = 20;
                 break;
             case 3:
-                maxShieldSize = 10;
-                shieldGrowSpeed = 10;
+                maxShieldSize = 35;
+                shieldGrowSpeed = 25;
                 break;
             default:
-                maxShieldSize = 5;
-                shieldGrowSpeed = 5;
+                maxShieldSize = 25;
+                shieldGrowSpeed = 15;
                 player.ShieldLV(1);
                 break;
         }
@@ -125,6 +130,7 @@ public class ShieldManager : MonoBehaviour
         isGenereShieldActive = false;
         isAccelShieldActive = false;
         currenShieldLV = player.ShieldLV();
+        shieldPushForce = 3.0f;
         ShieldLVManage();
     }
 }
