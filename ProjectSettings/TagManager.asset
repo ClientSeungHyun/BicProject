@@ -8,11 +8,12 @@ TagManager:
   - RoomLight
   - SamplesInfoPanel
   - Enemy
+  - Floor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
   - 
