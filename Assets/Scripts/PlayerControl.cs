@@ -11,17 +11,17 @@ public class PlayerControl : MonoBehaviour
     private int weaponLV = 1;    //무기 레벨
     private int shieldLV = 1;    //쉴듸 레벨
     [SerializeField] private float moveSpeed;     //이동 속도
-    private bool isBorder;
     private float sightAngle; //시야각 범위
+    private float accelDistance;
+    private bool isAccelWall;
+    private bool isMoveAble;
 
     public GameObject playerCamera;
     public GameObject UIM;
     private UIManager UIManagerScript;
     private CharacterController characterController;
     private Vector3 moveDirection;
-    
-
-    GameObject AccelPosition;     //엑셀 도착 지점
+    public GameObject accelPoint; // 액셀 도착지점
     public Rigidbody playerRigidbody;  //리짓바디
 
     // Start is called before the first frame update
@@ -34,8 +34,7 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        StopWall();
+        AccelSystem();
         Move();
     }
 
@@ -61,7 +60,35 @@ public class PlayerControl : MonoBehaviour
             }
         }
     }
-    
+
+    private void AccelSystem()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+
+            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward * accelDistance);
+            RaycastHit[] hitDatas;
+            hitDatas = Physics.RaycastAll(playerCamera.transform.position, playerCamera.transform.forward, accelDistance);
+
+            //통과한 레이들 중에 지나가지 못하는 장애물이 있는지 검사
+            for (int i = 0; i < hitDatas.Length; i++)
+            {
+                //hit.transform.gameObject.layer == LayerMask.NameToLayer("Wall")
+                RaycastHit hit = hitDatas[i];
+                if (hit.transform.CompareTag("Wall"))   //만약 지나가지 못하는 장애물이 있다면
+                {
+                    //Ray가 충돌한 지점으로 액셀 종료 위치 지정
+                    Vector3 hitPosition = hit.point;
+                    accelPoint.transform.position = new Vector3(hit.point.x, playerCamera.transform.position.y, hit.point.z);
+                }
+                else //없다면 레이 끝 부분이 액셀 종료 위치 지정
+                {
+                    accelPoint.transform.position = new Vector3(playerCamera.transform.position.x + playerCamera.transform.forward.x * accelDistance,
+                        playerCamera.transform.position.y, playerCamera.transform.position.z + playerCamera.transform.forward.z * accelDistance);
+                }
+            }
+        }
+    }
 
     //컨트롤러 조이스틱
     void Move()
@@ -103,12 +130,6 @@ public class PlayerControl : MonoBehaviour
         //if (!isBorder)
            
 
-    }
-
-    void StopWall() //충돌설정
-    {
-        //Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * 2.5f, Color.red);
-        isBorder = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, 0.3f, LayerMask.GetMask("Wall"));
     }
 
     //타겟이 시야 내에 있는가??
@@ -175,6 +196,8 @@ public class PlayerControl : MonoBehaviour
         playerHP = maxPlayerHP;
         moveSpeed = 3.0f;
         sightAngle = 80f;
+        accelDistance = 10.0f;
+        isMoveAble = true;
     }
 
     public int ShieldLV()

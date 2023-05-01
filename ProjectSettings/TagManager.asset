@@ -9,6 +9,7 @@ TagManager:
   - SamplesInfoPanel
   - Enemy
   - Floor
+  - Wall
   layers:
   - Default
   - TransparentFX
