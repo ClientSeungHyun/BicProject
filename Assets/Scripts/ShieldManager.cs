@@ -4,35 +4,28 @@ using UnityEngine;
 
 public class ShieldManager : MonoBehaviour
 {
+    private int shieldLV;
     private int currenShieldLV;
     private float maxShieldSize;
-    [SerializeField] private float shieldGrowSpeed;
+    private float shieldGrowSpeed;
     private float shieldPushForce;
     [SerializeField] private float currentShieldSize = 0.0f;
-    
-    private bool isGenereShieldActive;
-    private bool isAccelShieldActive;
+
+    [SerializeField] private bool isGenereShieldActive;
+    [SerializeField]  private bool isAccelShieldActive;
+    private bool isAccelReady;
+    private bool isAccelArrive;
 
     private PlayerControl player;
-
-    private void Start()
+    public Animator animator;
+    
+    private void Awake()
     {
         Init();
     }
 
-    void Update()
-    {
-        if (currenShieldLV != player.ShieldLV())
-        {
-            currenShieldLV = player.ShieldLV();
-            ShieldLVManage();
-        }
-        ShieldManage();
-        PlayerEgManage();
-    }
-
     //에너지 관리
-    void PlayerEgManage()   
+    public void PlayerEgManage()   
     {
         if (isGenereShieldActive == true)
             player.PlayerEg(player.PlayerEg() - 10.0f * Time.deltaTime);
@@ -42,47 +35,44 @@ public class ShieldManager : MonoBehaviour
             player.PlayerEg(100f);
 
     }
-
-    //쉴드 관리
-    void ShieldManage()
+    public void GenereShield() //일반 쉴드 기능
     {
-        if (Input.GetKeyDown(KeyCode.Z) && player.PlayerEg() >= 50f) 
-        {
-            isAccelShieldActive = true;
-            shieldGrowSpeed += 20;
-            player.PlayerEg(player.PlayerEg() - 50f);
-        }
-        if (Input.GetKeyDown(KeyCode.B) && isAccelShieldActive == false && player.PlayerEg() > 10f) 
-        {
-            isGenereShieldActive = !isGenereShieldActive;
-        }
-
-        if (isAccelShieldActive == true || isGenereShieldActive == true) 
+        if (isGenereShieldActive == true)
         {
             // 쉴드의 크기를 증가시키고, 최대 크기 지정
             currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, maxShieldSize);
             transform.localScale = new Vector3(currentShieldSize, currentShieldSize, currentShieldSize);
-
-            if (currentShieldSize == maxShieldSize && isAccelShieldActive == true) 
-            {
-                Invoke("ShieldDestroy", 1.0f);
-            }
         }
-
-        if (isAccelShieldActive == false && isGenereShieldActive == false)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-            currentShieldSize = 1.0f;
-        }
-
-        if (player.PlayerEg() <= 0)
-            isGenereShieldActive = isAccelShieldActive = false;
     }
 
-    //Invoke용 쉴드 off
+    public void StartAccelShield() //액셀 쉴드 기능
+    {
+        float startShieldSize = 20.0f;
+
+        if (player.PlayerEg() >= 50.0f && isAccelShieldActive == true)
+        {
+            isAccelShieldActive = true;
+            shieldGrowSpeed += 30;
+
+            //쉴드를 전개
+            currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, startShieldSize);
+            transform.localScale = new Vector3(currentShieldSize, currentShieldSize, currentShieldSize);
+            
+        }
+       
+    }
+
+    public void EndAccelShield()
+    {
+        isAccelReady = false;
+        isAccelArrive = true;
+        isAccelShieldActive = false;
+    }
+
+    //쉴드 off
     void ShieldDestroy()
     {
-        if(isAccelShieldActive == true) shieldGrowSpeed -= 20;
+        if(isAccelShieldActive == true) shieldGrowSpeed -= 30;
         isAccelShieldActive = false;
     }
 
@@ -93,44 +83,108 @@ public class ShieldManager : MonoBehaviour
             // 적 오브젝트를 쉴드 방향으로 밀어냄
             Vector3 pushDirection = other.transform.position - transform.position;
             if(isAccelShieldActive == true)
-                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce * 2, ForceMode.Impulse);
+                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce * 3, ForceMode.Impulse);
             if (isGenereShieldActive == true)
-            other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce, ForceMode.Impulse);
+                other.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * shieldPushForce * 3, ForceMode.Impulse);
         }
     }
 
-    private void ShieldLVManage()
+    public void ShieldLVManage()
     {
         switch (currenShieldLV) //쉴드 레벨에 따른 크기와 속도 차이
         {
             case 1:
-                maxShieldSize = 25;
-                shieldGrowSpeed = 15;
+                maxShieldSize = 20;
+                shieldGrowSpeed = 30;
                 break;
             case 2:
-                maxShieldSize = 30;
-                shieldGrowSpeed = 20;
+                maxShieldSize = 25;
+                shieldGrowSpeed = 35;
                 break;
             case 3:
-                maxShieldSize = 35;
-                shieldGrowSpeed = 25;
+                maxShieldSize = 30;
+                shieldGrowSpeed = 40;
                 break;
             default:
-                maxShieldSize = 25;
-                shieldGrowSpeed = 15;
-                player.ShieldLV(1);
+                maxShieldSize = 20;
+                shieldGrowSpeed = 30;
+                shieldLV = 1;
                 break;
+        }
+        if (currenShieldLV != shieldLV)
+        {
+            currenShieldLV = shieldLV;
+        }
+    }
+
+    public void ShieldLevelUp()
+    {
+        if (shieldLV >= 3) //최대 3레벨 제한
+        {
+            shieldLV = 3;
+        }
+        else //최대 레벨 아닐 시 렙업
+        {
+            shieldLV++;
         }
     }
 
     //초기화 함수
     private void Init()
     {
+        ShieldLVManage();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+        animator = player.GetComponent<Animator>();
         isGenereShieldActive = false;
         isAccelShieldActive = false;
-        currenShieldLV = player.ShieldLV();
+        isAccelReady = false;
+        isAccelArrive = false;
+        currenShieldLV = shieldLV;
         shieldPushForce = 3.0f;
-        ShieldLVManage();
+
+    }
+
+    public bool IsGenereShield()
+    { 
+        return isGenereShieldActive;
+    }
+    public void IsGenereShield(bool s)
+    {
+        isGenereShieldActive = s;
+    }
+
+    public bool IsAccelShield()
+    {
+        return isAccelShieldActive;
+    }
+    public void IsAccelShield(bool s)
+    {
+        isAccelShieldActive = s;
+    }
+
+    public float CurrentShieldSize()
+    {
+        return currentShieldSize;
+    }
+    public void CurrentShieldSize(float c)
+    {
+        currentShieldSize = c;
+    }
+
+    public bool IsAccelReady()
+    {
+        return isAccelReady;
+    }
+    public void IsAccelReady(bool ar)
+    {
+        isAccelReady = ar;
+    }
+    public bool IsAccelArrive()
+    {
+        return isAccelArrive;
+    }
+    public void IsAccelArrive(bool aa)
+    {
+        isAccelArrive = aa;
     }
 }
