@@ -14,11 +14,25 @@ public class GunController : MonoBehaviour
     public GameObject[] guns;
     public PlayerControl player;
 
+    private Rigidbody rigidbody;
+
+    public Transform playerHand;
+
+    public Vector3 originalPosition;
+    public Quaternion originalRotation;
+
     private bool isFiring;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+
+        rigidbody = GetComponent<Rigidbody>();
+
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
+        AttachToHand();
     }
     private void Update()
     {
@@ -54,7 +68,23 @@ public class GunController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.W)) 
         {
             Fire();
-        }   
+        }
+    }
+    void FixedUpdate()
+    {
+        playerHand.rotation = Quaternion.Euler(0, 180, 0);
+        rigidbody.MovePosition(playerHand.position);
+        rigidbody.MoveRotation(playerHand.rotation);
+    }
+
+    public void AttachToHand()
+    {
+        // 총의 물리 시뮬레이션 비활성화
+        rigidbody.isKinematic = true;
+
+        // 총의 위치와 회전값을 플레이어의 손에 맞게 설정
+        transform.position = playerHand.position;
+        transform.rotation = playerHand.rotation;
     }
 
     private void Fire()
