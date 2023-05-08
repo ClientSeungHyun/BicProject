@@ -11,6 +11,8 @@ public class EnemyShooting : MonoBehaviour
 
     private float lastShootTime = 0f;
 
+    private List<GameObject> missiles = new List<GameObject>();
+
     void Update()
     {
         // 플레이어와 적 사이의 거리를 계산합니다.
@@ -24,9 +26,22 @@ public class EnemyShooting : MonoBehaviour
 
             // 미사일을 생성하고 발사합니다.
             GameObject missile = Instantiate(missilePrefab, transform.position + transform.forward * 0.5f, transform.rotation);
+            missile.AddComponent<Missile>();
             missile.GetComponent<Rigidbody>().velocity = transform.forward * missileSpeed;
+
+            // 리스트에 미사일 추가
+            missiles.Add(missile);
+
             lastShootTime = Time.time;
         }
     }
 
+    public void DestroyMissile(GameObject missile)
+    {
+        if (missiles.Contains(missile))
+        {
+            missiles.Remove(missile);
+            Destroy(missile);
+        }
+    }
 }
