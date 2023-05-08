@@ -36,38 +36,33 @@ public class GunController : MonoBehaviour
     }
     private void Update()
     {
-        /*if (leftHand.grabbedObject == gameObject || rightHand.grabbedObject == gameObject)
+        //oculus 상
+        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
         {
-            transform.position = (leftHand.grabbedObject == gameObject) ? leftHand.transform.position : rightHand.transform.position;
-            transform.rotation = (leftHand.grabbedObject == gameObject) ? leftHand.transform.rotation : rightHand.transform.rotation;
-
-            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+            if (!isFiring)
             {
-                if (!isFiring)
-                {
-                    InvokeRepeating("Fire", 0f, 0.1f);
-                    isFiring = true;
-                }
-            }
-            else
-            {
-                if (isFiring)
-                {
-                    CancelInvoke("Fire");
-                    isFiring = false;
-                }
+                InvokeRepeating("Fire", 0f, 0.1f);
+                isFiring = true;
             }
         }
         else
         {
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
+            if (isFiring)
+            {
+                CancelInvoke("Fire");
+                isFiring = false;
+            }
         }
-        */
-
-        if(Input.GetKeyDown(KeyCode.W)) 
+        //컴터 테스트
+        if(Input.GetKeyDown(KeyCode.L)) 
         {
-            Fire();
+            InvokeRepeating("Fire", 0f, 0.1f);
+            isFiring = true;
+        }
+        if (Input.GetKeyUp(KeyCode.L))
+        {
+            CancelInvoke("Fire");
+            isFiring = false;
         }
     }
     void FixedUpdate()
