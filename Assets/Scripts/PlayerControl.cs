@@ -14,6 +14,7 @@ public class PlayerControl : MonoBehaviour
     private float accelDistance;
     private bool isAccelSystem;
     private bool isMoveAble;
+    private bool isHaveWeapon;
 
     public GameObject playerCamera;
     public GameObject UIM;
@@ -45,14 +46,14 @@ public class PlayerControl : MonoBehaviour
         ShieldSystem();
         Move();
 
-
         //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsAccelReady() != true) 
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsAccelReady() != true)
         {
             shieldScript.IsAccelReady(true);
         }
         if (shieldScript.IsAccelReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
         {
+            Debug.Log("ADSF");
             Vector3 z = Vector3.zero;
             Vector3 point = new Vector3(accelPoint.transform.position.x, transform.position.y, accelPoint.transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, point, 1.5f);
@@ -91,17 +92,20 @@ public class PlayerControl : MonoBehaviour
         shieldScript.PlayerEgManage();
         shieldScript.ShieldLVManage();
 
-        if (Input.GetKeyDown(KeyCode.B) && shieldScript.IsAccelShield() != true)
+        //일반 쉴드
+        if (Input.GetKeyDown(KeyCode.B) && shieldScript.IsAccelShield() != true)    
         {
             shieldScript.IsGenereShield(!shieldScript.IsGenereShield());
+            shieldScript.gameObject.SetActive(true);
         }
+        //액셀 쉴드
         if (Input.GetKeyDown(KeyCode.N) && playerEg >= 50.0f) 
         {
             if (shieldScript.IsGenereShield() == true)
                 shieldScript.IsGenereShield(false);
 
             shieldScript.IsAccelShield(true);
-
+            shieldScript.gameObject.SetActive(true);
             AccelSystem();
         }
 
@@ -112,8 +116,9 @@ public class PlayerControl : MonoBehaviour
         //쉴드 원상복구
         if (shieldScript.IsGenereShield() == false && shieldScript.IsAccelShield() == false) 
         {
-            shieldScript.transform.localScale = new Vector3(1, 1, 1);
+            shieldScript.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             shieldScript.CurrentShieldSize(1.0f);
+            shieldScript.gameObject.SetActive(false);
         }
         if (playerEg <= 0)
         {
@@ -151,14 +156,37 @@ public class PlayerControl : MonoBehaviour
                         playerCamera.transform.position.y, playerCamera.transform.position.z + playerCamera.transform.forward.z * accelDistance);
                 }
             }
-
-           
         }
     }
 
     //컨트롤러 조이스틱
     void Move()
     {
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))  //왼손 트리거
+        {
+            if (isHaveWeapon)
+            {
+
+            }
+            else
+            {
+                isHaveWeapon = true;
+                //총 생성
+            }
+        }
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))  //오른손 트리거 버튼
+        {
+            if (isHaveWeapon)
+            {
+
+            }
+            else
+            {
+                isHaveWeapon = true;
+                //총 생성
+            }
+        }
+
         if (OVRInput.Get(OVRInput.Touch.SecondaryThumbstick))
         {
             Vector2 thumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
@@ -182,18 +210,13 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        //if(Input.GetKey(KeyCode.W))
-        //    transform.Translate(Vector3.forward * moveSpeed);
-
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
         moveDirection = new Vector3(x, 0, z);
         //임시방편 pc 이동
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
-        
 
-        //if (!isBorder)
            
 
     }
@@ -240,18 +263,10 @@ public class PlayerControl : MonoBehaviour
 
         animator.SetBool("isCrouching", shieldScript.IsAccelShield());
         animator.SetBool("isSprint", shieldScript.IsAccelReady());
+
+
+       
     }
-
-    //void PlayerEgManage()
-    //{
-    //    if (shieldScript.IsGenereShield() == true)
-    //        playerEg = PlayerEg() - 10.0f * Time.deltaTime;
-    //    else if (playerEg < 100 && shieldScript.IsAccelShield() == false) // 에너지 까이면 지속적으로 채우기
-    //        playerEg = playerEg + 3.0f * Time.deltaTime;
-    //    else if (playerEg >= 100) //100을 넘겼을시 그냥 100으로 고정
-    //        playerEg = 100f;
-
-    //}
 
     public void Init()
     {
@@ -264,7 +279,8 @@ public class PlayerControl : MonoBehaviour
         accelDistance = 10.0f;
         isAccelSystem = false;
         isMoveAble = true;
-
+        isHaveWeapon = false;
+        shieldScript.gameObject.SetActive(false);
 
         animator = GameObject.FindGameObjectWithTag("Character").GetComponent<Animator>();
         vrRig = GameObject.FindGameObjectWithTag("Character").GetComponent<VRRig>();

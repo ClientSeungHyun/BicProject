@@ -14,7 +14,6 @@ public class ShieldManager : MonoBehaviour
     [SerializeField] private bool isGenereShieldActive;
     [SerializeField]  private bool isAccelShieldActive;
     private bool isAccelReady;
-    private bool isAccelArrive;
 
     private PlayerControl player;
     public Animator animator;
@@ -47,12 +46,12 @@ public class ShieldManager : MonoBehaviour
 
     public void StartAccelShield() //액셀 쉴드 기능
     {
-        float startShieldSize = 20.0f;
+        float startShieldSize = maxShieldSize + 1.0f;
 
-        if (player.PlayerEg() >= 50.0f && isAccelShieldActive == true)
+        if (player.PlayerEg() >= 50.0f && isAccelShieldActive == true && isAccelReady == false)
         {
             isAccelShieldActive = true;
-            shieldGrowSpeed += 30;
+            shieldGrowSpeed += 10;
 
             //쉴드를 전개
             currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, startShieldSize);
@@ -64,9 +63,17 @@ public class ShieldManager : MonoBehaviour
 
     public void EndAccelShield()
     {
-        isAccelReady = false;
-        isAccelArrive = true;
-        isAccelShieldActive = false;
+        float endShieldSize = maxShieldSize + 8.0f;
+        shieldGrowSpeed += 10;
+        currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, endShieldSize);
+        transform.localScale = new Vector3(currentShieldSize, currentShieldSize, currentShieldSize);
+
+        if (currentShieldSize >= endShieldSize)
+        {
+            isAccelReady = false;
+            isAccelShieldActive = false;
+            shieldGrowSpeed -= 20;
+        }
     }
 
     //쉴드 off
@@ -94,20 +101,20 @@ public class ShieldManager : MonoBehaviour
         switch (currenShieldLV) //쉴드 레벨에 따른 크기와 속도 차이
         {
             case 1:
-                maxShieldSize = 20;
-                shieldGrowSpeed = 30;
+                maxShieldSize = 4;
+                shieldGrowSpeed = 3;
                 break;
             case 2:
-                maxShieldSize = 25;
-                shieldGrowSpeed = 35;
+                maxShieldSize = 6;
+                shieldGrowSpeed = 5;
                 break;
             case 3:
-                maxShieldSize = 30;
-                shieldGrowSpeed = 40;
+                maxShieldSize = 8;
+                shieldGrowSpeed =8;
                 break;
             default:
-                maxShieldSize = 20;
-                shieldGrowSpeed = 30;
+                maxShieldSize = 4;
+                shieldGrowSpeed = 3;
                 shieldLV = 1;
                 break;
         }
@@ -138,7 +145,6 @@ public class ShieldManager : MonoBehaviour
         isGenereShieldActive = false;
         isAccelShieldActive = false;
         isAccelReady = false;
-        isAccelArrive = false;
         currenShieldLV = shieldLV;
         shieldPushForce = 3.0f;
 
@@ -178,13 +184,5 @@ public class ShieldManager : MonoBehaviour
     public void IsAccelReady(bool ar)
     {
         isAccelReady = ar;
-    }
-    public bool IsAccelArrive()
-    {
-        return isAccelArrive;
-    }
-    public void IsAccelArrive(bool aa)
-    {
-        isAccelArrive = aa;
     }
 }

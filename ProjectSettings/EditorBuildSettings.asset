@@ -4,8 +4,39 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/AccelTestScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/StroyExplain.unity
+    guid: 51a3c16d2ecfb4748bc5bcebc1e7a5d0
+  - enabled: 1
+    path: Assets/Scenes/TitleScene.unity
+    guid: dadd6a93211a72346a1cfc288717b0ce
+  - enabled: 1
+    path: Assets/Scenes/Bullet.unity
+    guid: e5a529c08f9e96d4bafa477c10bbe7e1
+  - enabled: 1
+    path: Assets/Scenes/EnemySampleScene.unity
+    guid: 652cbace05950da4a837b6c1c6248dbb
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: 64fd24eedc0c4e14097859ad3626ab06
+  - enabled: 1
+    path: Assets/Scenes/ExitScene.unity
+    guid: 7473449a73eb44e4aa1b56eba4a9814c
+  - enabled: 1
+    path: Assets/Scenes/MapOneHMH.unity
+    guid: 56e0ae39a8773f646984e76fae9fdacd
+  - enabled: 1
+    path: Assets/Scenes/SampleScene_Pooling.unity
+    guid: a6a823e0184a118439950609ebd30008
+  - enabled: 1
+    path: Assets/Scenes/OptionScene.unity
+    guid: 07cb2228987bc9a42936ad19919db8ae
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 217d93904f1ae464dbfd57e45a4b262d, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 250ca8acfb81f264c9c1a031dda3d1f0, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: cf919595123d44247936469c7b397afa, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 136cf20da72013546bdc3b975d61ca8a, type: 2}
