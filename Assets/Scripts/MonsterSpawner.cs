@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class MonsterSpawner : MonoBehaviour
 {
     public GameObject monsterPrefab;
-    public int monsterCount = 5;
+    public int monsterCount = 20;
     public float spawnRadius = 10f;
 
     private List<GameObject> monsterPool;
@@ -16,33 +15,34 @@ public class MonsterSpawner : MonoBehaviour
     {
         monsterPool = new List<GameObject>();
 
-        // 몬스터 생성 및 풀에 추가
+        // 몬스터 풀 초기화
         for (int i = 0; i < monsterCount; i++)
         {
             GameObject monster = Instantiate(monsterPrefab, transform.position, Quaternion.identity);
             monster.SetActive(false);
             monsterPool.Add(monster);
         }
-
-        // 몬스터 위치 랜덤하게 설정
-        SpawnMonsters();
     }
 
-    private void SpawnMonsters()
+    private void Update()
     {
-        for (int i = 0; i < monsterCount; i++)
+        // 몬스터 스폰 처리
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Vector3 randomPosition = GetRandomPosition();
-            GameObject monster = monsterPool[currentMonsterIndex];
+            SpawnMonster();
+        }
+    }
 
-            monster.transform.position = randomPosition;
-            monster.SetActive(true);
+    private void SpawnMonster()
+    {
+        GameObject monster = monsterPool[currentMonsterIndex];
+        monster.transform.position = GetRandomPosition();
+        monster.SetActive(true);
 
-            currentMonsterIndex++;
-            if (currentMonsterIndex >= monsterPool.Count)
-            {
-                currentMonsterIndex = 0;
-            }
+        currentMonsterIndex++;
+        if (currentMonsterIndex >= monsterPool.Count)
+        {
+            currentMonsterIndex = 0;
         }
     }
 
