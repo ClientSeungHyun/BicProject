@@ -1,23 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+
 public class EnemyNav : MonoBehaviour
 {
-    public Transform player; // ÇÃ·¹ÀÌ¾î Transform
+    public Transform player; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Transform
 
-    private NavMeshAgent navMeshAgent;
-    private float walkSpeed = 3f;
-    private float runSpeed = 15f;
+    private UnityEngine.AI.NavMeshAgent navMeshAgent;
+    public float walkSpeed = 3f;
+    public float runSpeed = 15f;
 
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.speed = walkSpeed; // Walk ¼Óµµ ¼³Á¤
+        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        navMeshAgent.speed = walkSpeed; // Walk ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
         navMeshAgent.enabled = true;
     }
 
     void Update()
     {
-        navMeshAgent.SetDestination(player.position); // Ç×»ó ÇÃ·¹ÀÌ¾î¸¦ ÃßÀûÇÕ´Ï´Ù.
-        navMeshAgent.speed = Vector3.Distance(transform.position, player.position) < 100f ? runSpeed : walkSpeed; // °Å¸®¿¡ µû¶ó ¼Óµµ¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+        navMeshAgent.SetDestination(player.position); // ï¿½×»ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+        navMeshAgent.speed = Vector3.Distance(transform.position, player.position) < 100f ? runSpeed : walkSpeed; // ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+    }
+
+    public float GetSpeed()
+    {
+        return navMeshAgent.speed;
     }
 }
