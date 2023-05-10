@@ -8,7 +8,7 @@ public class EnemyNav : MonoBehaviour
 
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     public float walkSpeed = 3f;
-    public float runSpeed = 15f;
+    public float runSpeed = 5f;
 
     void Start()
     {
@@ -19,8 +19,8 @@ public class EnemyNav : MonoBehaviour
 
     void Update()
     {
-        navMeshAgent.SetDestination(player.position); // �׻� �÷��̾ �����մϴ�.
-        navMeshAgent.speed = Vector3.Distance(transform.position, player.position) < 100f ? runSpeed : walkSpeed; // �Ÿ��� ���� �ӵ��� �����մϴ�.
+        navMeshAgent.SetDestination(player.position); // 항상 플레이어 추적
+        navMeshAgent.speed = Vector3.Distance(transform.position, player.position) < 15f ? runSpeed : walkSpeed; // 거리에따라 속도 조절
     }
 
     public float GetSpeed()
