@@ -12,9 +12,8 @@ public class PlayerControl : MonoBehaviour
     private float moveSpeed;     //이동 속도
     private float sightAngle; //시야각 범위
     private float accelDistance;
-    private bool isAccelSystem;
     private bool isMoveAble;
-    private bool isHaveWeapon;
+    [SerializeField] private bool isHaveWeapon;
 
     public GameObject playerCamera;
     public GameObject UIM;
@@ -25,6 +24,10 @@ public class PlayerControl : MonoBehaviour
     public GameObject accelPoint; // 액셀 도착지점
     public Rigidbody playerRigidbody;  //리짓바디
 
+    public float dashSpeed = 10f;
+    public Vector3 dashDirection;
+    private bool isDashing = false;
+    
     //애니메이터용 변수들
     public float speedTreshold = 0.001f;
     [Range(0, 1)]
@@ -42,32 +45,29 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         AnimatorControl();
         ShieldSystem();
-        Move();
+        KeyController();
 
         //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsAccelReady() != true)
         {
             shieldScript.IsAccelReady(true);
+            UIManagerScript.BoostOnOff(true);
         }
         if (shieldScript.IsAccelReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
         {
-            Debug.Log("ADSF");
-            Vector3 z = Vector3.zero;
-            Vector3 point = new Vector3(accelPoint.transform.position.x, transform.position.y, accelPoint.transform.position.z);
-            transform.position = Vector3.MoveTowards(transform.position, point, 1.5f);
-            if (transform.position == point)
-            {
-                shieldScript.EndAccelShield();
-            }
+
+            StartCoroutine(Accel());
+            if (!isDashing)
+                Invoke("EndAccelShield", 0.7f);
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         //체력 까임
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyWeapon")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "EnemyWeapon")
         {
             if (playerHP > 0)
             {
@@ -77,7 +77,7 @@ public class PlayerControl : MonoBehaviour
         }
 
         //체력 회복
-        if (collision.gameObject.tag == "Juice")
+        if (other.gameObject.tag == "Juice")
         {
             if (playerHP < 10)
             {
@@ -93,20 +93,21 @@ public class PlayerControl : MonoBehaviour
         shieldScript.ShieldLVManage();
 
         //일반 쉴드
-        if (Input.GetKeyDown(KeyCode.B) && shieldScript.IsAccelShield() != true)    
+        if ((Input.GetKeyDown(KeyCode.B) || OVRInput.GetDown(OVRInput.RawButton.B)) && shieldScript.IsAccelShield() != true)    
         {
             shieldScript.IsGenereShield(!shieldScript.IsGenereShield());
             shieldScript.gameObject.SetActive(true);
         }
         //액셀 쉴드
-        if (Input.GetKeyDown(KeyCode.N) && playerEg >= 50.0f) 
+        if ((Input.GetKeyDown(KeyCode.N) || OVRInput.GetDown(OVRInput.RawButton.A)) && playerEg >= 50.0f) 
         {
             if (shieldScript.IsGenereShield() == true)
                 shieldScript.IsGenereShield(false);
 
-            shieldScript.IsAccelShield(true);
+            isDashing = true;
             shieldScript.gameObject.SetActive(true);
-            AccelSystem();
+            shieldScript.IsAccelShield(true);
+            playerEg -= 50.0f;
         }
 
         shieldScript.GenereShield();
@@ -128,39 +129,30 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void AccelSystem()
+    private IEnumerator Accel()
     {
-        if (shieldScript.IsAccelShield())
-        {
-            playerEg -= 50.0f;
-            isAccelSystem = true;
-            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward * accelDistance);
-            RaycastHit[] hitDatas;
-            hitDatas = Physics.RaycastAll(playerCamera.transform.position, playerCamera.transform.forward, accelDistance);
+        MoveCharacter();
+        yield return new WaitForSeconds(0.5f);
+        
+        
+        isDashing = false;
+    }
 
-            //통과한 레이들 중에 지나가지 못하는 장애물이 있는지 검사
-            //액셀 종료 지점 설정
-            for (int i = 0; i < hitDatas.Length; i++)
-            {
-                //hit.transform.gameObject.layer == LayerMask.NameToLayer("Wall")
-                RaycastHit hit = hitDatas[i];
-                if (hit.transform.CompareTag("Wall"))   //만약 지나가지 못하는 장애물이 있다면
-                {
-                    //Ray가 충돌한 지점으로 액셀 종료 위치 지정
-                    Vector3 hitPosition = hit.point;
-                    accelPoint.transform.position = new Vector3(hit.point.x, playerCamera.transform.position.y, hit.point.z);
-                }
-                else //없다면 레이 끝 부분이 액셀 종료 위치 지정
-                {
-                    accelPoint.transform.position = new Vector3(playerCamera.transform.position.x + playerCamera.transform.forward.x * accelDistance,
-                        playerCamera.transform.position.y, playerCamera.transform.position.z + playerCamera.transform.forward.z * accelDistance);
-                }
-            }
-        }
+    private void MoveCharacter()
+    {
+        dashDirection = transform.forward;
+        Vector3 movement = dashDirection * dashSpeed * Time.deltaTime;
+        characterController.Move(movement);
+    }
+
+    private void EndAccelShield()
+    {
+        shieldScript.EndAccelShield();
+        UIManagerScript.BoostOnOff(false);
     }
 
     //컨트롤러 조이스틱
-    void Move()
+    void KeyController()
     {
         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))  //왼손 트리거
         {
@@ -187,28 +179,7 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        if (OVRInput.Get(OVRInput.Touch.SecondaryThumbstick))
-        {
-            Vector2 thumbstick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
-            if (thumbstick.x < 0) //왼쪽
-            {
-
-            }
-            else if (thumbstick.x > 0) //오른쪽
-            {
-
-            }
-            else if (thumbstick.y > 0) // 위
-            {
-
-            }
-            else if(thumbstick.y<0) //아래
-            {
-
-
-            }
-        }
 
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
@@ -217,7 +188,7 @@ public class PlayerControl : MonoBehaviour
         //임시방편 pc 이동
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
 
-           
+
 
     }
 
@@ -277,7 +248,6 @@ public class PlayerControl : MonoBehaviour
         moveSpeed = 3.0f;
         sightAngle = 80f;
         accelDistance = 10.0f;
-        isAccelSystem = false;
         isMoveAble = true;
         isHaveWeapon = false;
         shieldScript.gameObject.SetActive(false);
@@ -317,14 +287,5 @@ public class PlayerControl : MonoBehaviour
     public void PlayerEg(float e)
     {
         playerEg = e;
-    }
-
-    public bool IsAccelSystem()
-    {
-        return isAccelSystem;
-    }
-    public void IsAccelSystem(bool a)
-    {
-        isAccelSystem = a;
     }
 }

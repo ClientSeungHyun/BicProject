@@ -321,6 +321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
+  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -405,6 +406,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &705507996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705507993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1001 &744754058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -412,6 +433,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2292584510386183946, guid: 9a805af04d2e5ab4391b2842665a876c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d868516cd99fb33499ab91ce8911f404, type: 2}
     - target: {fileID: 5960434361134687449, guid: 9a805af04d2e5ab4391b2842665a876c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -55.4
@@ -419,6 +444,10 @@ PrefabInstance:
     - target: {fileID: 5960434361134687449, guid: 9a805af04d2e5ab4391b2842665a876c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -20.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225402027423089629, guid: 9a805af04d2e5ab4391b2842665a876c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8180540566665449647, guid: 9a805af04d2e5ab4391b2842665a876c, type: 3}
       propertyPath: m_Name
@@ -809,12 +838,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: mech_walker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3460045528269317818, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4753487489081522109, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
       propertyPath: m_Height
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4753487489081522109, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
       propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753487489081522109, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6592837932952081608, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}

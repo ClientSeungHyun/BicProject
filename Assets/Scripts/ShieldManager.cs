@@ -5,15 +5,15 @@ using UnityEngine;
 public class ShieldManager : MonoBehaviour
 {
     private int shieldLV;
-    private int currenShieldLV;
-    private float maxShieldSize;
-    private float shieldGrowSpeed;
+    [SerializeField] private int currenShieldLV;
+    [SerializeField] private float maxShieldSize;
+    [SerializeField] private float shieldGrowSpeed;
     private float shieldPushForce;
     [SerializeField] private float currentShieldSize = 0.0f;
 
     [SerializeField] private bool isGenereShieldActive;
     [SerializeField]  private bool isAccelShieldActive;
-    private bool isAccelReady;
+    [SerializeField] private bool isAccelReady;
 
     private PlayerControl player;
     public Animator animator;
@@ -48,11 +48,11 @@ public class ShieldManager : MonoBehaviour
     {
         float startShieldSize = maxShieldSize + 1.0f;
 
-        if (player.PlayerEg() >= 50.0f && isAccelShieldActive == true && isAccelReady == false)
+        
+        if (isAccelShieldActive == true && isAccelReady == false)
         {
-            isAccelShieldActive = true;
             shieldGrowSpeed += 10;
-
+            
             //½¯µå¸¦ Àü°³
             currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, startShieldSize);
             transform.localScale = new Vector3(currentShieldSize, currentShieldSize, currentShieldSize);
@@ -67,20 +67,13 @@ public class ShieldManager : MonoBehaviour
         shieldGrowSpeed += 10;
         currentShieldSize = Mathf.Min(currentShieldSize + shieldGrowSpeed * Time.deltaTime, endShieldSize);
         transform.localScale = new Vector3(currentShieldSize, currentShieldSize, currentShieldSize);
-
+       
         if (currentShieldSize >= endShieldSize)
         {
             isAccelReady = false;
             isAccelShieldActive = false;
             shieldGrowSpeed -= 20;
         }
-    }
-
-    //½¯µå off
-    void ShieldDestroy()
-    {
-        if(isAccelShieldActive == true) shieldGrowSpeed -= 30;
-        isAccelShieldActive = false;
     }
 
     private void OnTriggerEnter(Collider other)

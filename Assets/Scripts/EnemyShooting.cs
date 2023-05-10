@@ -19,7 +19,7 @@ public class EnemyShooting : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
 
         // 적이 플레이어를 향해 미사일을 발사합니다.
-        if (distance < 50f && Time.time - lastShootTime > missileInterval) // 거리가 10미터 이내이고 발사 간격을 만족할 때
+        if (distance < 10f && Time.time - lastShootTime > missileInterval) // 거리가 10미터 이내이고 발사 간격을 만족할 때
         {
             // 적이 플레이어를 바라보도록 합니다.
             transform.LookAt(player.position);
