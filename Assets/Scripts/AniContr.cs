@@ -13,7 +13,7 @@ public class AniContr : MonoBehaviour
         enemyNav = GetComponent<EnemyNav>();
     }
 
-    void Update()
+    void Update() //enemyNav함수에서 스피드 값을 받아 정해진 값에 따라 애니메이션이 변경됩니다. 
     {
         float speed = enemyNav.GetSpeed();
         if (speed == enemyNav.runSpeed)
