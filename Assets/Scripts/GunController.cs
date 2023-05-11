@@ -23,6 +23,9 @@ public class GunController : MonoBehaviour
 
     private bool isFiring;
 
+    public Transform leftBulletStart;
+    public Transform rightBulletStart;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
@@ -36,34 +39,18 @@ public class GunController : MonoBehaviour
     }
     private void Update()
     {
-        //oculus 상
-        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+        // PrimaryIndexTrigger 왼손 트리거 버튼
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
         {
-            if (!isFiring)
-            {
-                InvokeRepeating("Fire", 0f, 0.1f);
-                isFiring = true;
-            }
+            Debug.Log("왼손 트리거 버튼 클릭");
         }
-        else
+        // SecondaryIndexTrigger 오른손 트리거 버튼
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
-            if (isFiring)
-            {
-                CancelInvoke("Fire");
-                isFiring = false;
-            }
+            Debug.Log("오른손 트리거 버튼 클릭");
         }
-        //컴터 테스트
-        if(Input.GetKeyDown(KeyCode.L)) 
-        {
-            InvokeRepeating("Fire", 0f, 0.1f);
-            isFiring = true;
-        }
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            CancelInvoke("Fire");
-            isFiring = false;
-        }
+        
+      
     }
     void FixedUpdate()
     {
@@ -82,11 +69,8 @@ public class GunController : MonoBehaviour
         transform.rotation = playerHand.rotation;
     }
 
-    private void Fire()
+    private void Fire(Transform startBullet)
     {
-        GameObject bullet = bulletPool.GetObject();
-        bullet.transform.position = barrelEnd.position;
-        bullet.transform.rotation = barrelEnd.rotation;
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 100f;
+        bulletPool.transform.position = startBullet.position;
     }
 }

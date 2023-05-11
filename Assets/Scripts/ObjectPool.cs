@@ -10,11 +10,9 @@ public class ObjectPool : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < objectPool.Count; i++)
         {
-            GameObject obj = Instantiate(prefab, transform);
-            obj.SetActive(false);
-            objectPool.Add(obj);
+            objectPool[i].SetActive(false);
         }
     }
 
