@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Vector3 direction;
-    public float damage = 20.0f; //각 총알 별 딜 지정
+    public float speed = 10f; // 총알의 속도
 
-    public void Shoot(Vector3 direction)
+    private void OnEnable()
     {
-        this.direction = direction;
-        Destroy(this.gameObject, 5f);
+        // 총알을 발사하면 일정 시간 후에 자동으로 비활성화합니다.
+        Invoke("Deactivate", 3f);
     }
 
-    void Update()
+    private void OnDisable()
     {
-        transform.Translate(direction); //나가는 방향으로 쭉
+        // 총알이 비활성화되면 취소합니다.
+        CancelInvoke();
     }
 
-    public void OnTriggerEnter(Collider col)
+    private void Update()
     {
-        if(col.tag == "Enemy") //만난 콜리더 태그가 Enemy이면 Enemy 컴포넌트의 hp를 데미지 만큼 감소
-        {
-            col.gameObject.GetComponent<Enemy>().hp = col.gameObject.GetComponent<Enemy>().hp - damage;
-        }
+        // 총알을 앞으로 이동시킵니다.
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 총알이 다른 충돌체에 부딪히면 비활성화합니다.
+        Deactivate();
+    }
+
+    private void Deactivate()
+    {
+        // 총알을 비활성화하고 오브젝트 풀로 반환합니다.
+        gameObject.SetActive(false);
     }
 }

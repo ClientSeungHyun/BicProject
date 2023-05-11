@@ -27,7 +27,8 @@ public class PlayerControl : MonoBehaviour
     public float dashSpeed = 10f;
     public Vector3 dashDirection;
     private bool isDashing = false;
-    
+
+    private Vector3 initPosition;
     //애니메이터용 변수들
     public float speedTreshold = 0.001f;
     [Range(0, 1)]
@@ -40,6 +41,7 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         Init();
+        initPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -49,6 +51,8 @@ public class PlayerControl : MonoBehaviour
         AnimatorControl();
         ShieldSystem();
         KeyController();
+
+        transform.position = new Vector3(transform.position.x, initPosition.y, transform.position.z);
 
         //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsAccelReady() != true)
