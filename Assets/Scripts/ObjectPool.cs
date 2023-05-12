@@ -6,22 +6,26 @@ public class ObjectPool : MonoBehaviour
     public GameObject prefab;
     public int size;
 
-    private List<GameObject> objectPool = new List<GameObject>();
+    public List<GameObject> objectPool = new List<GameObject>();
 
     private void Start()
     {
-        for (int i = 0; i < objectPool.Count; i++)
+        Transform[] allChildren = GetComponentsInChildren<Transform>();
+        int a = transform.childCount;
+        for (int i = 0; i < transform.childCount; i++)
         {
-            objectPool[i].SetActive(false);
+            objectPool.Add(transform.GetChild(i).gameObject);
+            objectPool[i].gameObject.SetActive(false);
         }
     }
 
-    public GameObject GetObject()
+    public GameObject GetObject(Vector3 startPos)
     {
         foreach (GameObject obj in objectPool)
         {
             if (!obj.activeInHierarchy)
             {
+                obj.transform.position = startPos;
                 obj.SetActive(true);
                 return obj;
             }

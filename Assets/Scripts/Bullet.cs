@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    
     public float speed = 10f; // 총알의 속도
+    public GameObject bulletEndParticle;
 
     private void OnEnable()
     {
         // 총알을 발사하면 일정 시간 후에 자동으로 비활성화합니다.
-        Invoke("Deactivate", 3f);
+        Invoke("Deactivate", 2f);
     }
 
     private void OnDisable()
@@ -17,7 +19,10 @@ public class Bullet : MonoBehaviour
         // 총알이 비활성화되면 취소합니다.
         CancelInvoke();
     }
-
+    private void Start()
+    {
+        bulletEndParticle = GameObject.Find("EndBulletParticle");
+    }
     private void Update()
     {
         // 총알을 앞으로 이동시킵니다.
@@ -26,8 +31,13 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 총알이 다른 충돌체에 부딪히면 비활성화합니다.
-        Deactivate();
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // 총알이 다른 충돌체에 부딪히면 비활성화합니다.
+            bulletEndParticle.transform.position = transform.position;
+            bulletEndParticle.GetComponent<ParticleSystem>().Play();
+            Deactivate();
+        }
     }
 
     private void Deactivate()

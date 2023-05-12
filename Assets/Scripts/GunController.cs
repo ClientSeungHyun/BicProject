@@ -6,14 +6,7 @@ using System.Collections.Generic;
 
 public class GunController : MonoBehaviour
 {
-    public Transform barrelEnd;
-    public ObjectPool bulletPool;
-    public OVRGrabber leftHand;
-    public OVRGrabber rightHand;
-
-    public GameObject[] guns;
-    public PlayerControl player;
-
+    private PlayerControl player;
     private Rigidbody rigidbody;
 
     public Transform playerHand;
@@ -21,28 +14,22 @@ public class GunController : MonoBehaviour
     public Vector3 originalPosition;
     public Quaternion originalRotation;
 
-    private bool isFiring;
+    public ObjectPool bulletPool;
+    public GameObject bulletStartParticle;
 
-    public Transform leftBulletStart;
-    public Transform rightBulletStart;
-
+    public Transform bulletStartTransform;
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
-
-        rigidbody = GetComponent<Rigidbody>();
-
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
-
-        AttachToHand();
+        Init();
     }
     private void Update()
     {
         // PrimaryIndexTrigger 왼손 트리거 버튼
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
+        if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.name == "LeftHandPistol")
         {
-            Debug.Log("왼손 트리거 버튼 클릭");
+            bulletStartParticle.transform.position = bulletStartTransform.position;
+            bulletStartParticle.GetComponent<ParticleSystem>().Play();
+            bulletPool.GetObject(bulletStartTransform.position);
         }
         // SecondaryIndexTrigger 오른손 트리거 버튼
         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
@@ -54,7 +41,7 @@ public class GunController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        playerHand.rotation = Quaternion.Euler(0, 180, 0);
+        transform.rotation = Quaternion.Euler(0, 180, 0);
         rigidbody.MovePosition(playerHand.position);
         rigidbody.MoveRotation(playerHand.rotation);
     }
@@ -72,5 +59,18 @@ public class GunController : MonoBehaviour
     private void Fire(Transform startBullet)
     {
         bulletPool.transform.position = startBullet.position;
+    }
+
+    private void Init()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+        rigidbody = GetComponent<Rigidbody>();
+
+        originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
+        bulletStartParticle = GameObject.Find("StartBulletParticle");
+
+        AttachToHand();
     }
 }
