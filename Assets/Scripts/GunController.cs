@@ -45,7 +45,7 @@ public class GunController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(transform.forward) * playerHand.rotation;
 
         // Rigidbody를 사용하여 손잡이 부착
-        rigidbody.MovePosition(targetPosition);
+        rigidbody.MovePosition(playerHand.position + new Vector3(0, 0.02f, 0.05f));
         rigidbody.MoveRotation(targetRotation);
     }
 
