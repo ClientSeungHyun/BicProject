@@ -42,10 +42,11 @@ public class GunController : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 targetPosition = transform.TransformDirection(playerHand.position);
-        Quaternion targetRotation = Quaternion.LookRotation(transform.forward) * playerHand.rotation;
+        Quaternion targetRotation = playerHand.rotation;
 
         // Rigidbody를 사용하여 손잡이 부착
         rigidbody.MovePosition(playerHand.position + new Vector3(0, 0.02f, 0.05f));
+        targetRotation.eulerAngles = targetRotation.eulerAngles + new Vector3(0, 180, 0);
         rigidbody.MoveRotation(targetRotation);
     }
 
