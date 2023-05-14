@@ -13,7 +13,7 @@ public class BatSpawner : MonoBehaviour
     {
         for (int i = 0; i < number; i++) {
             Instantiate(prefab, transform.position +
-                Random.insideUnitSphere * radius, Random.rotation);
+                Random.insideUnitSphere * radius, Random.rotation).transform.SetParent(this.transform, false);
         }
     }
 }

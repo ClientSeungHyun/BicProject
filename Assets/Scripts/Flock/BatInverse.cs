@@ -21,12 +21,10 @@ public class BatInverse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //모든 보이드들의 배열 가져오기
         Bat[] bats = FindObjectsOfType<Bat>();
         Vector3 average = Vector3.zero;
         float found = 0;
 
-        //linq where :: 
         foreach (Bat bat in bats.Where(b => b != bat)) {
             Vector3 diff = bat.transform.position - transform.position;
 

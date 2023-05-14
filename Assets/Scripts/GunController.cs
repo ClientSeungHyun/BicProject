@@ -41,9 +41,12 @@ public class GunController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(0, 180, 0);
-        rigidbody.MovePosition(playerHand.position);
-        rigidbody.MoveRotation(playerHand.rotation);
+        Vector3 targetPosition = transform.TransformDirection(playerHand.position);
+        Quaternion targetRotation = Quaternion.LookRotation(transform.forward) * playerHand.rotation;
+
+        // Rigidbody를 사용하여 손잡이 부착
+        rigidbody.MovePosition(targetPosition);
+        rigidbody.MoveRotation(targetRotation);
     }
 
     public void AttachToHand()
@@ -54,6 +57,7 @@ public class GunController : MonoBehaviour
         // 총의 위치와 회전값을 플레이어의 손에 맞게 설정
         transform.position = playerHand.position;
         transform.rotation = playerHand.rotation;
+        transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
     private void Fire(Transform startBullet)
