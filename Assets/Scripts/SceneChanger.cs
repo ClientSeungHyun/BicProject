@@ -80,6 +80,6 @@ public class SceneChanger : MonoBehaviour
             sceneName = "TitleScene";
         }
         // 지정한 씬으로 이동하는코드입니다.
-        SceneManager.LoadScene(sceneName);
+        LoadingSceneManager.LoadScene(sceneName);
     }
 }
