@@ -17,9 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bullet.unity
     guid: e5a529c08f9e96d4bafa477c10bbe7e1
-  - enabled: 1
-    path: Assets/Scenes/EnemySampleScene.unity
-    guid: 652cbace05950da4a837b6c1c6248dbb
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/StartScene.unity
     guid: 64fd24eedc0c4e14097859ad3626ab06
@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OptionScene.unity
     guid: 07cb2228987bc9a42936ad19919db8ae
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: 8cd3b688a05d7e942a27bcaeb5467f60
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 217d93904f1ae464dbfd57e45a4b262d, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 250ca8acfb81f264c9c1a031dda3d1f0, type: 2}

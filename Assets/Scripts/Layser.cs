@@ -97,8 +97,7 @@ public class Layser : MonoBehaviour
             layser.material.color = lineColor;
             //¾ÀÀÌµ¿
             if (sceneName != null)
-                SceneManager.LoadScene(sceneName);
-
+                LoadingSceneManager.LoadScene(sceneName);
         }
         else if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger) && !OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
         {
@@ -106,9 +105,7 @@ public class Layser : MonoBehaviour
             lineColor = Color.magenta;
             layser.material.color = lineColor;
             if (sceneName != null)
-                SceneManager.LoadScene(sceneName);
-            if (sceneName != null)
-                SceneManager.LoadScene(sceneName);
+                LoadingSceneManager.LoadScene(sceneName);
         }
         
         // ¹öÆ°À» ¶¿ °æ¿ì          
