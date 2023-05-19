@@ -18,23 +18,28 @@ public class GunController : MonoBehaviour
     public GameObject bulletStartParticle;
 
     public Transform bulletStartTransform;
+
+    public DissolveChilds gunDissolveScript;
     private void Start()
     {
         Init();
     }
     private void Update()
     {
-        // PrimaryIndexTrigger 왼손 트리거 버튼
-        if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.name == "LeftHandPistol")
+        if (gunDissolveScript.IsGenerate()) //총이 생성되어있다면
         {
-            bulletStartParticle.transform.position = bulletStartTransform.position;
-            bulletStartParticle.GetComponent<ParticleSystem>().Play();
-            bulletPool.GetObject(bulletStartTransform.position);
-        }
-        // SecondaryIndexTrigger 오른손 트리거 버튼
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
-        {
-            Debug.Log("오른손 트리거 버튼 클릭");
+            // PrimaryIndexTrigger 왼손 트리거 버튼
+            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.name == "LeftHandPistol")
+            {
+                bulletStartParticle.transform.position = bulletStartTransform.position;
+                bulletStartParticle.GetComponent<ParticleSystem>().Play();
+                bulletPool.GetObject(bulletStartTransform.position);
+            }
+            // SecondaryIndexTrigger 오른손 트리거 버튼
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            {
+                Debug.Log("오른손 트리거 버튼 클릭");
+            }
         }
         
       

@@ -11,17 +11,15 @@ public class PlayerControl : MonoBehaviour
     private int weaponLV = 1;    //무기 레벨
     private float moveSpeed;     //이동 속도
     private float sightAngle; //시야각 범위
-    private float accelDistance;
     private bool isMoveAble;
     [SerializeField] private bool isHaveWeapon;
 
     public GameObject playerCamera;
     public GameObject UIM;
-    private UIManager UIManagerScript;
+    [SerializeField] private UIManager UIManagerScript;
     public ShieldManager shieldScript;
     private CharacterController characterController;
     private Vector3 moveDirection;
-    public GameObject accelPoint; // 액셀 도착지점
     public Rigidbody playerRigidbody;  //리짓바디
 
     public float dashSpeed = 10f;
@@ -36,6 +34,8 @@ public class PlayerControl : MonoBehaviour
     private Animator animator;
     private Vector3 previousPos;
     private VRRig vrRig;
+
+    public DissolveChilds gunDissolveScript;
 
     // Start is called before the first frame update
     void Start()
@@ -183,6 +183,11 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Debug.Log("adsf");
+            StartCoroutine(gunDissolveScript.GenerateGun());
+        }
 
 
         float x = Input.GetAxisRaw("Horizontal");
@@ -251,7 +256,6 @@ public class PlayerControl : MonoBehaviour
         playerHP = maxPlayerHP;
         moveSpeed = 3.0f;
         sightAngle = 80f;
-        accelDistance = 10.0f;
         isMoveAble = true;
         isHaveWeapon = false;
         shieldScript.gameObject.SetActive(false);
@@ -282,6 +286,10 @@ public class PlayerControl : MonoBehaviour
         {
             maxPlayerHP += 20;
         }
+    }
+    public void ShieldLevelUp()
+    {
+
     }
 
     public float PlayerEg()

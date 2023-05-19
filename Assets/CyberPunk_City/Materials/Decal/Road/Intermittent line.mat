@@ -23,7 +23,6 @@ Material:
   m_Name: Intermittent line
   m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
   m_ValidKeywords:
-  - _SPECULAR_COLOR
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -34,6 +33,7 @@ Material:
     RenderType: Transparent
   disabledShaderPasses:
   - DepthOnly
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -98,7 +98,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c663bfae71fd9674fab82af841766f58, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -279,7 +279,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 0.8113207, g: 0.8004139, b: 0.22579208, a: 1}
-    - _Color: {r: 0.95283014, g: 0.7453235, b: 0.25618544, a: 1}
+    - _Color: {r: 0.8113207, g: 0.8004139, b: 0.22579205, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
