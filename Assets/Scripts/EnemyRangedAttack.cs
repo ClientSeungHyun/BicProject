@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class EnemyRangedAttack : MonoBehaviour
 {
@@ -114,9 +115,32 @@ public class EnemyRangedAttack : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            // 플레이어의 총알에 맞으면 death 애니메이션 재생 및 파괴
+            // Bullet과 충돌하면 death 애니메이션 재생 및 파괴
             animator.SetTrigger("Death");
-            Destroy(gameObject);
+            // 애니메이션 재생 시간만큼 딜레이 후에 오브젝트 파괴
+            float deathAnimationLength = GetDeathAnimationLength();
+            StartCoroutine(DestroyAfterDelay(deathAnimationLength));
         }
+    }
+
+    private float GetDeathAnimationLength()
+    {
+        // Death 애니메이션 클립의 길이를 가져옴
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+        foreach (AnimationClip clip in clips)
+        {
+            if (clip.name == "Death")
+            {
+                return clip.length;
+            }
+        }
+        return 0f;
+    }
+
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        // 딜레이 후에 오브젝트 파괴
+        Destroy(gameObject);
     }
 }
