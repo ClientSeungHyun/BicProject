@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Layser : MonoBehaviour
 {
+    private GameObject gameManager;
     private LineRenderer layser;        // 레이저
     public Color lineColor;
     private RaycastHit Collided_object; // 충돌된 객체
@@ -18,9 +19,12 @@ public class Layser : MonoBehaviour
     public GameObject Rlayser;
 
     string sceneName = "";
+    int chooseCard = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager");
         // 스크립트가 포함된 객체에 라인 렌더러라는 컴포넌트를 넣고있다.
         layser = this.gameObject.GetComponent<LineRenderer>();
         // 라인이 가지개될 색상 표현
@@ -73,6 +77,20 @@ public class Layser : MonoBehaviour
             }
             else sceneName = null;
 
+            //충돌한 물체 이름 확인후 강화 선택
+            if (Collided_object.collider.gameObject.name == "CardHP")
+            {
+                chooseCard = 1;
+            }
+            else if (Collided_object.collider.gameObject.name == "CardGun")
+            {
+                chooseCard = 2;
+            }
+            else if (Collided_object.collider.gameObject.name == "CardEnergy")
+            {
+                chooseCard = 3;
+            }
+            else chooseCard = 0;
         }
 
         else
@@ -87,44 +105,54 @@ public class Layser : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 버튼을 누를 경우 + 동시에 눌리는걸 막기
+        // 왼쪽 트리거 버튼을 누를 경우 + 동시에 눌리는걸 막기
         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) && !OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
-        {
-            //반대 레이저 비활성화, 그래야 레이저 하나만 인식
-            Rlayser.SetActive(false);
-            //레이저 색 변경
-            lineColor = Color.magenta;
+        { 
+            Rlayser.SetActive(false);   //오른쪽 레이저 비활성화, 그래야 레이저 하나만 인식
+            lineColor = Color.magenta;  //레이저 색 변경
             layser.material.color = lineColor;
             //씬이동
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
+            //강화 활성화
+            if(chooseCard != 0)
+            {
+                gameManager.GetComponent<GameManager>().chooseCard = chooseCard;
+                //다음레벨 이동
+            }
+
         }
+        // 오른쪽 트리거 버튼을 누를 경우 + 동시에 눌리는걸 막기
         else if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger) && !OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
         {
-            Llayser.SetActive(false);
-            lineColor = Color.magenta;
+            Llayser.SetActive(false);    //왼쪽 레이저 비활성화, 그래야 레이저 하나만 인식
+            lineColor = Color.magenta;  //레이저 색 변경
             layser.material.color = lineColor;
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
+            //강화 활성화
+            if (chooseCard != 0)
+            {
+                gameManager.GetComponent<GameManager>().chooseCard = chooseCard;
+                //다음레벨 이동
+            }
         }
-        
-        // 버튼을 뗄 경우          
+
+        //왼쪽 트리거 버튼을 뗄 경우          
         if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
         {
-            //반대 레이저 활성화
-            Rlayser.SetActive(true);
-            //레이저 색 
-            lineColor = Color.black;
+            Rlayser.SetActive(true);    //오른쪽 레이저 활성화
+            lineColor = Color.black;     //레이저 색 
             layser.material.color = lineColor;
-            //반대 레이저도 색 변경해주어야 함
-            Rlayser.GetComponent<LineRenderer>().material.color = lineColor;
+            Rlayser.GetComponent<LineRenderer>().material.color = lineColor;    //오른쪽 레이저도 색 변경해주어야 함
         }
+        //오른쪽 트리거 버튼을 뗄 경우  
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            Llayser.SetActive(true);
-            lineColor = Color.black;
+            Llayser.SetActive(true);    //왼쪽 레이저 활성화
+            lineColor = Color.black;    //레이저 색 
             layser.material.color = lineColor;
-            Llayser.GetComponent<LineRenderer>().material.color = lineColor;
+            Llayser.GetComponent<LineRenderer>().material.color = lineColor;    //왼쪽 레이저도 색 변경해주어야 함
         }
     }
 }

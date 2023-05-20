@@ -287,7 +287,7 @@ public class PlayerControl : MonoBehaviour
             maxPlayerHP += 20;
         }
     }
-    public void ShieldLevelUp()
+    public void EnergyLevelUp()
     {
 
     }
