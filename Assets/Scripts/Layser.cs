@@ -117,7 +117,7 @@ public class Layser : MonoBehaviour
             //강화 활성화
             if(chooseCard != 0)
             {
-                gameManager.GetComponent<GameManager>().chooseCard = chooseCard;
+                gameManager.GetComponent<GameManagers>().chooseCard = chooseCard;
                 //다음레벨 이동
             }
 
@@ -133,7 +133,7 @@ public class Layser : MonoBehaviour
             //강화 활성화
             if (chooseCard != 0)
             {
-                gameManager.GetComponent<GameManager>().chooseCard = chooseCard;
+                gameManager.GetComponent<GameManagers>().chooseCard = chooseCard;
                 //다음레벨 이동
             }
         }

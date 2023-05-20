@@ -12,6 +12,7 @@ public class DissolveChilds : MonoBehaviour
     float destoryDuration = 0.1f;
 
     bool isGenerate;
+
     void Start()
     {
         dissoloveValue = 1; //없는 상태
