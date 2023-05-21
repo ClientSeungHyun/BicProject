@@ -14,12 +14,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleScene.unity
     guid: dadd6a93211a72346a1cfc288717b0ce
+  - enabled: 1
+    path: Assets/Scenes/OptionScene.unity
+    guid: 5b78c65c42fc24c4fa0831489122c874
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/UpgradeScene.unity
+    guid: 4cba90e34f6ac384094dc675389b66f8
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
@@ -32,9 +38,6 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/OptionScene.unity
-    guid: 07cb2228987bc9a42936ad19919db8ae
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: 8cd3b688a05d7e942a27bcaeb5467f60
