@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+
 
 /*
  * 게임 시작 조건
@@ -70,16 +72,20 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
+    public AudioMixer audioMixer;
 
     private GameObject player;
     private PlayerControl playerScript;
     public int chooseCard;
+    public bool activeSubtitile = true;    //자막 활성화 상태
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     private bool isScripting;   //스토리가 진행중인지 확인하는 변수
     
-    //씬이 변경될 때마다 호출되는 3함수들  //우송아 이거 동작하는지 확인해보고 이 주석 지워줘
+    //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
     {
+        Debug.Log("델리추가");
+
         SceneManager.sceneLoaded += OnSceneLoaded;  //델리게이트 체인 추가
     }
 
@@ -95,6 +101,7 @@ public class GameManagers : MonoBehaviour
 
     private void OnDisable()
     {
+        Debug.Log("델리제거");
         SceneManager.sceneLoaded -= OnSceneLoaded;  //델리게이트 체인 제거;
     }
 
@@ -131,4 +138,6 @@ public class GameManagers : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
     }
+
+  
 }
