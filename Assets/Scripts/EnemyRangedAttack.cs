@@ -48,19 +48,26 @@ public class EnemyRangedAttack : MonoBehaviour
         }
         else // 추적 범위 내
         {
+            StopAttack(); // 추가: 공격 중지
             TrackPlayer();
         }
 
         // 애니메이션 업데이트
         if (isAttacking)
         {
-            animator.SetTrigger("idle"); 
             animator.SetTrigger("Attack");
         }
-        else
+        else if (distance <= trackingDistance) // 추적 범위 내에서만 Run 애니메이션 재생
         {
             animator.SetTrigger("run");
         }
+    }
+
+    private void StopAttack()
+    {
+        // 공격 중지
+        isAttacking = false;
+        attackTimer = 0f;
     }
 
     private void TrackPlayer()
