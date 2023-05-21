@@ -7,27 +7,27 @@ public class PlayerControl : MonoBehaviour
 {
     private int maxPlayerHP = 10;  //최대 hp
     private int playerHP = 10;   //현재 hp
-    [SerializeField] private float playerEg = 100.0f; //쉴드 에너지
-    private int weaponLV = 1;    //무기 레벨
+    private float playerEg = 100.0f; //쉴드 에너지
+    private float shieldEnergyConsumption;  // 쉴드 에너지 소모량
+    private float boostEnergyConsumption;   //부스트 에너지 소모량
     private float moveSpeed;     //이동 속도
     private float sightAngle; //시야각 범위
-    private bool isMoveAble;
-    [SerializeField] private bool isHaveWeapon;
+    
+    private bool isHaveWeapon; //무기가 소환됐나?
 
     public GameObject playerCamera;
-    public GameObject UIM;
-    [SerializeField] private UIManager UIManagerScript;
-    public ShieldManager shieldScript;
-    private CharacterController characterController;
-    private Vector3 moveDirection;
-    public Rigidbody playerRigidbody;  //리짓바디
 
+    public Rigidbody playerRigidbody;  //리짓바디
+    private CharacterController characterController;
+
+    //대쉬 기능 변수
     public float dashSpeed = 10f;
     public Vector3 dashDirection;
     private bool isDashing = false;
 
-    private Vector3 initPosition;
-    //애니메이터용 변수들
+    private Vector3 initPosition;   //y이동 고정을 위한 초기 위치 받는 변수
+
+    //애니메이터용 변수
     public float speedTreshold = 0.001f;
     [Range(0, 1)]
     public float smoothing = 1;
@@ -35,7 +35,14 @@ public class PlayerControl : MonoBehaviour
     private Vector3 previousPos;
     private VRRig vrRig;
 
-    public DissolveChilds gunDissolveScript;
+
+    public ShieldManager shieldScript;          //쉴드 관리 스크립트
+    public DissolveChilds weaponDissolveScript;    //총 소환 및 사라짐 스크립트
+    [SerializeField] private UIManager UIManagerScript;          //UI 관리 스크립트
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
+
+
+    private Vector3 moveDirection;  //임시방편 이동용
 
     // Start is called before the first frame update
     void Start()
@@ -55,17 +62,17 @@ public class PlayerControl : MonoBehaviour
         transform.position = new Vector3(transform.position.x, initPosition.y, transform.position.z);
 
         //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsAccelReady() != true)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsBoostReady() != true)
         {
-            shieldScript.IsAccelReady(true);
+            shieldScript.IsBoostReady(true);
             UIManagerScript.BoostOnOff(true);
         }
-        if (shieldScript.IsAccelReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
+        if (shieldScript.IsBoostReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
         {
 
-            StartCoroutine(Accel());
+            StartCoroutine(Boost());
             if (!isDashing)
-                Invoke("EndAccelShield", 0.7f);
+                Invoke("EndBoostShield", 0.7f);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -91,13 +98,13 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+
     private void ShieldSystem()
     {
         shieldScript.PlayerEgManage();
-        shieldScript.ShieldLVManage();
 
         //일반 쉴드
-        if ((Input.GetKeyDown(KeyCode.B) || OVRInput.GetDown(OVRInput.RawButton.B)) && shieldScript.IsAccelShield() != true)    
+        if ((Input.GetKeyDown(KeyCode.B) || OVRInput.GetDown(OVRInput.RawButton.B)) && shieldScript.IsBoostShield() != true)    
         {
             shieldScript.IsGenereShield(!shieldScript.IsGenereShield());
             shieldScript.gameObject.SetActive(true);
@@ -110,16 +117,16 @@ public class PlayerControl : MonoBehaviour
 
             isDashing = true;
             shieldScript.gameObject.SetActive(true);
-            shieldScript.IsAccelShield(true);
+            shieldScript.IsBoostShield(true);
             playerEg -= 50.0f;
         }
 
         shieldScript.GenereShield();
-        shieldScript.StartAccelShield();
+        shieldScript.StartBoostShield();
        
 
         //쉴드 원상복구
-        if (shieldScript.IsGenereShield() == false && shieldScript.IsAccelShield() == false) 
+        if (shieldScript.IsGenereShield() == false && shieldScript.IsBoostShield() == false) 
         {
             shieldScript.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             shieldScript.CurrentShieldSize(1.0f);
@@ -127,13 +134,13 @@ public class PlayerControl : MonoBehaviour
         }
         if (playerEg <= 0)
         {
-            shieldScript.IsAccelShield(false);
+            shieldScript.IsBoostShield(false);
             shieldScript.IsGenereShield(false);
             playerEg = 0.0001f;
         }
     }
 
-    private IEnumerator Accel()
+    private IEnumerator Boost()
     {
         MoveCharacter();
         yield return new WaitForSeconds(0.5f);
@@ -149,9 +156,9 @@ public class PlayerControl : MonoBehaviour
         characterController.Move(movement);
     }
 
-    private void EndAccelShield()
+    private void EndBoostShield()
     {
-        shieldScript.EndAccelShield();
+        shieldScript.EndBoostShield();
         UIManagerScript.BoostOnOff(false);
     }
 
@@ -166,7 +173,7 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
-                isHaveWeapon = true;
+                isHaveWeapon = weaponDissolveScript.IsGenerate();
                 //총 생성
             }
         }
@@ -178,15 +185,15 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
-                isHaveWeapon = true;
+                isHaveWeapon = weaponDissolveScript.IsGenerate();
                 //총 생성
             }
         }
 
+        //임시 총 나타나는 코드
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Debug.Log("adsf");
-            StartCoroutine(gunDissolveScript.GenerateGun());
+            StartCoroutine(weaponDissolveScript.GenerateGun());
         }
 
 
@@ -206,7 +213,7 @@ public class PlayerControl : MonoBehaviour
     {
 
         ////타겟의 방향 
-        //Vector3 targetDir = (AccelPosition[0].transform.position - transform.position).normalized; //크기가 1인 벡터로 만듬 -> 노멀값
+        //Vector3 targetDir = (BoostPosition[0].transform.position - transform.position).normalized; //크기가 1인 벡터로 만듬 -> 노멀값
         //float dot = Vector3.Dot(transform.forward, targetDir);  //내적 -> |a||b|cos@ - |a||b| = 1(생략 가능)
 
         ////내적을 이용한 각 계산하기
@@ -241,8 +248,8 @@ public class PlayerControl : MonoBehaviour
         animator.SetFloat("DirectionX", Mathf.Lerp(previousDirectionX, Mathf.Clamp(headsetLocalSpeed.x, -1, 1), smoothing));
         animator.SetFloat("DirectionY", Mathf.Lerp(previousDirectionY, Mathf.Clamp(headsetLocalSpeed.z, -1, 1), smoothing));
 
-        animator.SetBool("isCrouching", shieldScript.IsAccelShield());
-        animator.SetBool("isSprint", shieldScript.IsAccelReady());
+        animator.SetBool("isCrouching", shieldScript.IsBoostShield());
+        animator.SetBool("isSprint", shieldScript.IsBoostReady());
 
 
        
@@ -250,48 +257,55 @@ public class PlayerControl : MonoBehaviour
 
     public void Init()
     {
-        UIManagerScript = UIM.GetComponent<UIManager>();
-        playerRigidbody = GetComponent<Rigidbody>();
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         characterController = GetComponent<CharacterController>();
+        animator = GameObject.FindGameObjectWithTag("Character").GetComponent<Animator>();
+        vrRig = GameObject.FindGameObjectWithTag("Character").GetComponent<VRRig>();
+        playerRigidbody = GetComponent<Rigidbody>();
+        UIManagerScript = GameObject.Find("UIManager").GetComponent<UIManager>();
+
         playerHP = maxPlayerHP;
         moveSpeed = 3.0f;
         sightAngle = 80f;
-        isMoveAble = true;
         isHaveWeapon = false;
         shieldScript.gameObject.SetActive(false);
-
-        animator = GameObject.FindGameObjectWithTag("Character").GetComponent<Animator>();
-        vrRig = GameObject.FindGameObjectWithTag("Character").GetComponent<VRRig>();
         previousPos = vrRig.head.vrTarget.position;
     }
 
-    public void GunLevelUp()
+    private void PlayerStatus()
     {
-        if (weaponLV >= 3) //최대 3레벨 제한
+        switch (gameManagerScript.playerInfo.WeaponLV())    //레벨에 따른 무기 교체
         {
-            weaponLV = 3;
-        }
-        else //최대 레벨 아닐 시 렙업
-        {
-            weaponLV++;
-        }
-    }
-    public void HPLevelUp()
-    {
-        if (maxPlayerHP >= 160) //최대 3레벨 제한
-        {
-            maxPlayerHP = 160;
-        }
-        else //최대 레벨 아닐 시 렙업
-        {
-            maxPlayerHP += 20;
-        }
-    }
-    public void ShieldLevelUp()
-    {
+            case 1:
 
+
+            default:
+                break;
+        }
+
+        //레벨에 따른 에너지 소모량
+        switch (gameManagerScript.playerInfo.EnergyLV())
+        {
+            case 1:
+                shieldEnergyConsumption = 10f;
+                boostEnergyConsumption = 50f;
+                break;
+            case 2:
+                shieldEnergyConsumption = 9f;
+                boostEnergyConsumption = 45f;
+                break;
+            case 3:
+                shieldEnergyConsumption = 8f;
+                boostEnergyConsumption = 40f;
+                break;
+            default:
+                shieldEnergyConsumption = 10f;
+                boostEnergyConsumption = 50f;
+                break;
+        }
     }
 
+    //플레이어 에너지 현황 전달 함수
     public float PlayerEg()
     {
         return playerEg;
@@ -299,5 +313,16 @@ public class PlayerControl : MonoBehaviour
     public void PlayerEg(float e)
     {
         playerEg = e;
+    }
+
+    //쉴드 소모량 전달 함수
+    public float ShieldEnergyConsumption()
+    {
+        return shieldEnergyConsumption;
+    }
+    //부스트 소모량 전달 함수
+    public float BoostEnergyConsumption()
+    {
+        return boostEnergyConsumption;
     }
 }
