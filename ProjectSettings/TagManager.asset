@@ -12,6 +12,7 @@ TagManager:
   - Wall
   - Character
   - Bullet
+  - GameManager
   layers:
   - Default
   - TransparentFX

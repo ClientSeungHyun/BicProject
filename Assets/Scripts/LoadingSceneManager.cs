@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-    static string nextScene;
+    string nextScene;
 
     [SerializeField]
     Image progressBar;
 
-    public static void LoadScene(string sceneName)
+    public void LoadScene(string sceneName)
     {
         nextScene = sceneName;
         SceneManager.LoadScene("LoadingScene");
@@ -49,5 +49,13 @@ public class LoadingSceneManager : MonoBehaviour
             }
         }
     }
-   
+
+    public string NextSceneName()
+    {
+        return nextScene;
+    }
+    public void NextSceneName(string s)
+    {
+        nextScene = s;
+    }
 }
