@@ -7,12 +7,14 @@ using UnityEngine.Audio;
 public class OptionMenu : MonoBehaviour
 {
     private GameManagers gameManagerScript;
-
+    public AudioMixer audioMixer;
     public Slider bgmSlider;
     public Slider sfxSlider;
+    public Toggle subToggle;
     // Start is called before the first frame update
     void Start()
     {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
     }
 
     // Update is called once per frame
@@ -23,16 +25,18 @@ public class OptionMenu : MonoBehaviour
 
     public void ClickSubtitle(bool active)
     {
-        gameManagerScript.activeSubtitile = active;
+        gameManagerScript.activeSubtitile = subToggle.isOn;
+        // Debug.Log("´­·¶´Ï*********************************");
+        Debug.Log(gameManagerScript.activeSubtitile);
     }
     
     public void setBGMSounds()
     {
-        gameManagerScript.audioMixer.SetFloat("BGM", Mathf.Log10(bgmSlider.value) * 20);
+        audioMixer.SetFloat("BGM", Mathf.Log10(bgmSlider.value) * 20);
     }
     public void setSFXSounds()
     {
-        gameManagerScript.audioMixer.SetFloat("SFX", Mathf.Log10(bgmSlider.value) * 20);
+        audioMixer.SetFloat("SFX", Mathf.Log10(sfxSlider.value) * 20);
     }
     public void GoTitle()
     {

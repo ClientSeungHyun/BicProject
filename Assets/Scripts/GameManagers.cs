@@ -72,7 +72,6 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
-    public AudioMixer audioMixer;
 
     private GameObject player;
     private PlayerControl playerScript;
