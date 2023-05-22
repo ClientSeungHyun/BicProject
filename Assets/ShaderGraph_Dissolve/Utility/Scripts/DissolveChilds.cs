@@ -15,13 +15,7 @@ public class DissolveChilds : MonoBehaviour
 
     void Start()
     {
-        dissoloveValue = 1; //없는 상태
-        isGenerate = false;
-        var renders = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < renders.Length; i++)
-        {
-            materials.AddRange(renders[i].materials);
-        }
+        Init();
     }
 
     // Update is called once per frame
@@ -66,6 +60,17 @@ public class DissolveChilds : MonoBehaviour
         // 최종 값 설정
         dissoloveValue = 1f;
         isGenerate = false;
+    }
+
+    private void Init()
+    {
+        dissoloveValue = 1; //없는 상태
+        isGenerate = false;
+        var renders = GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renders.Length; i++)
+        {
+            materials.AddRange(renders[i].materials);
+        }
     }
 
 

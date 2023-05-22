@@ -22,7 +22,7 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
     public void Init()
     {
         weaponLV = 1;
-        energyLV = 1;
+        energyLV = 3;
         reloadLV = 1;
         isMoveAble = false;
     }
@@ -84,14 +84,11 @@ public class GameManagers : MonoBehaviour
     //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
     {
-        Debug.Log("델리추가");
-
         SceneManager.sceneLoaded += OnSceneLoaded;  //델리게이트 체인 추가
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("씬 바뀜, 현재 씬 이름 : " + scene.name);
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -101,7 +98,6 @@ public class GameManagers : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("델리제거");
         SceneManager.sceneLoaded -= OnSceneLoaded;  //델리게이트 체인 제거;
     }
 
@@ -114,11 +110,17 @@ public class GameManagers : MonoBehaviour
 
     private void Update()
     {
+        UpgradeStatus();
+
+    }
+
+    public void UpgradeStatus()
+    {
         if (chooseCard == 1 && player)
         {
             playerInfo.ReloadLevelUP();
             chooseCard = 0;
-        }   
+        }
         else if (chooseCard == 2 && player)
         {
             playerInfo.WeaponLeveUP();
@@ -134,6 +136,7 @@ public class GameManagers : MonoBehaviour
     //초기 설정 함수
     private void Init()
     {
+        playerInfo = new PlayerInfor();
         playerInfo.Init();
         DontDestroyOnLoad(gameObject);
         

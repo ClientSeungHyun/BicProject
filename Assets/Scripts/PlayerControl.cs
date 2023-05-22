@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -16,7 +16,6 @@ public class PlayerControl : MonoBehaviour
     private bool isHaveWeapon; //무기가 소환됐나?
 
     public GameObject playerCamera;
-
     public Rigidbody playerRigidbody;  //리짓바디
     private CharacterController characterController;
 
@@ -38,7 +37,7 @@ public class PlayerControl : MonoBehaviour
 
     public ShieldManager shieldScript;          //쉴드 관리 스크립트
     public DissolveChilds weaponDissolveScript;    //총 소환 및 사라짐 스크립트
-    [SerializeField] private UIManager UIManagerScript;          //UI 관리 스크립트
+    private UIManager UIManagerScript;          //UI 관리 스크립트
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
 
 
@@ -118,7 +117,7 @@ public class PlayerControl : MonoBehaviour
             isDashing = true;
             shieldScript.gameObject.SetActive(true);
             shieldScript.IsBoostShield(true);
-            playerEg -= 50.0f;
+            playerEg -= boostEnergyConsumption;
         }
 
         shieldScript.GenereShield();
@@ -270,6 +269,8 @@ public class PlayerControl : MonoBehaviour
         isHaveWeapon = false;
         shieldScript.gameObject.SetActive(false);
         previousPos = vrRig.head.vrTarget.position;
+
+        PlayerStatus();
     }
 
     private void PlayerStatus()
