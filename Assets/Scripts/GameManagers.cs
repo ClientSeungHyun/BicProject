@@ -72,6 +72,7 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
+    SceneManagers sceneManagerScript;
 
     private GameObject player;
     private PlayerControl playerScript;
@@ -79,7 +80,8 @@ public class GameManagers : MonoBehaviour
     public bool activeSubtitile = true;    //자막 활성화 상태
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     private bool isScripting;   //스토리가 진행중인지 확인하는 변수
-    
+    private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
+
     //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
     {
@@ -137,6 +139,8 @@ public class GameManagers : MonoBehaviour
     {
         playerInfo = new PlayerInfor();
         playerInfo.Init();
+        sceneManagerScript = GameObject.FindGameObjectWithTag("SceneManger").GetComponent<SceneManagers>();
+
         DontDestroyOnLoad(gameObject);
         
     }

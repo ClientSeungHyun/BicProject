@@ -53,7 +53,7 @@ public class Layser : MonoBehaviour
             //충돌한 물체 이름 확인후 이동할 씬 설정
             if (Collided_object.collider.gameObject.name == "ClickStart")
             {
-                sceneName = "StartScene";
+                sceneName = "Stage01";
             }
             else if (Collided_object.collider.gameObject.name == "ClickOption")
             {
@@ -99,8 +99,6 @@ public class Layser : MonoBehaviour
             layser.SetPosition(1, transform.position + (transform.forward * rayRenderDistance));
             sceneName = null;
         }
-
-
     }
 
     private void LateUpdate()

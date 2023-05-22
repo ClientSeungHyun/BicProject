@@ -13,6 +13,8 @@ TagManager:
   - Character
   - Bullet
   - GameManager
+  - SceneManager
+  - SceneChange
   layers:
   - Default
   - TransparentFX

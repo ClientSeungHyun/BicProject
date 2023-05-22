@@ -6,14 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-    string nextScene;
+    string currentSceneName;
+    static string nextSceneName;
 
     [SerializeField]
     Image progressBar;
 
-    public void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName)
     {
-        nextScene = sceneName;
+        nextSceneName = sceneName;
         SceneManager.LoadScene("LoadingScene");
     }
   
@@ -24,7 +25,7 @@ public class LoadingSceneManager : MonoBehaviour
 
     IEnumerator LoadSceneProcess()
     {
-       AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+       AsyncOperation op = SceneManager.LoadSceneAsync(nextSceneName);
        op.allowSceneActivation = false; //씬을 90프로 로딩할때 까지기다리고 다음 씬으로 넘어가지 않음
 
         float timer = 0f;
@@ -50,12 +51,21 @@ public class LoadingSceneManager : MonoBehaviour
         }
     }
 
+    public string NowSceneName()
+    {
+        return currentSceneName;
+    }
+    public void NowSceneName(string n)
+    {
+        currentSceneName = n;
+    }
+
     public string NextSceneName()
     {
-        return nextScene;
+        return nextSceneName;
     }
     public void NextSceneName(string s)
     {
-        nextScene = s;
+        nextSceneName = s;
     }
 }
