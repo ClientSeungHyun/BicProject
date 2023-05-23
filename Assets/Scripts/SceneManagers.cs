@@ -34,8 +34,8 @@ public class SceneManagers : MonoBehaviour
             {
                 if (hit.collider.CompareTag("SceneChange"))
                     LoadingSceneManager.LoadScene(nextSceneName);
-                if (hit.collider.CompareTag("Option"))
-                    SceneManager.LoadScene("OptionScene");
+                //if (hit.collider.CompareTag("Option"))
+                //    SceneManager.LoadScene("OptionScene");
                 
             }
         }

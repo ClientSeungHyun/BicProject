@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     public bool boostActive;
     public Image boostImage;
 
+    public Image storyDialog;
+    public StoryScript storyScript;
+
     public PlayerControl player;
     // Start is called before the first frame update
     void Start()
@@ -18,11 +21,15 @@ public class UIManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
         boostActive = false;
         boostImage.gameObject.SetActive(false);
+        storyDialog.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (storyScript.IsStoryComplete())
+            storyDialog.gameObject.SetActive(false);
+        
         boostGage.fillAmount = player.PlayerEg() / 100f;
     }
 

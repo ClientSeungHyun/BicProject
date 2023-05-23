@@ -326,4 +326,9 @@ public class PlayerControl : MonoBehaviour
     {
         return boostEnergyConsumption;
     }
+
+    public bool IsHaveWeapon()
+    {
+        return isHaveWeapon;
+    }
 }

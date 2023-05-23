@@ -73,13 +73,15 @@ public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
     SceneManagers sceneManagerScript;
+    StoryScript storyScript;
+    OVRPlayerController ovrPlayerControl;
 
     private GameObject player;
     private PlayerControl playerScript;
     public int chooseCard;
     public bool activeSubtitile = true;    //자막 활성화 상태
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
-    private bool isScripting;   //스토리가 진행중인지 확인하는 변수
+    private bool isPlaying;     //플레이가 진행 중인지 확인
     private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
 
     //씬이 변경될 때마다 호출되는 3함수들
@@ -94,6 +96,7 @@ public class GameManagers : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<PlayerControl>();
+            ovrPlayerControl = player.GetComponent<OVRPlayerController>();
         }
     }
 
@@ -113,6 +116,10 @@ public class GameManagers : MonoBehaviour
     {
         UpgradeStatus();
 
+        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
+            isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
+        if (isStageClear)
+            isPlaying = false;
     }
 
     public void UpgradeStatus()
@@ -140,10 +147,21 @@ public class GameManagers : MonoBehaviour
         playerInfo = new PlayerInfor();
         playerInfo.Init();
         sceneManagerScript = GameObject.FindGameObjectWithTag("SceneManger").GetComponent<SceneManagers>();
+        isPlaying = false;
 
         DontDestroyOnLoad(gameObject);
         
     }
 
-  
+    private void SettingGame()
+    {
+        if (isPlaying)
+        {
+            ovrPlayerControl.Acceleration = 0.1f;
+        }
+        else
+        {
+            ovrPlayerControl.Acceleration = 0;
+        }
+    }
 }
