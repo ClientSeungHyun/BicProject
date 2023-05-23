@@ -92,6 +92,7 @@ public class GameManagers : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        storyScript = GameObject.FindGameObjectWithTag("StoryScript").GetComponent<StoryScript>();
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             player = GameObject.FindGameObjectWithTag("Player");

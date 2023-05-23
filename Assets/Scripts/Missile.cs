@@ -3,11 +3,12 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     private Transform target; // 플레이어의 위치
-    private float speed; // 미사일 속도
+    private float speed = 10f; // 미사일 속도
 
 
     private void Update()
     {
+        SetTarget(GameObject.FindGameObjectWithTag("Player").transform);
         if (target != null)
         {
             MoveTowardsTarget();
@@ -27,29 +28,15 @@ public class Missile : MonoBehaviour
         target = targetTransform;
     }
 
-    public void Launch(float missileSpeed)
-    {
-        // 미사일 발사 설정
-        speed = missileSpeed;
-        gameObject.SetActive(true);
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             // 플레이어와 충돌 시 미사일 비활성화
             gameObject.SetActive(false);
-            Deactivate();
         }
     }
 
-    private void Deactivate()
-    {
-        // 총알을 비활성화하고 오브젝트 풀로 반환합니다.
-        gameObject.SetActive(false);
-    }
 
   
 

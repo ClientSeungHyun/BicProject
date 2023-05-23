@@ -21,7 +21,7 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetObject(Vector3 startPos)
+    public GameObject GetObject(Vector3 startPos, Quaternion startRotation)
     {
         // 오브젝트 풀에서 비활성화된 오브젝트를 찾아 활성화하고 반환
         foreach (GameObject obj in objectPool)
@@ -29,6 +29,7 @@ public class ObjectPool : MonoBehaviour
             if (!obj.activeInHierarchy)
             {
                 obj.transform.position = startPos; // 시작 위치로 이동
+                obj.transform.rotation = startRotation;
                 obj.SetActive(true); // 오브젝트 활성화
                 return obj; // 오브젝트 반환
             }

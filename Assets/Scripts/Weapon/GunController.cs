@@ -33,7 +33,7 @@ public class GunController : MonoBehaviour
             {
                 bulletStartParticle.transform.position = bulletStartTransform.position;
                 bulletStartParticle.GetComponent<ParticleSystem>().Play();
-                bulletPool.GetObject(bulletStartTransform.position);
+                bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
             }
             // SecondaryIndexTrigger 오른손 트리거 버튼
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
