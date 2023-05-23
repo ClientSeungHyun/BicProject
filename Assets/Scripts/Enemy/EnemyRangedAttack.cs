@@ -12,18 +12,22 @@ public class EnemyRangedAttack : MonoBehaviour
     public float idleDistance = 7f; // 공격 거리
     public float attackDuration = 3f; // 공격 지속 시간
     public Animator animator; // 애니메이터
-
+    public Transform target; // 플레이어의 위치
     private NavMeshAgent navMeshAgent;
     private float defaultSpeed; // 기본 이동 속도
     private float attackTimer; // 공격 타이머
     private bool isAttacking; // 현재 공격 중인지 여부
     private float distance; // 플레이어와의 거리
+    public ObjectPool missilePool;
+    public Transform missileStartTransform;
+
 
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         defaultSpeed = navMeshAgent.speed; // 기본 이동 속도 저장
         navMeshAgent.enabled = true;
+        
     }
 
     private void Update()
@@ -90,6 +94,8 @@ public class EnemyRangedAttack : MonoBehaviour
 
         isAttacking = true;
         attackTimer = 0f;
+
+        FireMissile(); // 미사일 발사
     }
 
     private void UpdateAttack()
@@ -97,19 +103,27 @@ public class EnemyRangedAttack : MonoBehaviour
         attackTimer += Time.deltaTime;
 
         if (attackTimer >= attackDuration)
-        {
-            // 플레이어를 향해 미사일을 발사합니다.
-            GameObject missile = Instantiate(missilePrefab, transform.position + transform.forward * 0.5f, transform.rotation);
-            missile.GetComponent<Rigidbody>().velocity = transform.forward * missileSpeed;
-
+        { 
             EndAttack();
         }
     }
 
-    public void DestroyMissile(GameObject missile)
+    private void FireMissile()
     {
-        // 미사일을 파괴합니다.
-        Destroy(missile);
+        
+        Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
+        rotation *= Quaternion.Euler(0f, -90f, 0f);
+        GameObject missileObject = Instantiate(missilePrefab, transform.position + transform.forward * 0.5f, rotation);
+        Missile missile = missileObject.GetComponent<Missile>();
+        
+        if (missile != null)
+        {
+            missile.SetTarget(player);
+            missile.Launch(missileSpeed); // 미사일 발사 설정
+        }
+        
+
+        missilePool.GetObject(transform.position + transform.forward * 0.5f);
     }
 
     private void EndAttack()
@@ -118,9 +132,9 @@ public class EnemyRangedAttack : MonoBehaviour
         isAttacking = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (other.gameObject.CompareTag("Bullet"))
         {
             // Bullet과 충돌하면 death 애니메이션 재생 및 파괴
             animator.SetTrigger("Death");
