@@ -52,7 +52,7 @@ public class EnemyRangedAttack : MonoBehaviour
     private void StartAttack()
     {
         timer += Time.deltaTime;
-
+        transform.LookAt(player.transform);
         if (timer >= timerDuration)
         {
             isAttacking = true;
