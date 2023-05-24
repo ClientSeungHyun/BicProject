@@ -5,55 +5,54 @@ using System.Collections;
 public class EnemyMeleeAttack : MonoBehaviour
 {
     public Transform player; // 플레이어 Transform
-    public float attackRange = 0.5f; // 공격 범위
-    public float attackCooldown = 2f; // 공격 쿨다운 시간
     public Animator animator; // 애니메이터
     private bool isAttacking; // 공격 중인지 여부
+    public Transform target; // 플레이어의 위치
     private NavMeshAgent navMeshAgent;
-    private float attackTimer; // 공격 타이머
+    private float distance; // 플레이어와의 거리
+    private float defaultSpeed; // 기본 이동 속도
+
+    private float timer;
+    private float timerDuration;
 
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        defaultSpeed = navMeshAgent.speed; // 기본 이동 속도 저장
+        navMeshAgent.enabled = true;
+
+        timer = 0f;
+        timerDuration = 2f;
     }
 
     private void Update()
     {
-        // 플레이어와의 거리 계산
-        float distance = Vector3.Distance(transform.position, player.position);
+        distance = Vector3.Distance(transform.position, player.position);
+        navMeshAgent.SetDestination(player.position);
 
-        if (distance <= attackRange)
+        //목적지 도착
+        if (distance <= 2f)
         {
-            // 플레이어와 겹치면 공격 애니메이션 재생
+            StartAttack();
+            navMeshAgent.isStopped = true;
             animator.SetTrigger("Attack");
-            isAttacking = true;
-            Attack();
         }
         else
         {
-            // 플레이어를 향해 이동
-            navMeshAgent.SetDestination(player.position);
-            navMeshAgent.speed = 5f; // 항상 5의 속도로 추적
-
-            if (!isAttacking)
-            {
-                animator.SetTrigger("run"); // 항상 run 애니메이션 재생
-            }
+            animator.SetTrigger("Run");
+            navMeshAgent.isStopped = false;
         }
     }
 
-    private void Attack()
+    private void StartAttack()
     {
-        // 공격 애니메이션 재생 후 쿨다운 타이머 시작
-        attackTimer = attackCooldown;
-    }
+        timer += Time.deltaTime;
 
-    private void FixedUpdate()
-    {
-        if (attackTimer > 0)
+        if (timer >= timerDuration)
         {
-            // 공격 쿨다운 시간 감소
-            attackTimer -= Time.fixedDeltaTime;
+            isAttacking = true;
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+            timer = 0;
         }
     }
 
