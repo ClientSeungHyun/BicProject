@@ -188,16 +188,6 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-
-        moveDirection = new Vector3(x, 0, z);
-        //임시방편 pc 이동
-        characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-
-
     }
 
     //타겟이 시야 내에 있는가??
