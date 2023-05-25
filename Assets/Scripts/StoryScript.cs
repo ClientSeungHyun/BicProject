@@ -34,9 +34,14 @@ public class StoryScript : MonoBehaviour
     private bool isScripting;   //스크립트 진행 중
     private bool isStoryComplete;    //대화 끝
 
+    private GameManagers gameManagerScript;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
+        textSpeed = gameManagerScript.subSpeed;
+
         if (SceneManager.GetActiveScene().name == "Stage01")
             stageScript = stage01Script;
         if (SceneManager.GetActiveScene().name == "Stage02")
