@@ -7,51 +7,64 @@ public class Boss : MonoBehaviour
     public GameObject enemyParent;
     public GameObject missileParent;
 
-    public GameObject[] summonEnemies;
-    public GameObject missile;
-    private float dashTimer = 3f;
-    private float dashSpeed = 0.5f;
-    public bool isDash = false;
+    private UnityEngine.AI.NavMeshAgent navMeshAgent;
 
     private Transform target;
+    public GameObject[] summonEnemies;
+    public GameObject missile;
+
+    private float distance;
+    private float timer = 0f;
+    private float timerDuration = 5.0f;
+    private float hp = 100.0f;
 
     void Start()
     {
-        InvokeRepeating("Skill", 0.0f, 5.0f);
+        SetTarget(GameObject.FindGameObjectWithTag("Player").transform);
+        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        navMeshAgent.enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (dashTimer > 0f && isDash == true) 
+        distance = Vector3.Distance(transform.position, target.position);
+        navMeshAgent.SetDestination(target.position);
+
+        if (distance <= 10f)
         {
-            Vector3 direction = target.position - transform.position;
-            transform.LookAt(direction);
-            transform.Translate(direction * dashSpeed * Time.deltaTime, Space.World);
-            dashTimer -= Time.deltaTime;
+            Skill();
+            navMeshAgent.isStopped = true;
+            this.gameObject.GetComponent<Animator>().SetTrigger("Stay");
         }
         else
         {
-            isDash = false;
-            this.gameObject.GetComponent<Animator>().SetTrigger("Stay");
+            navMeshAgent.isStopped = false;
+            this.gameObject.GetComponent<Animator>().SetTrigger("Dash");
         }
     }
 
-    public void Skill()
+    private void Skill()
     {
-        int pattern = Random.Range(0, 3);
-        
-        if (pattern == 0)
+        timer += Time.deltaTime;
+
+        if (timer >= timerDuration)
         {
-            Summon();
-        }
-        if (pattern == 1)
-        {
-            Missile();
-        }
-        if (pattern == 2)
-        {
-            Dash();
+            int pattern = Random.Range(0, 2);
+    
+            if (pattern == 0)
+            {
+                Summon();
+            }
+            if (pattern == 1)
+            {
+                Missile();
+            }
+            if (pattern == 2)
+            {
+                Heal();
+            }
+            timer = 0;
         }
     }
     
@@ -67,13 +80,9 @@ public class Boss : MonoBehaviour
             Instantiate(missile, child.position, Quaternion.identity);
         }
     }
-    void Dash()
+    void Heal()
     {
-        SetTarget(GameObject.FindGameObjectWithTag("Player").transform);
-        Vector3 direction = target.position - transform.position;
-        this.gameObject.GetComponent<Animator>().SetTrigger("Dash");
-        isDash = true;
-        dashTimer = 3f;
+        
     }
 
     public void SetTarget(Transform targetTransform)
