@@ -19,6 +19,8 @@ public class StoryScript : MonoBehaviour
     "인간의 형태를 띄고 있지만 우리를 따라했을 뿐", "하지만 신체능력은 너와 비교해도 손색이 없을 괴물자식이지.",
     "저놈만 물리치면 끝이라고 봐도 돼", "너라도 힘든 싸움이 되겠지만", "너라면 가능할 거라고 믿어!!"};
 
+    private GameManagers gameManagerScript;
+
     public string[] stageScript;
     private TextMeshProUGUI textComponent;
 
@@ -37,6 +39,8 @@ public class StoryScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManagerScript = gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
+        textSpeed = gameManagerScript.subSpeed;
         if (SceneManager.GetActiveScene().name == "Stage01")
             stageScript = stage01Script;
         if (SceneManager.GetActiveScene().name == "Stage02")
