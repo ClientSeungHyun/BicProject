@@ -79,7 +79,7 @@ public class GameManagers : MonoBehaviour
     private GameObject player;
     private PlayerControl playerScript;
     public int chooseCard;
-    public float subSpeed = 0;
+    public bool activeSubtitile = true;    //자막 활성화 상태
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     private bool isPlaying;     //플레이가 진행 중인지 확인
     private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
