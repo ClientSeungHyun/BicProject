@@ -482,14 +482,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 709413227}
-  missilePrefab: {fileID: 1374693180731417}
-  missileSpeed: 10
-  trackingDistance: 100
+  animator: {fileID: 561158293}
+  target: {fileID: 709413227}
+  missilePool: {fileID: 0}
   trackingSpeed: 5
   idleDistance: 7
   attackDuration: 3
-  animator: {fileID: 561158293}
-  target: {fileID: 709413227}
 --- !u!4 &561158299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1011654394431018973, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
@@ -954,7 +952,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1221,11 +1219,6 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 6b047f42022943044bf3249452f9f28c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7f308eeb0d64684e903d9eecf63b98a, type: 3}
---- !u!1 &1374693180731417 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8061449355309696118, guid: eca6a6bbe05955c43836f18731b38a5d, type: 3}
-  m_PrefabInstance: {fileID: 8062823480413860975}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7319950207102532878
 PrefabInstance:
   m_ObjectHideFlags: 0
