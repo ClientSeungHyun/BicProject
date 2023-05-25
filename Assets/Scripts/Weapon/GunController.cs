@@ -20,25 +20,27 @@ public class GunController : MonoBehaviour
     public Transform bulletStartTransform;
 
     public DissolveChilds gunDissolveScript;
+
+    public float reloadTime;    //총알 장전 속도
+
     private void Start()
     {
         Init();
     }
     private void Update()
     {
-        if (gunDissolveScript.IsGenerate()) //총이 생성되어있다면
+        //총이 생성되어있다면
+        if (gunDissolveScript.IsGenerate()) 
         {
             // PrimaryIndexTrigger 왼손 트리거 버튼
-            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.name == "LeftHandPistol")
+            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
             {
-                bulletStartParticle.transform.position = bulletStartTransform.position;
-                bulletStartParticle.GetComponent<ParticleSystem>().Play();
-                bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
+                Fire();
             }
             // SecondaryIndexTrigger 오른손 트리거 버튼
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.R)) && gameObject.tag == "RightHandPistol")
             {
-                Debug.Log("오른손 트리거 버튼 클릭");
+                Fire();
             }
         }
         
@@ -64,10 +66,12 @@ public class GunController : MonoBehaviour
         transform.rotation = playerHand.rotation;
         transform.rotation = Quaternion.Euler(0, 180, 0);
     }
-
-    private void Fire(Transform startBullet)
+    
+    private void Fire()
     {
-        bulletPool.transform.position = startBullet.position;
+        bulletStartParticle.transform.position = bulletStartTransform.position;
+        bulletStartParticle.GetComponent<ParticleSystem>().Play();
+        bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
     }
 
     private void Init()

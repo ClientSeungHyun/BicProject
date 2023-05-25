@@ -14,6 +14,7 @@ public class Credit : MonoBehaviour
     void Update()
     {
         gameObject.transform.Translate(new Vector2(transform.position.x, 0.3f*Time.deltaTime));
-        if(gameObject.transform.position.y > 7.5) Destroy(gameObject);
+        if (gameObject.transform.position.y > 7.5)
+            LoadingSceneManager.LoadScene("Stage01");
     }
 }

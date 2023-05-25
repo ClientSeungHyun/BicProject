@@ -58,21 +58,7 @@ public class PlayerControl : MonoBehaviour
         ShieldSystem();
         KeyController();
 
-        transform.position = new Vector3(transform.position.x, initPosition.y, transform.position.z);
-
-        //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsBoostReady() != true)
-        {
-            shieldScript.IsBoostReady(true);
-            UIManagerScript.BoostOnOff(true);
-        }
-        if (shieldScript.IsBoostReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
-        {
-
-            StartCoroutine(Boost());
-            if (!isDashing)
-                Invoke("EndBoostShield", 0.7f);
-        }
+       
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -192,7 +178,14 @@ public class PlayerControl : MonoBehaviour
         //임시 총 나타나는 코드
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            StartCoroutine(weaponDissolveScript.GenerateGun());
+            if (!weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+            {
+                StartCoroutine(weaponDissolveScript.GenerateGun());
+            }
+            else if (weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+            {
+                StartCoroutine(weaponDissolveScript.DestoryGun());
+            }
         }
 
 
@@ -250,8 +243,22 @@ public class PlayerControl : MonoBehaviour
         animator.SetBool("isCrouching", shieldScript.IsBoostShield());
         animator.SetBool("isSprint", shieldScript.IsBoostReady());
 
+        transform.position = new Vector3(transform.position.x, initPosition.y, transform.position.z);
 
-       
+        //준비자세 애니메이션 재생이 끝났다면 레디를 true로 
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Crouching") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && shieldScript.IsBoostReady() != true)
+        {
+            shieldScript.IsBoostReady(true);
+            UIManagerScript.BoostOnOff(true);
+        }
+        if (shieldScript.IsBoostReady() && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f)
+        {
+
+            StartCoroutine(Boost());
+            if (!isDashing)
+                Invoke("EndBoostShield", 0.7f);
+        }
+
     }
 
     public void Init()
@@ -275,17 +282,8 @@ public class PlayerControl : MonoBehaviour
 
     private void PlayerStatus()
     {
-        switch (gameManagerScript.playerInfo.WeaponLV())    //레벨에 따른 무기 교체
-        {
-            case 1:
-
-
-            default:
-                break;
-        }
-
         //레벨에 따른 에너지 소모량
-        switch (gameManagerScript.playerInfo.EnergyLV())
+        switch (GameManagers.playerInfo.EnergyLV())
         {
             case 1:
                 shieldEnergyConsumption = 10f;
