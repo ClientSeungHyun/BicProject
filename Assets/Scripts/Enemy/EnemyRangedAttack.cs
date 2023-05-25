@@ -9,7 +9,7 @@ public class EnemyRangedAttack : MonoBehaviour
     public Animator animator; // 애니메이터
     public Transform target; // 플레이어의 위치
     public ObjectPool missilePool;
-
+    public int MonsterCount; //몬스터 수 판별 함수
     public float trackingSpeed = 5f; // 추적 속도
     public float idleDistance = 7f; // 공격 거리
     public float attackDuration = 3f; // 공격 지속 시간
@@ -64,12 +64,13 @@ public class EnemyRangedAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
             // Bullet과 충돌하면 death 애니메이션 재생 및 파괴
             animator.SetTrigger("Death");
+            MonsterCount++;
             // 애니메이션 재생 시간만큼 딜레이 후에 오브젝트 파괴
             float deathAnimationLength = GetDeathAnimationLength();
             StartCoroutine(DestroyAfterDelay(deathAnimationLength));

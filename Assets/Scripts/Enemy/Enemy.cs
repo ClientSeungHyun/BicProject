@@ -1,33 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
-    public float hp = 1.0f;
-    public float speed = 1.0f;
-    public float damage = 20.0f;
-    public Animator anim;
-    public bool isShooter = false;
+    private EnemyRangedAttack rangedAttack; // EnemyRangedAttack 스크립트 참조
 
-    void Start()
+    private void Start()
     {
-        anim = GetComponent<Animator>();
+        rangedAttack = GetComponent<EnemyRangedAttack>();
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (hp <= 0)
-            Die();
-    }
-
-    void Die()
-    {
-        GameObject.Destroy(this.gameObject);
-    }
-
-    void Attack()
-    {
-        //Damage
+        if (other.CompareTag("Player"))
+        {
+            int monsterCount = rangedAttack.MonsterCount;
+            if (monsterCount >= 180)
+            {
+                SceneManager.LoadScene("ClearSceneTest"); // ClearSceneTest 씬으로 넘어감
+            }
+        }
     }
 }

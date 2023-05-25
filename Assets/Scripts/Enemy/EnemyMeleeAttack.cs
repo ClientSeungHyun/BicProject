@@ -11,7 +11,7 @@ public class EnemyMeleeAttack : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private float distance; // 플레이어와의 거리
     private float defaultSpeed; // 기본 이동 속도
-
+    public int MonsterCount; //몬스터 수 판별 함수
     private float timer;
     private float timerDuration;
 
@@ -56,12 +56,13 @@ public class EnemyMeleeAttack : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             // Player과 충돌하면 Death 애니메이션 재생 및 파괴
             animator.SetTrigger("Death");
+            MonsterCount++;
             // 애니메이션 재생 시간만큼 딜레이 후에 오브젝트 파괴
             float deathAnimationLength = GetDeathAnimationLength();
             StartCoroutine(DestroyAfterDelay(deathAnimationLength));
