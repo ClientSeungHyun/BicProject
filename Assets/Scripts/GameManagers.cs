@@ -17,11 +17,10 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
     private int energyLV;    //에너지소모량 결정하는 레벨
     private int reloadLV;   //탄창 수를 늘려주는 레벨
     private bool isMoveAble;    //플레이어가 움직일 수 있는지 변수
-    private bool isPlaying;     //게임이 진행중인지 확인하는 변수 true면 게임 시작
 
     public void Init()
     {
-        weaponLV = 3;
+        weaponLV = 1;
         energyLV = 1;
         reloadLV = 1;
         isMoveAble = false;
@@ -62,11 +61,6 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
         return reloadLV;
     }
 
-    //게임 시작
-    public void IsPlayStart()
-    {
-        isPlaying = true;
-    }
 }
 
 public class GameManagers : MonoBehaviour
@@ -81,7 +75,7 @@ public class GameManagers : MonoBehaviour
     public int chooseCard;
     public float subSpeed = 0.0f; //자막 속도
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
-    private bool isPlaying;     //플레이가 진행 중인지 확인
+    [SerializeField] private bool isPlaying;     //플레이가 진행 중인지 확인
     private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
 
     //씬이 변경될 때마다 호출되는 3함수들
@@ -153,9 +147,7 @@ public class GameManagers : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
     }
-
-
-
+    
     private void SettingGame()
     {
         if (isPlaying)
@@ -166,5 +158,10 @@ public class GameManagers : MonoBehaviour
         {
             ovrPlayerControl.Acceleration = 0;
         }
+    }
+
+    public bool IsPlaying()
+    {
+        return isPlaying;
     }
 }

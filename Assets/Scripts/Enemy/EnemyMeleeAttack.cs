@@ -15,8 +15,11 @@ public class EnemyMeleeAttack : MonoBehaviour
     private float timer;
     private float timerDuration;
 
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
+
     private void Start()
     {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         defaultSpeed = navMeshAgent.speed; // 기본 이동 속도 저장
         navMeshAgent.enabled = true;
@@ -27,20 +30,23 @@ public class EnemyMeleeAttack : MonoBehaviour
 
     private void Update()
     {
-        distance = Vector3.Distance(transform.position, player.position);
-        navMeshAgent.SetDestination(player.position);
+        if (gameManagerScript.IsPlaying())
+        {
+            distance = Vector3.Distance(transform.position, player.position);
+            navMeshAgent.SetDestination(player.position);
 
-        //목적지 도착
-        if (distance <= 2f)
-        {
-            StartAttack();
-            navMeshAgent.isStopped = true;
-            animator.SetTrigger("Attack");
-        }
-        else
-        {
-            animator.SetTrigger("Run");
-            navMeshAgent.isStopped = false;
+            //목적지 도착
+            if (distance <= 2f)
+            {
+                StartAttack();
+                navMeshAgent.isStopped = true;
+                animator.SetTrigger("Attack");
+            }
+            else
+            {
+                animator.SetTrigger("Run");
+                navMeshAgent.isStopped = false;
+            }
         }
     }
 

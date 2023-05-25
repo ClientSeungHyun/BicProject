@@ -15,8 +15,11 @@ public class MonsterSpawner : MonoBehaviour
     private float spawnTimer = 0f;
     private int monstersSpawned = 0;
 
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
+    
     private void Start()
     {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         monsterPool = new List<GameObject>();
 
         // 오브젝트 풀에 몬스터 생성
@@ -33,11 +36,14 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Update()
     {
-        spawnTimer += Time.deltaTime;
-        if (spawnTimer >= spawnInterval)
+        if (gameManagerScript.IsPlaying())
         {
-            SpawnMonsters(monstersPerInterval);
-            spawnTimer = 0f;
+            spawnTimer += Time.deltaTime;
+            if (spawnTimer >= spawnInterval)
+            {
+                SpawnMonsters(monstersPerInterval);
+                spawnTimer = 0f;
+            }
         }
     }
 

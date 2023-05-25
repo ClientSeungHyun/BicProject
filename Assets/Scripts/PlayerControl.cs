@@ -37,7 +37,7 @@ public class PlayerControl : MonoBehaviour
     public DissolveChilds weaponDissolveScript;    //총 소환 및 사라짐 스크립트
     private UIManager UIManagerScript;          //UI 관리 스크립트
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
-
+    private StoryScript storyScrpit;
 
     private Vector3 moveDirection;  //임시방편 이동용
 
@@ -54,11 +54,14 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        AnimatorControl();
-        ShieldSystem();
-        KeyController();
-
+        isHaveWeapon = weaponDissolveScript.IsGenerate();
+        if (gameManagerScript.IsPlaying())
+        {
+            AnimatorControl();
+            ShieldSystem();
+        }
+        if (storyScrpit.IsScripting())
+            GunOnOFF();
        
     }
     private void OnTriggerEnter(Collider other)
@@ -149,33 +152,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     //컨트롤러 조이스틱
-    void KeyController()
+    void GunOnOFF()
     {
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))  //왼손 트리거
-        {
-            if (isHaveWeapon)
-            {
-
-            }
-            else
-            {
-                isHaveWeapon = weaponDissolveScript.IsGenerate();
-                //총 생성
-            }
-        }
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))  //오른손 트리거 버튼
-        {
-            if (isHaveWeapon)
-            {
-
-            }
-            else
-            {
-                isHaveWeapon = weaponDissolveScript.IsGenerate();
-                //총 생성
-            }
-        }
-
         //임시 총 나타나는 코드
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -188,28 +166,6 @@ public class PlayerControl : MonoBehaviour
                 StartCoroutine(weaponDissolveScript.DestoryGun());
             }
         }
-
-    }
-
-    //타겟이 시야 내에 있는가??
-    bool IsTargetInSight()
-    {
-
-        ////타겟의 방향 
-        //Vector3 targetDir = (BoostPosition[0].transform.position - transform.position).normalized; //크기가 1인 벡터로 만듬 -> 노멀값
-        //float dot = Vector3.Dot(transform.forward, targetDir);  //내적 -> |a||b|cos@ - |a||b| = 1(생략 가능)
-
-        ////내적을 이용한 각 계산하기
-        ////thetha = cos^-1( a dot b / |a||b|)
-        ////Mathf.Rad2Deg을 이용하여 라디안 값을 각도로 변환
-        //float theta = Mathf.Acos(dot) * Mathf.Rad2Deg;
-
-        ////Debug.Log("타겟과 AI의 각도 : " + theta);
-        //if (theta <= sightAngle) return true;   //시야각 내부에 있음
-        //else return false;
-
-
-        return false;
 
     }
 
@@ -260,6 +216,7 @@ public class PlayerControl : MonoBehaviour
         vrRig = GameObject.FindGameObjectWithTag("Character").GetComponent<VRRig>();
         playerRigidbody = GetComponent<Rigidbody>();
         UIManagerScript = GameObject.Find("UIManager").GetComponent<UIManager>();
+        storyScrpit = GameObject.Find("Story").GetComponent<StoryScript>();
 
         playerHP = maxPlayerHP;
         moveSpeed = 3.0f;

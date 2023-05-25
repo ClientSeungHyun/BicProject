@@ -36,25 +36,28 @@ public class GunController : MonoBehaviour
     }
     private void Update()
     {
-        //총이 생성되어있다면
-        if (gunDissolveScript.IsGenerate() && !isReloading) 
+        if (gameManagerScript.IsPlaying())
         {
-            // PrimaryIndexTrigger 왼손 트리거 버튼
-            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
+            //총이 생성되어있다면
+            if (gunDissolveScript.IsGenerate() && !isReloading)
             {
-                Fire();
+                // PrimaryIndexTrigger 왼손 트리거 버튼
+                if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
+                {
+                    Fire();
+                }
+                // SecondaryIndexTrigger 오른손 트리거 버튼
+                if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.R)) && gameObject.tag == "RightHandPistol")
+                {
+                    Fire();
+                }
             }
-            // SecondaryIndexTrigger 오른손 트리거 버튼
-            if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.R)) && gameObject.tag == "RightHandPistol")
+
+            //총알이 다 떨어지면 자동 재장전
+            if (currentBulletMagzine <= 0)
             {
-                Fire();
+                Reload();
             }
-        }
-        
-        //총알이 다 떨어지면 자동 재장전
-        if(currentBulletMagzine <=0)
-        {
-            Reload();
         }
       
     }
