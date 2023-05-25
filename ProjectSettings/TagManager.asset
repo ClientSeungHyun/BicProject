@@ -16,7 +16,6 @@ TagManager:
   - SceneManager
   - SceneChange
   - StoryScript
-  - Boss
   layers:
   - Default
   - TransparentFX
