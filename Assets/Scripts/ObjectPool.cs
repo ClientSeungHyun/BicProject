@@ -37,6 +37,8 @@ public class ObjectPool : MonoBehaviour
 
         // 오브젝트 풀에 사용 가능한 오브젝트가 없는 경우 새로운 오브젝트 생성
         GameObject newObj = Instantiate(prefab, transform); // 프리팹을 복제하여 새로운 오브젝트 생성
+        newObj.transform.position = startPos;
+        newObj.transform.rotation = startRotation;
         newObj.SetActive(true); // 새로운 오브젝트 활성화
         objectPool.Add(newObj); // 오브젝트 풀에 새로운 오브젝트 추가
         return newObj; // 새로운 오브젝트 반환

@@ -16,6 +16,9 @@ TagManager:
   - SceneManager
   - SceneChange
   - StoryScript
+  - LeftHandPistol
+  - RightHandPistol
+  - BulletStart
   layers:
   - Default
   - TransparentFX

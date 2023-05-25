@@ -23,7 +23,7 @@ public class SceneManagers : MonoBehaviour
         if (currentSceneName == "Stage01")
             nextSceneName = "Stage02";
         if (currentSceneName == "TitleScene")
-            nextSceneName = "Stage01";
+            nextSceneName = "StroyExplain";
 
         if (Input.GetMouseButtonDown(0))
         {
