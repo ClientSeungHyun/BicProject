@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    private int maxPlayerHP = 10;  //최대 hp
-    private int playerHP = 10;   //현재 hp
     private float playerEg = 100.0f; //쉴드 에너지
     private float shieldEnergyConsumption;  // 쉴드 에너지 소모량
     private float boostEnergyConsumption;   //부스트 에너지 소모량
@@ -42,6 +40,9 @@ public class PlayerControl : MonoBehaviour
 
 
     private Vector3 moveDirection;  //임시방편 이동용
+
+    private int maxPlayerHP = 10;  //최대 hp
+    public int playerHP = 10;
 
     // Start is called before the first frame update
     void Start()
