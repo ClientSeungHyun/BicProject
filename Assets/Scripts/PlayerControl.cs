@@ -14,20 +14,20 @@ public class PlayerControl : MonoBehaviour
     private bool isHaveWeapon; //무기가 소환됐나?
 
     public GameObject playerCamera;
-    public Rigidbody playerRigidbody;  //리짓바디
+    private Rigidbody playerRigidbody;  //리짓바디
     private CharacterController characterController;
 
     //대쉬 기능 변수
-    public float dashSpeed = 10f;
-    public Vector3 dashDirection;
+    private float dashSpeed = 10f;
+    private Vector3 dashDirection;
     private bool isDashing = false;
 
     private Vector3 initPosition;   //y이동 고정을 위한 초기 위치 받는 변수
 
     //애니메이터용 변수
-    public float speedTreshold = 0.001f;
+    private float speedTreshold = 0.001f;
     [Range(0, 1)]
-    public float smoothing = 1;
+    private float smoothing = 1;
     private Animator animator;
     private Vector3 previousPos;
     private VRRig vrRig;
@@ -157,13 +157,16 @@ public class PlayerControl : MonoBehaviour
         //임시 총 나타나는 코드
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (!weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+            if (storyScrpit.IsStoryComplete())
             {
-                StartCoroutine(weaponDissolveScript.GenerateGun());
-            }
-            else if (weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
-            {
-                StartCoroutine(weaponDissolveScript.DestoryGun());
+                if (!weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+                {
+                    StartCoroutine(weaponDissolveScript.GenerateGun());
+                }
+                else if (weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+                {
+                    StartCoroutine(weaponDissolveScript.DestoryGun());
+                }
             }
         }
 

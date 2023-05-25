@@ -12,13 +12,14 @@ public class UIManager : MonoBehaviour
     public Image boostImage;
 
     public Image storyDialog;
-    public StoryScript storyScript;
+    private StoryScript storyScript;
 
-    public PlayerControl player;
+    private PlayerControl player;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+        storyScript = GameObject.Find("Story").GetComponent<StoryScript>();
         boostActive = false;
         boostImage.gameObject.SetActive(false);
         storyDialog.gameObject.SetActive(true);

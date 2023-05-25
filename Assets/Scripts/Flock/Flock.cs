@@ -21,8 +21,11 @@ public class Flock : MonoBehaviour {
     // 박쥐 개체 리스트
     private List<GameObject> bats = new List<GameObject>();
 
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
+
     // Start is called before the first frame update
     void Start() {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         // 박쥐 개체 생성
         for (int i = 0; i < flockSize; i++) {
             Vector3 position = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), Random.Range(-10f, 10f));
@@ -34,33 +37,41 @@ public class Flock : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        foreach (GameObject bat in bats) {
-            // 주변 박쥐 개체 리스트
-            List<GameObject> neighbors = new List<GameObject>();
-            foreach (GameObject other in bats) {
-                if (other != bat && Vector3.Distance(other.transform.position, bat.transform.position) <= neighborDistance) {
-                    neighbors.Add(other);
+
+        if (gameManagerScript.IsPlaying())
+        {
+            foreach (GameObject bat in bats)
+            {
+                // 주변 박쥐 개체 리스트
+                List<GameObject> neighbors = new List<GameObject>();
+                foreach (GameObject other in bats)
+                {
+                    if (other != bat && Vector3.Distance(other.transform.position, bat.transform.position) <= neighborDistance)
+                    {
+                        neighbors.Add(other);
+                    }
                 }
+
+                // 규칙 적용
+                Vector3 separation = SeparationRule(bat, neighbors);
+                Vector3 alignment = AlignmentRule(bat, neighbors);
+                Vector3 cohesion = CohesionRule(bat, neighbors);
+
+                // 박쥐 속도 조정
+                Vector3 velocity = separation + alignment + cohesion;
+                velocity = Vector3.ClampMagnitude(velocity, speed);
+                bat.GetComponent<Rigidbody>().velocity = velocity;
+
+                // 박쥐 방향 조정
+                if (velocity != Vector3.zero)
+                {
+                    Quaternion rotation = Quaternion.LookRotation(velocity);
+                    bat.transform.rotation = Quaternion.Slerp(bat.transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+                }
+
+                // 박쥐 위치 조정
+                bat.transform.position += velocity * Time.deltaTime;
             }
-
-            // 규칙 적용
-            Vector3 separation = SeparationRule(bat, neighbors);
-            Vector3 alignment = AlignmentRule(bat, neighbors);
-            Vector3 cohesion = CohesionRule(bat, neighbors);
-
-            // 박쥐 속도 조정
-            Vector3 velocity = separation + alignment + cohesion;
-            velocity = Vector3.ClampMagnitude(velocity, speed);
-            bat.GetComponent<Rigidbody>().velocity = velocity;
-
-            // 박쥐 방향 조정
-            if (velocity != Vector3.zero) {
-                Quaternion rotation = Quaternion.LookRotation(velocity);
-                bat.transform.rotation = Quaternion.Slerp(bat.transform.rotation, rotation, rotationSpeed * Time.deltaTime);
-            }
-
-            // 박쥐 위치 조정
-            bat.transform.position += velocity * Time.deltaTime;
         }
     }
 

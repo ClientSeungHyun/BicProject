@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class GunController : MonoBehaviour
 {
-    [SerializeField]private PlayerControl player;
+    private PlayerControl player;
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
     private Rigidbody rigidbody;
 
@@ -38,12 +38,15 @@ public class GunController : MonoBehaviour
     {
         if (gameManagerScript.IsPlaying())
         {
+            Debug.Log("플레이중");
             //총이 생성되어있다면
             if (gunDissolveScript.IsGenerate() && !isReloading)
             {
+                Debug.Log("조건만족");
                 // PrimaryIndexTrigger 왼손 트리거 버튼
                 if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
                 {
+                    Debug.Log("발사");
                     Fire();
                 }
                 // SecondaryIndexTrigger 오른손 트리거 버튼
@@ -127,6 +130,8 @@ public class GunController : MonoBehaviour
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         rigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        bulletPool = GameObject.Find("Bullet").GetComponent<ObjectPool>();
+        bulletStartTransform = transform.GetChild(1).transform;
 
         originalPosition = transform.position;
         originalRotation = transform.rotation;

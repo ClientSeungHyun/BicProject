@@ -86,7 +86,7 @@ public class GameManagers : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        storyScript = GameObject.FindGameObjectWithTag("StoryScript").GetComponent<StoryScript>();
+        storyScript = GameObject.Find("Story").GetComponent<StoryScript>();
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -111,8 +111,9 @@ public class GameManagers : MonoBehaviour
     {
         UpgradeStatus();
 
-        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
-            isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
+        
+            if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
+                isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
         if (isStageClear)
             isPlaying = false;
     }

@@ -23,6 +23,7 @@ public class Boss : MonoBehaviour
         SetTarget(GameObject.FindGameObjectWithTag("Player").transform);
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         navMeshAgent.enabled = true;
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame

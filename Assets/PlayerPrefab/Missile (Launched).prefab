@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8064396621002016174}
   - component: {fileID: 8062823480338919842}
-  - component: {fileID: 8766831605655161948}
   - component: {fileID: 8062823480338919843}
+  - component: {fileID: 1211706180808357504}
   m_Layer: 0
   m_Name: Missile (Launched)
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 8061449355309696118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8067257476407730352}
@@ -51,19 +51,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8766831605655161948
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8061449355309696118}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.01, z: 0.01}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8062823480338919843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +63,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78166cc3f0abfa14884326dbad07b0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1211706180808357504
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061449355309696118}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 3.597093
+  m_Height: 73.60083
+  m_Direction: 0
+  m_Center: {x: 37.01, y: 0, z: 0}
 --- !u!1 &8061715163814308894
 GameObject:
   m_ObjectHideFlags: 0

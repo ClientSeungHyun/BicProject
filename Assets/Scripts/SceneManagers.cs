@@ -31,7 +31,7 @@ public class SceneManagers : MonoBehaviour
                 stage++;
             }
             if (currentSceneName == "TitleScene")
-                nextSceneName = "Stage01";
+                nextSceneName = "Stage03";
             if (currentSceneName == "Stage03")
                 nextSceneName = "ClearSceneTest";
             if (currentSceneName == "UpgradeScene")
