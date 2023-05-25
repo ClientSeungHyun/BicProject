@@ -23,7 +23,7 @@ public class SceneManagers : MonoBehaviour
     {
 
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             if (currentSceneName == "Stage01" || currentSceneName == "Stage02")
             {

@@ -274,7 +274,7 @@ public class PlayerControl : MonoBehaviour
     private void PlayerStatus()
     {
         //레벨에 따른 에너지 소모량
-        switch (GameManagers.playerInfo.EnergyLV())
+        switch (gameManagerScript.playerInfo.EnergyLV())
         {
             case 1:
                 shieldEnergyConsumption = 10f;

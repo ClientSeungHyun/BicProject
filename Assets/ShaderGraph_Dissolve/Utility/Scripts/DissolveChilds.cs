@@ -20,6 +20,7 @@ public class DissolveChilds : MonoBehaviour
     bool isGunLoading;
 
     PlayerControl playercontrol;
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
 
     void Start()
     {
@@ -82,12 +83,13 @@ public class DissolveChilds : MonoBehaviour
     {
         playercontrol = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
         gunObject = new GameObject[transform.childCount];
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
 
         dissoloveValue = 1; //없는 상태
         isGenerate = false;
         isGunLoading = false;
         gunrenderer = GetComponentsInChildren<Renderer>();
-        weaponLV = GameManagers.playerInfo.WeaponLV();
+        weaponLV = gameManagerScript.playerInfo.WeaponLV();
 
         //무기 번호 설정
         switch (weaponLV)

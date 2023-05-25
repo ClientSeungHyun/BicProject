@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    int weaponLV;
+    [SerializeField]int weaponLV;
     public float speed = 10f; // 총알의 속도
     public Transform bulletStartTransform;
     public Transform bulletEndTransform;
@@ -17,6 +17,8 @@ public class Bullet : MonoBehaviour
     ParticleSystem.MainModule[] bulletFlyingModule;
 
     Color bulletColor;
+
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
 
     private void OnEnable()
     {
@@ -59,10 +61,10 @@ public class Bullet : MonoBehaviour
 
     private void Init()
     {
-        weaponLV = GameManagers.playerInfo.WeaponLV();
+        
         bulletStartTransform = GameObject.Find("StartBulletParticle").transform;
         bulletEndTransform = GameObject.Find("EndBulletParticle").transform;
-        //transform.position = bulletStartTransform.position;
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
 
         bulletStartParticle = new ParticleSystem[4];
         bulletEndParticle = new ParticleSystem[4];
@@ -80,7 +82,7 @@ public class Bullet : MonoBehaviour
         }
         bulletFlyingModule[0] = transform.GetChild(0).GetComponent<ParticleSystem>().main;
         bulletFlyingModule[1] = transform.GetChild(1).GetComponent<ParticleSystem>().main;
-
+        weaponLV = gameManagerScript.playerInfo.WeaponLV();
         switch (weaponLV)
         {
             case 1:

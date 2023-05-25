@@ -21,8 +21,8 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 
     public void Init()
     {
-        weaponLV = 1;
-        energyLV = 3;
+        weaponLV = 3;
+        energyLV = 1;
         reloadLV = 1;
         isMoveAble = false;
     }
@@ -71,7 +71,7 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 
 public class GameManagers : MonoBehaviour
 {
-    public static PlayerInfor playerInfo;
+    public PlayerInfor playerInfo;
     SceneManagers sceneManagerScript;
     StoryScript storyScript;
     OVRPlayerController ovrPlayerControl;
@@ -107,7 +107,7 @@ public class GameManagers : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //초기화 함수
         Init();
@@ -147,12 +147,14 @@ public class GameManagers : MonoBehaviour
     {
         playerInfo = new PlayerInfor();
         playerInfo.Init();
-        sceneManagerScript = GameObject.FindGameObjectWithTag("SceneManger").GetComponent<SceneManagers>();
+        sceneManagerScript = GameObject.Find("SceneManager").GetComponent<SceneManagers>();
         isPlaying = false;
 
         DontDestroyOnLoad(gameObject);
         
     }
+
+
 
     private void SettingGame()
     {
