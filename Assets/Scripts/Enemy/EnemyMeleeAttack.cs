@@ -20,7 +20,7 @@ public class EnemyMeleeAttack : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         defaultSpeed = navMeshAgent.speed; // 기본 이동 속도 저장
         navMeshAgent.enabled = true;
-
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         timer = 0f;
         timerDuration = 2f;
     }
