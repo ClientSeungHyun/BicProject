@@ -66,17 +66,18 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
-    SceneManagers sceneManagerScript;
-    StoryScript storyScript;
-    OVRPlayerController ovrPlayerControl;
+    [SerializeField] SceneManagers sceneManagerScript;
+    [SerializeField] StoryScript storyScript;
+    [SerializeField] OVRPlayerController ovrPlayerControl;
+    [SerializeField] MonsterManager monsterManagerScript;
 
-    private GameObject player;
-    private PlayerControl playerScript;
+    [SerializeField] private GameObject player;
+    [SerializeField] private PlayerControl playerScript;
     public int chooseCard;
     public float subSpeed = 0.0f; //자막 속도
-    private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
+    [SerializeField] private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     [SerializeField] private bool isPlaying;     //플레이가 진행 중인지 확인
-    private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
+    public bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
 
     //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
@@ -87,12 +88,14 @@ public class GameManagers : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         storyScript = GameObject.Find("Story").GetComponent<StoryScript>();
+        monsterManagerScript = GameObject.Find("MonsterManage").GetComponent<MonsterManager>();
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             player = GameObject.FindGameObjectWithTag("Player");
             playerScript = player.GetComponent<PlayerControl>();
             ovrPlayerControl = player.GetComponent<OVRPlayerController>();
         }
+        isStageClear = false;
     }
 
     private void OnDisable()
@@ -110,10 +113,11 @@ public class GameManagers : MonoBehaviour
     private void Update()
     {
         UpgradeStatus();
+        SettingGame();
+        isStageClear = monsterManagerScript.isStageClear;
 
-        
-            if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
-                isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
+        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
+            isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
         if (isStageClear)
             isPlaying = false;
     }
@@ -144,6 +148,7 @@ public class GameManagers : MonoBehaviour
         playerInfo.Init();
         sceneManagerScript = GameObject.Find("SceneManager").GetComponent<SceneManagers>();
         isPlaying = false;
+        isStageClear = false;
 
         DontDestroyOnLoad(gameObject);
         

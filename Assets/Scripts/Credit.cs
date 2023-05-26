@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Credit : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class Credit : MonoBehaviour
     {
         gameObject.transform.Translate(new Vector2(transform.position.x, 0.3f*Time.deltaTime));
         if (gameObject.transform.position.y > 7.5)
-            LoadingSceneManager.LoadScene("Stage01");
+        {
+            if(SceneManager.GetActiveScene().name == "OpeningScene")
+                LoadingSceneManager.LoadScene("Stage01");
+            else if(SceneManager.GetActiveScene().name == "EndingScene")
+                LoadingSceneManager.LoadScene("TitleScene");
+        }
+            
     }
 }

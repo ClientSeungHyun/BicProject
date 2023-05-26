@@ -37,7 +37,7 @@ public class OptionMenu : MonoBehaviour
     }
     public void ClickSlow()
     {
-        gameManagerScript.subSpeed = 0.2f;
+        gameManagerScript.subSpeed = 0.3f;
     }
     public void ClickNormal()
     {

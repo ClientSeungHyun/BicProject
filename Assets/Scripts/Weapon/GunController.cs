@@ -38,18 +38,15 @@ public class GunController : MonoBehaviour
     {
         if (gameManagerScript.IsPlaying())
         {
-            Debug.Log("플레이중");
             //총이 생성되어있다면
             if (gunDissolveScript.IsGenerate() && !isReloading)
             {
-                Debug.Log("조건만족");
-                // PrimaryIndexTrigger 왼손 트리거 버튼
+                //왼손 트리거 버튼
                 if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
                 {
-                    Debug.Log("발사");
                     Fire();
                 }
-                // SecondaryIndexTrigger 오른손 트리거 버튼
+                //오른손 트리거 버튼
                 if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.R)) && gameObject.tag == "RightHandPistol")
                 {
                     Fire();

@@ -13,35 +13,43 @@ public class Boss : MonoBehaviour
     public GameObject[] summonEnemies;
     public GameObject missile;
 
+    GameManagers gameManager;
+
     private float distance;
     private float timer = 0f;
-    private float timerDuration = 5.0f;
-    private float hp = 100.0f;
-
+    private float timerDuration = 10.0f;
+    private float maxhp = 100.0f;
+    public float nowhp = 100.0f;
+    private int maxMonster = 50;
+    private int nowMonster = 0;
     void Start()
     {
         SetTarget(GameObject.FindGameObjectWithTag("Player").transform);
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         navMeshAgent.enabled = true;
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManagers>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        distance = Vector3.Distance(transform.position, target.position);
-        navMeshAgent.SetDestination(target.position);
-
-        if (distance < 18.0f)
+        if(gameManager.IsPlaying())
         {
-            Skill();
-            navMeshAgent.isStopped = true;
-            this.gameObject.GetComponent<Animator>().SetTrigger("Stay");
-        }
-        else
-        {
-            navMeshAgent.isStopped = false;
-            this.gameObject.GetComponent<Animator>().SetTrigger("Dash");
+            distance = Vector3.Distance(transform.position, target.position);
+            navMeshAgent.SetDestination(target.position);
+            if (distance < 20f)
+            {
+                Skill();
+                navMeshAgent.isStopped = true;
+                this.gameObject.GetComponent<Animator>().SetTrigger("Stay");
+                transform.LookAt(target);
+            }
+            else
+            {
+                navMeshAgent.isStopped = false;
+                this.gameObject.GetComponent<Animator>().SetTrigger("Dash");
+            }
         }
     }
 
@@ -51,6 +59,7 @@ public class Boss : MonoBehaviour
 
         if (timer >= timerDuration)
         {
+            this.gameObject.GetComponent<Animator>().SetTrigger("Cast");
             int pattern = Random.Range(0, 2);
     
             if (pattern == 0)
@@ -61,33 +70,40 @@ public class Boss : MonoBehaviour
             {
                 Missile();
             }
-            if (pattern == 2)
-            {
-                Heal();
-            }
             timer = 0;
         }
     }
     
     void Summon()
     {
-        foreach (Transform child in enemyParent.transform) {
-            Instantiate(summonEnemies[Random.Range(0, 2)], child.position, Quaternion.identity);
+        if(nowMonster <= maxMonster)
+        {
+            foreach (Transform child in enemyParent.transform)
+            {
+                Instantiate(summonEnemies[Random.Range(0, 2)], child.position, Quaternion.identity);
+            }
+            nowMonster += 8;
         }
     }
     void Missile()
     {
+        Quaternion rotation = Quaternion.LookRotation(target.position - transform.position);
+        rotation *= Quaternion.Euler(0f, -90f, 0f);
         foreach (Transform child in missileParent.transform) {
-            Instantiate(missile, child.position, Quaternion.identity);
+            Instantiate(missile, child.position, rotation);
         }
-    }
-    void Heal()
-    {
-        
     }
 
     public void SetTarget(Transform targetTransform)
     {
         target = targetTransform;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            nowhp--;
+        }
     }
 }

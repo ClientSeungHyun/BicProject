@@ -25,14 +25,14 @@ public class StoryScript : MonoBehaviour
     private string fullText;
     private string currentText;
 
-    [SerializeField] private float textSpeed = 0.5f;
+    private float textSpeed = 0.5f;
     private float timer = 0f;
 
     private int currentIndex;
     private int i;
 
-    [SerializeField]  private bool isScripting;   //스크립트 진행 중
-    [SerializeField] private bool isStoryComplete;    //대화 끝
+    private bool isScripting;   //스크립트 진행 중
+    private bool isStoryComplete;    //대화 끝
 
     private GameManagers gameManagerScript;
 
@@ -65,7 +65,7 @@ public class StoryScript : MonoBehaviour
 
     public void TextProceeding()
     {
-        if (Input.GetKeyDown(KeyCode.T) || i == 0) 
+        if ((OVRInput.GetDown(OVRInput.RawButton.A) || Input.GetKeyDown(KeyCode.T)) || i == 0) 
         {
             //대화 스킵
             if (isScripting)
@@ -83,9 +83,9 @@ public class StoryScript : MonoBehaviour
         if (isScripting)
         {
             timer += Time.deltaTime; // 경과 시간 측정
-            
+
             //대화 끝 
-            if (stageScript.Length <= i && Input.GetKeyDown(KeyCode.T))
+            if (stageScript.Length <= i && (OVRInput.GetDown(OVRInput.RawButton.A) || Input.GetKeyDown(KeyCode.T))) 
             {
                 isStoryComplete = true;
                 textComponent.text = "";

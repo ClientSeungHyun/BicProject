@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class MonsterSpawner : MonoBehaviour
 {
     public GameObject monsterPrefab;
     public int monsterCount = 50; // 오브젝트 풀의 몬스터 개수
+    public int monsterMaxCount;
+    public int clearCount;
     public float spawnRadius = 5f;
     public float spawnInterval = 3f;
     public int initialSpawnCount = 2; // 게임 시작 시 생성할 몬스터 개수
@@ -32,17 +35,26 @@ public class MonsterSpawner : MonoBehaviour
 
         // 게임 시작 시 초기 몬스터 생성
         SpawnMonsters(initialSpawnCount);
+
+        if (SceneManager.GetActiveScene().name == "Stage01")
+            monsterMaxCount = 130;
+        if (SceneManager.GetActiveScene().name == "Stage02")
+            monsterMaxCount = 150;
+        clearCount = 50;
     }
 
     private void Update()
     {
         if (gameManagerScript.IsPlaying())
         {
-            spawnTimer += Time.deltaTime;
-            if (spawnTimer >= spawnInterval)
+            if (monsterMaxCount >= clearCount)
             {
-                SpawnMonsters(monstersPerInterval);
-                spawnTimer = 0f;
+                spawnTimer += Time.deltaTime;
+                if (spawnTimer >= spawnInterval)
+                {
+                    SpawnMonsters(monstersPerInterval);
+                    spawnTimer = 0f;
+                }
             }
         }
     }
@@ -67,6 +79,7 @@ public class MonsterSpawner : MonoBehaviour
             }
 
             monstersSpawned++;
+            clearCount++;
         }
     }
 

@@ -6,8 +6,11 @@ public class SceneManagers : MonoBehaviour
     private string currentSceneName;
     private string nextSceneName;
     public int stage = 0;
+    private GameManagers gameManagerScript;    //게임 매니저 스크립트
+
     private void Start()
     {
+        gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         DontDestroyOnLoad(this);
     }
 
@@ -21,40 +24,36 @@ public class SceneManagers : MonoBehaviour
     // 임시 체크용
     private bool CheckClearCondition()
     {
-
-
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) || OVRInput.GetDown(OVRInput.RawButton.A))
         {
-            if (currentSceneName == "Stage01" || currentSceneName == "Stage02")
-            {
-                nextSceneName = "UpgradeScene";
-                stage++;
-            }
             if (currentSceneName == "TitleScene")
-                nextSceneName = "Stage03";
-            if (currentSceneName == "Stage03")
-                nextSceneName = "ClearSceneTest";
+            {
+                nextSceneName = "Stage01";
+                LoadingSceneManager.LoadScene(nextSceneName);
+            }
+
+            if (gameManagerScript.isStageClear)
+            {
+                if ((currentSceneName == "Stage01" || currentSceneName == "Stage02"))
+                {
+                    nextSceneName = "UpgradeScene";
+                    stage++;
+                }
+                if (currentSceneName == "Stage03")
+                {
+                    nextSceneName = "EndingScene";
+                }
+
+                LoadingSceneManager.LoadScene(nextSceneName);
+            }
             if (currentSceneName == "UpgradeScene")
             {
                 if (stage == 1)
                     nextSceneName = "Stage02";
                 else if (stage == 2)
                     nextSceneName = "Stage03";
+                LoadingSceneManager.LoadScene(nextSceneName);
             }
-
-            LoadingSceneManager.LoadScene(nextSceneName);
-
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //RaycastHit hit;
-
-            //if (Physics.Raycast(ray, out hit))
-            //{
-            //    if (hit.collider.CompareTag("SceneChange"))
-            //        LoadingSceneManager.LoadScene(nextSceneName);
-            //    //if (hit.collider.CompareTag("Option"))
-            //    //    SceneManager.LoadScene("OptionScene");
-
-            //}
         }
 
         return false;  // 클리어 조건이 충족되지 않았을 때 false를 반환

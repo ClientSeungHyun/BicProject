@@ -154,8 +154,8 @@ public class PlayerControl : MonoBehaviour
     //컨트롤러 조이스틱
     void GunOnOFF()
     {
-        //임시 총 나타나는 코드
-        if (Input.GetKeyDown(KeyCode.Z))
+        //총 나타나는 코드
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) || OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.Z)) 
         {
             if (storyScrpit.IsStoryComplete())
             {
