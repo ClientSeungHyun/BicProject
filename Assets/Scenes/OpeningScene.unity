@@ -1524,7 +1524,7 @@ MonoBehaviour:
     \uC0AC\uC774\uBCF4\uADF8.\n\uBC18\uC740 \uB85C\uBD07\uC774\uC9C0\uB9CC \uBC18\uC740
     \uC778\uAC04\uC774\uAE30\uC5D0 \n\uAE30\uACC4\uC758 \uB2A5\uB825\uACFC \uC778\uAC04\uC758
     \uC0AC\uACE0\uBC29\uC2DD\uC744 \uAC00\uC9C0\uACE0 \uC788\uB2E4.\n\uB4DC\uB514\uC5B4
-    \uB3C4\uC2DC \uD0C8\uD658 \uC791\uC801\uC774 \uC2DC\uC791\uB41C\uB2E4....\n"
+    \uB3C4\uC2DC \uD0C8\uD658 \uC791\uC804\uC774 \uC2DC\uC791\uB41C\uB2E4....\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a7d5ad3a20d3103408efed5ad684bdd5, type: 2}
   m_sharedMaterial: {fileID: 5215081956011292081, guid: a7d5ad3a20d3103408efed5ad684bdd5, type: 2}
