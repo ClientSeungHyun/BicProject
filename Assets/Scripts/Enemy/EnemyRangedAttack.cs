@@ -34,7 +34,7 @@ public class EnemyRangedAttack : MonoBehaviour
 
     private void Update()
     {
-        if (gameManagerScript.IsPlaying())
+        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear())
         {
             distance = Vector3.Distance(transform.position, player.position);
             navMeshAgent.SetDestination(player.position);
@@ -60,8 +60,6 @@ public class EnemyRangedAttack : MonoBehaviour
                 }
             }
         }
-        
-
     }
 
     private void StartAttack()

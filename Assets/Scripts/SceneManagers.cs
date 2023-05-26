@@ -32,7 +32,7 @@ public class SceneManagers : MonoBehaviour
                 LoadingSceneManager.LoadScene(nextSceneName);
             }
 
-            if (gameManagerScript.isStageClear)
+            if (gameManagerScript.IsStageClear())
             {
                 if ((currentSceneName == "Stage01" || currentSceneName == "Stage02"))
                 {

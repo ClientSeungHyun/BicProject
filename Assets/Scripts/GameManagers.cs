@@ -77,7 +77,7 @@ public class GameManagers : MonoBehaviour
     public float subSpeed = 0.0f; //자막 속도
     [SerializeField] private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     [SerializeField] private bool isPlaying;     //플레이가 진행 중인지 확인
-    public bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
+    private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
 
     //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
@@ -116,7 +116,7 @@ public class GameManagers : MonoBehaviour
         SettingGame();
         isStageClear = monsterManagerScript.isStageClear;
 
-        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon())
+        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon() && !playerScript.IsDeath())
             isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
         if (isStageClear)
             isPlaying = false;
@@ -169,5 +169,9 @@ public class GameManagers : MonoBehaviour
     public bool IsPlaying()
     {
         return isPlaying;
+    }
+    public bool IsStageClear()
+    {
+        return isStageClear;
     }
 }

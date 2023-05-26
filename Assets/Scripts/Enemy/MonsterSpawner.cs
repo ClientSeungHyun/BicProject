@@ -45,7 +45,7 @@ public class MonsterSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (gameManagerScript.IsPlaying())
+        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear())
         {
             if (monsterMaxCount >= clearCount)
             {
