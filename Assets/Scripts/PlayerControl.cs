@@ -12,6 +12,9 @@ public class PlayerControl : MonoBehaviour
     private float sightAngle; //시야각 범위
     
     private bool isHaveWeapon; //무기가 소환됐나?
+    private bool isDeath;
+    private bool isPlaying;
+    private bool isStageClear;
 
     public GameObject playerCamera;
     private Rigidbody playerRigidbody;  //리짓바디
@@ -55,12 +58,17 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         isHaveWeapon = weaponDissolveScript.IsGenerate();
-        if (gameManagerScript.IsPlaying())
+        isPlaying = gameManagerScript.IsPlaying();
+        isStageClear = gameManagerScript.IsStageClear();
+
+        if (playerHP <= 0)
+            isDeath = true;
+        if (isPlaying)
         {
             AnimatorControl();
             ShieldSystem();
         }
-        if (storyScrpit.IsScripting())
+        if (storyScrpit.IsScripting() && !isStageClear)
             GunOnOFF();
        
     }
@@ -225,6 +233,7 @@ public class PlayerControl : MonoBehaviour
         moveSpeed = 3.0f;
         sightAngle = 80f;
         isHaveWeapon = false;
+        isDeath = false;
         shieldScript.gameObject.SetActive(false);
         previousPos = vrRig.head.vrTarget.position;
 
@@ -279,5 +288,15 @@ public class PlayerControl : MonoBehaviour
     public bool IsHaveWeapon()
     {
         return isHaveWeapon;
+    }
+
+    public bool IsDeath()
+    {
+        return isDeath;
+    }
+
+    public bool IsStageClear()
+    {
+        return isStageClear;
     }
 }
