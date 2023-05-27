@@ -38,10 +38,12 @@ public class UIManager : MonoBehaviour
         if (storyScript.IsStoryComplete())
             storyDialog.gameObject.SetActive(false);
 
+        //플레이어가 죽으면
         if (player.IsDeath())
         {
             FadeIn(gameOverImage);
         }
+        //스테이지 클리어하면
         if (player.IsStageClear())
         {
             FadeIn(clearImage);
@@ -57,16 +59,16 @@ public class UIManager : MonoBehaviour
 
     private void FadeIn(Image fImage)
     {
-        if (time < 3f)
+        if (time < 2f)
         {
             fImage.gameObject.SetActive(true);
-            fImage.color = new Color(1, 1, 1, time / 3f);
+            fImage.color = new Color(1, 1, 1, time / 2f);
         }
         else
         {
-            time = 0;
-            fImage.gameObject.SetActive(false);
+            time = 2f;
         }
+        time += Time.deltaTime;
     }
    
 }

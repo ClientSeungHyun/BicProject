@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyMeleeAttack : MonoBehaviour
 {
@@ -63,7 +64,12 @@ public class EnemyMeleeAttack : MonoBehaviour
             }
             
         }
-        
+
+        //클리어되면 모두 비활성화
+        if (gameManagerScript.IsStageClear())
+        {
+            isDeath = true;
+        }
     }
 
     private void StartAttack()
@@ -84,7 +90,9 @@ public class EnemyMeleeAttack : MonoBehaviour
             // Player과 충돌하면 Death 애니메이션 재생 및 파괴
             isDeath = true;
             animator.SetTrigger("Death");
-            monsterManagerScript.monsterCount++;
+
+            if (SceneManager.GetActiveScene().name != "Stage03")
+                monsterManagerScript.monsterDeathCount++;
         }
     }
     

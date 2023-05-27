@@ -19,6 +19,7 @@ TagManager:
   - LeftHandPistol
   - RightHandPistol
   - BulletStart
+  - MonsterSpawnPoint
   layers:
   - Default
   - TransparentFX

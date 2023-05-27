@@ -274,13 +274,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  missilePrefab: {fileID: 0}
-  missileSpeed: 10
-  trackingDistance: 100
-  trackingSpeed: 5
-  idleDistance: 7
-  attackDuration: 3
   animator: {fileID: 6937238109685613099}
+  target: {fileID: 0}
+  missilePool: {fileID: 0}
+  isDeath: 0
 --- !u!195 &4267286427187084831
 NavMeshAgent:
   m_ObjectHideFlags: 0

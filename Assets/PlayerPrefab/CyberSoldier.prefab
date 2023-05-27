@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 5797142975498990811}
   m_Layer: 0
   m_Name: CyberSoldier
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1194,6 +1194,7 @@ MonoBehaviour:
   summonEnemies:
   - {fileID: 0}
   missile: {fileID: 0}
+  nowhp: 100
 --- !u!1 &5797142975347055459
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class PlayerControl : MonoBehaviour
     private bool isHaveWeapon; //무기가 소환됐나?
     private bool isDeath;
     private bool isPlaying;
-    private bool isStageClear;
+    [SerializeField]private bool isStageClear;
 
     public GameObject playerCamera;
     private Rigidbody playerRigidbody;  //리짓바디
@@ -60,6 +60,7 @@ public class PlayerControl : MonoBehaviour
         isHaveWeapon = weaponDissolveScript.IsGenerate();
         isPlaying = gameManagerScript.IsPlaying();
         isStageClear = gameManagerScript.IsStageClear();
+        GunOnOFF();
 
         if (playerHP <= 0)
             isDeath = true;
@@ -68,14 +69,12 @@ public class PlayerControl : MonoBehaviour
             AnimatorControl();
             ShieldSystem();
         }
-        if (storyScrpit.IsScripting() && !isStageClear)
-            GunOnOFF();
        
     }
     private void OnTriggerEnter(Collider other)
     {
         //체력 까임
-        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "EnemyWeapon")
+        if (other.gameObject.tag == "Enemy")
         {
             if (playerHP > 0)
             {
@@ -162,21 +161,44 @@ public class PlayerControl : MonoBehaviour
     //컨트롤러 조이스틱
     void GunOnOFF()
     {
-        //총 나타나는 코드
-        if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) || OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.Z)) 
+        if (storyScrpit.IsScripting() && !isStageClear)
         {
-            if (storyScrpit.IsStoryComplete())
+            //총 나타나는 코드
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) || OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.Z))
             {
-                if (!weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+                if (storyScrpit.IsStoryComplete())
                 {
-                    StartCoroutine(weaponDissolveScript.GenerateGun());
-                }
-                else if (weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
-                {
-                    StartCoroutine(weaponDissolveScript.DestoryGun());
+                    if (!weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+                    {
+                        StartCoroutine(weaponDissolveScript.GenerateGun());
+                    }
+                    else if (weaponDissolveScript.IsGenerate() && !weaponDissolveScript.IsGunLoading())
+                    {
+                        StartCoroutine(weaponDissolveScript.DestoryGun());
+                    }
                 }
             }
         }
+
+    }
+    
+    public bool IsTargetInSight(Transform target)
+    {
+
+        //타겟의 방향 
+        Vector3 targetDir = (target.position - transform.position).normalized;
+        float dot = Vector3.Dot(transform.forward, targetDir);
+
+        //내적을 이용한 각 계산하기
+        // thetha = cos^-1( a dot b / |a||b|)
+        float theta = Mathf.Acos(dot) * Mathf.Rad2Deg;
+        
+        //시야 내에 있으면 true 반환
+        if (theta <= playerCamera.GetComponent<Camera>().fieldOfView) return true;
+        else return false;
+
+
+        return false;
 
     }
 

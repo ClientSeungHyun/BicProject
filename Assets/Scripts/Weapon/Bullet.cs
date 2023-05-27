@@ -37,9 +37,10 @@ public class Bullet : MonoBehaviour
     }
     private void Update()
     {
+        //총 레벨에 따른 색 설정
+        SetBulletColor();
         // 총알을 앞으로 이동시킵니다.
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        SetBulletColor();
     }
 
     private void OnTriggerEnter(Collider other)
