@@ -66,7 +66,10 @@ public class Boss : MonoBehaviour
             }
         }
         if (nowhp <= 0)
+        {
             monsterManagerScript.monsterDeathCount++;
+            Dead();
+        }
     }
 
     private void Skill()
@@ -114,6 +117,12 @@ public class Boss : MonoBehaviour
         foreach (Transform child in missileParent.transform) {
             Instantiate(missile, child.position, rotation);
         }
+    }
+
+    void Dead()
+    {
+        //Animation
+        //Destroy Obj (effect?)
     }
 
     //void runToPlayer()
