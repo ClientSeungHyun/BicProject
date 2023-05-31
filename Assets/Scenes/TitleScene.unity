@@ -1358,8 +1358,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ca71f65e9ca0b4f868e14218703029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManagerScript: {fileID: 0}
+  storyScript: {fileID: 0}
+  ovrPlayerControl: {fileID: 0}
+  monsterManagerScript: {fileID: 0}
+  player: {fileID: 0}
+  playerScript: {fileID: 0}
   chooseCard: 0
   subSpeed: 0
+  sceneName: 
+  isPlaying: 0
 --- !u!4 &115084384
 Transform:
   m_ObjectHideFlags: 0
@@ -1593,6 +1601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf395142cc134504a9a18933d981cc1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
 --- !u!4 &148428860
 Transform:
   m_ObjectHideFlags: 0
@@ -9824,7 +9833,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7089338489307948122, guid: 3d1ecfefa049b244b8d43cb53210071f, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 4137c58f839d66347b7fe7b374736247, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e871cab556676b748bb7b26ccb6e1d75, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.7
   m_Pitch: 1
