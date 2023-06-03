@@ -43,34 +43,54 @@ public class MonsterManager : MonoBehaviour
     }
 
     //몬스터 스폰 
-    private void MonsterSpawn()
+    public void MonsterSpawn()
     {
         if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear())
         {
-            timer += Time.deltaTime;
-
-            if (timer >= 0.3f)
+            if(SceneManager.GetActiveScene().name == "Stage03")
             {
-                while (true)
+                for(int i=0; i<10; i=i)
                 {
                     spawnIndex = Random.Range(0, monsterSpawnPoints.Length);
                     distance = Vector3.Distance(monsterSpawnPoints[spawnIndex].transform.position, playerScript.transform.position);
-                    
-                    //시야 내에 없고 거리가 일정 이상이면
+
+                    //거리가 일정 이상이면
                     if (distance >= 15f)
                     {
-                        Debug.Log(spawnIndex);
-                        Debug.Log(monsterSpawnPoints[spawnIndex]);
-                        monsterPool.prefab = monsterPrefabs[Random.Range(0, 3)];
+                        int[] numbers = new int[] { 0, 2 };
+                        monsterPool.prefab = monsterPrefabs[numbers[Random.Range(0, numbers.Length)]];
                         monsterPool.GetObject(monsterSpawnPoints[spawnIndex].transform.position, new Quaternion(0, 0, 0, 0));
                         monsterSpawnCount++;
                         timer = 0;
-                        break;
+                        i++;
+                    }
+                }
+            }
+
+            if (SceneManager.GetActiveScene().name != "Stage03")
+            {
+                timer += Time.deltaTime;
+
+                if (timer >= 0.3f)
+                {
+                    while (true)
+                    {
+                        spawnIndex = Random.Range(0, monsterSpawnPoints.Length);
+                        distance = Vector3.Distance(monsterSpawnPoints[spawnIndex].transform.position, playerScript.transform.position);
+
+                        //거리가 일정 이상이면
+                        if (distance >= 15f)
+                        {
+                            monsterPool.prefab = monsterPrefabs[Random.Range(0, 3)];
+                            monsterPool.GetObject(monsterSpawnPoints[spawnIndex].transform.position, new Quaternion(0, 0, 0, 0));
+                            monsterSpawnCount++;
+                            timer = 0;
+                            break;
+                        }
                     }
                 }
             }
         }
-        
     }
 
     private void Init()

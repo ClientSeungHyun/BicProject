@@ -181,26 +181,6 @@ public class PlayerControl : MonoBehaviour
         }
 
     }
-    
-    public bool IsTargetInSight(Transform target)
-    {
-
-        //타겟의 방향 
-        Vector3 targetDir = (target.position - transform.position).normalized;
-        float dot = Vector3.Dot(transform.forward, targetDir);
-
-        //내적을 이용한 각 계산하기
-        // thetha = cos^-1( a dot b / |a||b|)
-        float theta = Mathf.Acos(dot) * Mathf.Rad2Deg;
-        
-        //시야 내에 있으면 true 반환
-        if (theta <= playerCamera.GetComponent<Camera>().fieldOfView) return true;
-        else return false;
-
-
-        return false;
-
-    }
 
     void AnimatorControl()
     {
