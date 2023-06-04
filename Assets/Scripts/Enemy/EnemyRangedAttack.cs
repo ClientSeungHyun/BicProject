@@ -98,7 +98,7 @@ public class EnemyRangedAttack : MonoBehaviour
         navMeshAgent.speed = 0;
         animator.SetTrigger("Death");
 
-        if (SceneManager.GetActiveScene().name != "Stage03")
+        if (SceneManager.GetActiveScene().name != "Stage03" && !isDeath)
             monsterManagerScript.monsterDeathCount++;
     }
 

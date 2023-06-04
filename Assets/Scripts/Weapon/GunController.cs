@@ -13,9 +13,6 @@ public class GunController : MonoBehaviour
     public Transform playerHand;
     public Transform bulletStartTransform;
 
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
-
     public ObjectPool bulletPool;
     public GameObject bulletStartParticle;
     private AudioSource audioSource;
@@ -28,6 +25,7 @@ public class GunController : MonoBehaviour
     private float reloadTime;    //총알 장전 속도
     public float maxBulletMagazine;    //최대 총알 잔탄
     public float currentBulletMagzine;   //현재 총알 수
+
     private bool isReloading;
 
     private void Start()
@@ -59,7 +57,7 @@ public class GunController : MonoBehaviour
                 Reload();
             }
         }
-      
+        AttachToHand();
     }
     void FixedUpdate()
     {
@@ -78,8 +76,10 @@ public class GunController : MonoBehaviour
 
         // 총의 위치와 회전값을 플레이어의 손에 맞게 설정
         transform.position = playerHand.position;
-        transform.rotation = playerHand.rotation;
-        transform.rotation = Quaternion.Euler(0, 180, 0);
+        Vector3 gunAngle = playerHand.transform.eulerAngles;
+        gunAngle.y += 180f;
+        Quaternion gunRoatation = Quaternion.Euler(gunAngle);
+        transform.rotation = gunRoatation;
     }
     
     private void Fire()
@@ -129,9 +129,6 @@ public class GunController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         bulletPool = GameObject.Find("Bullet").GetComponent<ObjectPool>();
         bulletStartTransform = transform.GetChild(1).transform;
-
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
 
         bulletStartParticle = GameObject.Find("StartBulletParticle");
 
