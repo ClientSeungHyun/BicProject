@@ -35,38 +35,38 @@ public class EnemyRangedAttack : MonoBehaviour
 
     private void Update()
     {
-        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear())
-        {
-            distance = Vector3.Distance(transform.position, player.position);
-            navMeshAgent.SetDestination(player.position);
-
-            if (isDeath)
-            {
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
-                    gameObject.SetActive(false);
-            }
-            else if (!isDeath)
-            {
-                //목적지 도착
-                if (distance <= 12f)
-                {
-                    StartAttack();
-                    navMeshAgent.isStopped = true;
-                    animator.SetTrigger("Idle");
-                }
-                else
-                {
-                    animator.SetTrigger("Run");
-                    navMeshAgent.isStopped = false;
-                }
-            }
-        }
-
         //클리어되면 모두 비활성화
         if (gameManagerScript.IsStageClear())
         {
-            isDeath = true;
+            DeathCode();
         }
+
+        distance = Vector3.Distance(transform.position, player.position);
+        navMeshAgent.SetDestination(player.position);
+
+        if (isDeath)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+                gameObject.SetActive(false);
+        }
+        else if (!isDeath)
+        {
+            navMeshAgent.speed = 2f;
+            //목적지 도착
+            if (distance <= 12f)
+            {
+                StartAttack();
+                navMeshAgent.isStopped = true;
+                animator.SetTrigger("Idle");
+            }
+            else
+            {
+                animator.SetTrigger("Run");
+                navMeshAgent.isStopped = false;
+            }
+        }
+
+        
     }
 
     private void StartAttack()
@@ -88,13 +88,18 @@ public class EnemyRangedAttack : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            // Bullet과 충돌하면 death 애니메이션 재생 및 파괴
-            isDeath = true;
-            animator.SetTrigger("Death");
-
-            if(SceneManager.GetActiveScene().name != "Stage03")
-                monsterManagerScript.monsterDeathCount++;
+            DeathCode();
         }
+    }
+
+    public void DeathCode()
+    {
+        isDeath = true;
+        navMeshAgent.speed = 0;
+        animator.SetTrigger("Death");
+
+        if (SceneManager.GetActiveScene().name != "Stage03")
+            monsterManagerScript.monsterDeathCount++;
     }
 
     

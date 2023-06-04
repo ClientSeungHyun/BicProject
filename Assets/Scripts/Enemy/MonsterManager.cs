@@ -39,6 +39,7 @@ public class MonsterManager : MonoBehaviour
                 isStageClear = true;
         }
 
+
         
     }
 
