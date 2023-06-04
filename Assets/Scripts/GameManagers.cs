@@ -87,8 +87,10 @@ public class GameManagers : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        storyScript = GameObject.Find("Story").GetComponent<StoryScript>();
-        monsterManagerScript = GameObject.Find("MonsterManage").GetComponent<MonsterManager>();
+        if(GameObject.Find("Story"))
+            storyScript = GameObject.Find("Story").GetComponent<StoryScript>();
+        if(GameObject.Find("MonsterManage"))
+            monsterManagerScript = GameObject.Find("MonsterManage").GetComponent<MonsterManager>();
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -114,10 +116,13 @@ public class GameManagers : MonoBehaviour
     {
         UpgradeStatus();
         SettingGame();
-        isStageClear = monsterManagerScript.isStageClear;
-
-        if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon() && !playerScript.IsDeath())
-            isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
+        if(monsterManagerScript)
+            isStageClear = monsterManagerScript.isStageClear;
+        if (storyScript)
+        {
+            if (storyScript.IsStoryComplete() && playerScript.IsHaveWeapon() && !playerScript.IsDeath())
+                isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
+        }
         if (isStageClear)
             isPlaying = false;
     }
