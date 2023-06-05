@@ -1679,6 +1679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf395142cc134504a9a18933d981cc1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
 --- !u!114 &161700588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11230,7 +11231,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 495053127}
   m_HandleRect: {fileID: 649364020}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -23613,7 +23614,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 293990329}
   m_HandleRect: {fileID: 787485179}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1

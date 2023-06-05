@@ -6,7 +6,7 @@ public class MonsterManager : MonoBehaviour
     private float timer;
     private float distance;
     private int spawnIndex;
-    private int stageClearCount;
+    private int monsterSpawnLimit;
     public int monsterSpawnCount;
     public int monsterDeathCount;
 
@@ -35,7 +35,7 @@ public class MonsterManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Stage03" )
         {
             MonsterSpawn();
-            if (monsterDeathCount >= stageClearCount)
+            if (monsterDeathCount >= monsterSpawnLimit)
                 isStageClear = true;
         }
 
@@ -46,7 +46,7 @@ public class MonsterManager : MonoBehaviour
     //몬스터 스폰 
     public void MonsterSpawn()
     {
-        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear())
+        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear() && monsterSpawnLimit>=monsterSpawnCount)
         {
             if(SceneManager.GetActiveScene().name == "Stage03")
             {
@@ -102,13 +102,13 @@ public class MonsterManager : MonoBehaviour
         monsterSpawnPoints = GameObject.FindGameObjectsWithTag("MonsterSpawnPoint");
 
         if (SceneManager.GetActiveScene().name == "Stage01")
-            stageClearCount = 180;
+            monsterSpawnLimit = 180;
         else if (SceneManager.GetActiveScene().name == "Stage02")
-            stageClearCount = 200;
+            monsterSpawnLimit = 200;
         else if (SceneManager.GetActiveScene().name == "Stage03")
         {
             bossScript = GameObject.Find("Boss").GetComponent<Boss>();
-            stageClearCount = 1;
+            monsterSpawnLimit = 1;
         }
 
         monsterSpawnCount = 0;

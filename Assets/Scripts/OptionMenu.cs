@@ -6,21 +6,18 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 public class OptionMenu : MonoBehaviour
 {
-    private GameManagers gameManagerScript;
     public AudioMixer audioMixer;
     public Slider bgmSlider;
     public Slider sfxSlider;
-    public Toggle subToggle;
+
+    public Button[] subButtons;
+
+    private GameManagers gameManagerScript;
+
     // Start is called before the first frame update
     void Start()
     {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void setBGMSounds()
@@ -35,16 +32,33 @@ public class OptionMenu : MonoBehaviour
     {
         LoadingSceneManager.LoadScene("TitleScene");
     }
+
     public void ClickSlow()
     {
         gameManagerScript.subSpeed = 0.3f;
+        ButtonColorChange(subButtons[0], Color.red);
+        ButtonColorChange(subButtons[1], Color.white);
+        ButtonColorChange(subButtons[2], Color.white);
     }
     public void ClickNormal()
     {
         gameManagerScript.subSpeed = 0.5f;
+        ButtonColorChange(subButtons[0], Color.white);
+        ButtonColorChange(subButtons[1], Color.red);
+        ButtonColorChange(subButtons[2], Color.white);
     }
     public void ClickFast()
     {
         gameManagerScript.subSpeed = 0.8f;
+        ButtonColorChange(subButtons[0], Color.white);
+        ButtonColorChange(subButtons[1], Color.white);
+        ButtonColorChange(subButtons[2], Color.red);
+    }
+
+    public void ButtonColorChange(Button b, Color c)
+    {
+        ColorBlock col = b.colors;
+        col.normalColor = c;
+        b.colors = col;
     }
 }
