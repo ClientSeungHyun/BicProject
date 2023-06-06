@@ -16,10 +16,10 @@ public class UIManager : MonoBehaviour
     private bool boostActive;
     private float time;
 
-
     private StoryScript storyScript;
-
     private PlayerControl player;
+    private PlayerInput playerInput;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
         storyDialog.gameObject.SetActive(true);
         clearImage.gameObject.SetActive(false);
         gameOverImage.gameObject.SetActive(false);
+
+        playerInput = FindObjectOfType<PlayerInput>();
+        playerInput.retryButton.gameObject.SetActive(false);
+        playerInput.returnToTitleButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,11 +46,15 @@ public class UIManager : MonoBehaviour
         if (player.IsDeath())
         {
             FadeIn(gameOverImage);
+            playerInput.retryButton.gameObject.SetActive(true);
+            playerInput.returnToTitleButton.gameObject.SetActive(true);
         }
         //스테이지 클리어하면
         if (player.IsStageClear())
         {
             FadeIn(clearImage);
+            playerInput.retryButton.gameObject.SetActive(true);
+            playerInput.returnToTitleButton.gameObject.SetActive(true);
         }
         boostGage.fillAmount = player.PlayerEg() / 100f;
     }
@@ -70,5 +78,4 @@ public class UIManager : MonoBehaviour
         }
         time += Time.deltaTime;
     }
-   
 }
