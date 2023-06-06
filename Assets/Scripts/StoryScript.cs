@@ -32,7 +32,7 @@ public class StoryScript : MonoBehaviour
     private int i;
 
     private bool isScripting;   //스크립트 진행 중
-    private bool isStoryComplete;    //대화 끝
+    [SerializeField]private bool isStoryComplete;    //대화 끝
 
     private GameManagers gameManagerScript;
 

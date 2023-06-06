@@ -30,6 +30,8 @@ public class OptionMenu : MonoBehaviour
     }
     public void GoTitle()
     {
+        Destroy(GameObject.Find("GameManager"));
+        Destroy(GameObject.Find("SceneManager"));
         LoadingSceneManager.LoadScene("TitleScene");
     }
 

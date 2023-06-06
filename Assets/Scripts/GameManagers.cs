@@ -83,6 +83,7 @@ public class GameManagers : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;  //델리게이트 체인 추가
+        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -97,6 +98,7 @@ public class GameManagers : MonoBehaviour
             playerScript = player.GetComponent<PlayerControl>();
             ovrPlayerControl = player.GetComponent<OVRPlayerController>();
         }
+        isPlaying = false;
         isStageClear = false;
     }
 
@@ -124,7 +126,14 @@ public class GameManagers : MonoBehaviour
                 isPlaying = true;   //이 변수가 true일 때 모든 인게임 동작 실행(조정하기)
         }
         if (isStageClear)
+        {
             isPlaying = false;
+            ovrPlayerControl.Acceleration = 0;
+        }
+        if (playerScript.IsDeath())
+        {
+            ovrPlayerControl.Acceleration = 0;
+        }
     }
 
     public void UpgradeStatus()

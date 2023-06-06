@@ -14,7 +14,7 @@ public class PlayerControl : MonoBehaviour
     private bool isHaveWeapon; //무기가 소환됐나?
     private bool isDeath;
     private bool isPlaying;
-    [SerializeField]private bool isStageClear;
+    private bool isStageClear;
 
     public GameObject playerCamera;
     private Rigidbody playerRigidbody;  //리짓바디
@@ -41,6 +41,7 @@ public class PlayerControl : MonoBehaviour
     private UIManager UIManagerScript;          //UI 관리 스크립트
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
     private StoryScript storyScrpit;
+    private OVRPlayerController ovrPlayerScript;
 
     private Vector3 moveDirection;  //임시방편 이동용
 
@@ -230,6 +231,7 @@ public class PlayerControl : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody>();
         UIManagerScript = GameObject.Find("UIManager").GetComponent<UIManager>();
         storyScrpit = GameObject.Find("Story").GetComponent<StoryScript>();
+        ovrPlayerScript = GetComponent<OVRPlayerController>();
 
         playerHP = maxPlayerHP;
         moveSpeed = 3.0f;

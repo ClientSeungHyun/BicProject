@@ -8,13 +8,13 @@ public class PlayerInput : MonoBehaviour
     public Button returnToTitleButton;
 
     private int currentButtonIndex;
-    private bool isButtonSelected;
 
     void Start()
     {
         currentButtonIndex = 0;
-        isButtonSelected = false;
 
+        retryButton.gameObject.GetComponent<Image>().color = new Color32(255, 66, 91, 255);
+        returnToTitleButton.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         retryButton.onClick.AddListener(Retry);
         returnToTitleButton.onClick.AddListener(ReturnToTitle);
     }
@@ -24,32 +24,22 @@ public class PlayerInput : MonoBehaviour
 
         float joystickVertical = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y;
 
-        if (joystickVertical > 0.5f || joystickVertical < -0.5f)
-        {
-            if (!isButtonSelected)
-            {
-                if (joystickVertical > 0.5f)
-                {
-                    currentButtonIndex = 0;
-                }
-                else if (joystickVertical < -0.5f)
-                {
-                    currentButtonIndex = 1;
-                }
 
-                isButtonSelected = true;
-            }
-        }
-        else
+        if (joystickVertical > 0.5f || Input.GetKeyDown(KeyCode.UpArrow)) 
         {
-            isButtonSelected = false;
+            currentButtonIndex = 0;
+            retryButton.gameObject.GetComponent<Image>().color = new Color32(255, 66, 91, 255);
+            returnToTitleButton.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        }
+        else if (joystickVertical < -0.5f || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentButtonIndex = 1;
+            retryButton.gameObject.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            returnToTitleButton.GetComponent<Image>().color = new Color32(255, 66, 91, 255);
         }
 
-        bool aButtonPressed = OVRInput.GetDown(OVRInput.Button.One);
-
-        if (aButtonPressed)
+        if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown(KeyCode.Alpha1))
         {
-
             if (currentButtonIndex == 0)
             {
                 Retry();
@@ -83,6 +73,8 @@ public class PlayerInput : MonoBehaviour
 
     public void ReturnToTitle()
     {
+        Destroy(GameObject.Find("GameManager"));
+        Destroy(GameObject.Find("SceneManager"));
         SceneManager.LoadScene("TitleScene");
     }
 }

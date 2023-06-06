@@ -92,7 +92,6 @@ public class Layser : MonoBehaviour
             }
             else chooseCard = 0;
         }
-
         else
         {
             // 레이저에 감지된 것이 없기 때문에 레이저 초기 설정 길이만큼 길게 만든다.
@@ -109,6 +108,7 @@ public class Layser : MonoBehaviour
             Rlayser.SetActive(false);   //오른쪽 레이저 비활성화, 그래야 레이저 하나만 인식
             lineColor = Color.magenta;  //레이저 색 변경
             layser.material.color = lineColor;
+
             //씬이동
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
@@ -126,6 +126,12 @@ public class Layser : MonoBehaviour
             Llayser.SetActive(false);    //왼쪽 레이저 비활성화, 그래야 레이저 하나만 인식
             lineColor = Color.magenta;  //레이저 색 변경
             layser.material.color = lineColor;
+
+            if(sceneName == "ExitScene")
+            {
+                Application.Quit();
+            }
+
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
             //강화 활성화
