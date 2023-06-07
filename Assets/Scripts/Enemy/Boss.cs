@@ -36,6 +36,7 @@ public class Boss : MonoBehaviour
     private bool isIdle;
     private bool isSprint;
     private bool isCast;
+    private bool isDead;
 
     void Start()
     {
@@ -54,7 +55,7 @@ public class Boss : MonoBehaviour
         pattern = -1;
         isDashStart = false;
         isBossShield = false;
-        isIdle = isSprint = isCast = false;
+        isIdle = isSprint = isCast = isDead = false;
     }
 
     // Update is called once per frame
@@ -132,8 +133,8 @@ public class Boss : MonoBehaviour
 
     void Dead()
     {
-        //Animation
-        //Destroy Obj (effect?)
+        isDead = true;
+        GameObject.Destroy(this);
     }
 
     void runToPlayer()
@@ -183,6 +184,7 @@ public class Boss : MonoBehaviour
         animator.SetBool("Sprint", isSprint);  //sprint
         animator.SetBool("IDLE", isIdle);  //idle
         animator.SetBool("Cast", isCast);  //cast
+        animator.SetBool("Dead", isDead); //dead
     }
 
     private void OnTriggerEnter(Collider other)
