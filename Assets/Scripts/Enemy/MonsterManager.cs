@@ -46,7 +46,7 @@ public class MonsterManager : MonoBehaviour
     //몬스터 스폰 
     public void MonsterSpawn()
     {
-        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear() && monsterSpawnLimit>=monsterSpawnCount)
+        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear() && monsterSpawnLimit>monsterSpawnCount)
         {
             if(SceneManager.GetActiveScene().name == "Stage03")
             {

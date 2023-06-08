@@ -25,6 +25,8 @@ public class GunController : MonoBehaviour
     private float reloadTime;    //총알 장전 속도
     public float maxBulletMagazine;    //최대 총알 잔탄
     public float currentBulletMagzine;   //현재 총알 수
+    public float vibrationDuration;     //진동 시간
+    public float vibrationStrength;     //진동 강도
 
     private bool isReloading;
 
@@ -42,12 +44,12 @@ public class GunController : MonoBehaviour
                 //왼손 트리거 버튼
                 if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) || Input.GetKeyDown(KeyCode.L)) && gameObject.tag == "LeftHandPistol")
                 {
-                    Fire();
+                    StartCoroutine(Fire(OVRInput.Controller.LTouch));
                 }
                 //오른손 트리거 버튼
                 if ((OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || Input.GetKeyDown(KeyCode.R)) && gameObject.tag == "RightHandPistol")
                 {
-                    Fire();
+                    StartCoroutine(Fire(OVRInput.Controller.RTouch));
                 }
             }
 
@@ -81,17 +83,6 @@ public class GunController : MonoBehaviour
         Quaternion gunRoatation = Quaternion.Euler(gunAngle);
         transform.rotation = gunRoatation;
     }
-    
-    private void Fire()
-    {
-        if (currentBulletMagzine >= 1)
-        {
-            currentBulletMagzine -= 1;
-            bulletStartParticle.transform.position = bulletStartTransform.position;
-            bulletStartParticle.GetComponent<ParticleSystem>().Play();
-            bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
-        }
-    }
 
     private void Reload()
     {
@@ -121,6 +112,21 @@ public class GunController : MonoBehaviour
         isReloading = false;
     }
 
+    private IEnumerator Fire(OVRInput.Controller controller)
+    {
+        if (currentBulletMagzine >= 1)
+        {
+            currentBulletMagzine -= 1;
+            bulletStartParticle.transform.position = bulletStartTransform.position;
+            bulletStartParticle.GetComponent<ParticleSystem>().Play();
+            bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
+
+            OVRInput.SetControllerVibration(vibrationStrength, vibrationStrength, controller);
+            yield return new WaitForSeconds(vibrationDuration);
+            OVRInput.SetControllerVibration(0, 0, controller);
+        }
+    }
+
     private void Init()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
@@ -134,6 +140,9 @@ public class GunController : MonoBehaviour
 
         isReloading = false;
         AttachToHand();
+
+        vibrationDuration = 0.1f;
+        vibrationStrength = 0.4f;
 
         weaponLV = gameManagerScript.playerInfo.WeaponLV();
         reloadLV = gameManagerScript.playerInfo.ReloadLV();
