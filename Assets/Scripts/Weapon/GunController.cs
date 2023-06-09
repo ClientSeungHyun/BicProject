@@ -77,9 +77,13 @@ public class GunController : MonoBehaviour
         rigidbody.isKinematic = true;
 
         // 총의 위치와 회전값을 플레이어의 손에 맞게 설정
-        transform.position = new Vector3(playerHand.position.x+0.3f, playerHand.position.y, playerHand.position.z);
+        transform.position = new Vector3(playerHand.position.x, playerHand.position.y, playerHand.position.z);
         Vector3 gunAngle = playerHand.transform.eulerAngles;
-        gunAngle.y += 180f;
+
+        //gunAngle.y *= -1;
+        //gunAngle.y += 180f;
+        if (gameObject.CompareTag("RightHandPistol")) gunAngle.z += 90f;
+        if (gameObject.CompareTag("LeftHandPistol")) gunAngle.z -= 90f;
         Quaternion gunRoatation = Quaternion.Euler(gunAngle);
         transform.rotation = gunRoatation;
     }

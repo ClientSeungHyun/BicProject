@@ -72,7 +72,7 @@ public class MonsterManager : MonoBehaviour
             {
                 timer += Time.deltaTime;
 
-                if (timer >= 0.3f)
+                if (timer >= 0.8f)
                 {
                     while (true)
                     {

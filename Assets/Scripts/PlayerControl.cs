@@ -33,7 +33,6 @@ public class PlayerControl : MonoBehaviour
     private float smoothing = 1;
     private Animator animator;
     private Vector3 previousPos;
-    private VRRig vrRig;
 
 
     public ShieldManager shieldScript;          //쉴드 관리 스크립트
@@ -185,21 +184,14 @@ public class PlayerControl : MonoBehaviour
 
     void AnimatorControl()
     {
-        //속도 계산
-        Vector3 headsetSpeed = (vrRig.head.vrTarget.position - previousPos) / Time.deltaTime;
-        headsetSpeed.y = 0;
+        Vector2 primaryAxis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+        bool isWalking;
 
-        //지역 속도
-        Vector3 headsetLocalSpeed = transform.InverseTransformDirection(headsetSpeed);
-        previousPos = vrRig.head.vrTarget.position;
-
-        //애니메이션 설정
-        float previousDirectionX = animator.GetFloat("DirectionX");
-        float previousDirectionY = animator.GetFloat("DirectionY");
-
-        animator.SetBool("isWalking", headsetLocalSpeed.magnitude > speedTreshold);
-        animator.SetFloat("DirectionX", Mathf.Lerp(previousDirectionX, Mathf.Clamp(headsetLocalSpeed.x, -1, 1), smoothing));
-        animator.SetFloat("DirectionY", Mathf.Lerp(previousDirectionY, Mathf.Clamp(headsetLocalSpeed.z, -1, 1), smoothing));
+        if (primaryAxis.y > 0.0f || primaryAxis.y < 0.0f || primaryAxis.x < 0.0f || primaryAxis.x > 0.0f)
+            isWalking = true;
+        else
+            isWalking = false;
+        animator.SetBool("isWalking", isWalking);
 
         animator.SetBool("isCrouching", shieldScript.IsBoostShield());
         animator.SetBool("isSprint", shieldScript.IsBoostReady());
@@ -227,7 +219,6 @@ public class PlayerControl : MonoBehaviour
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
         characterController = GetComponent<CharacterController>();
         animator = GameObject.FindGameObjectWithTag("Character").GetComponent<Animator>();
-        vrRig = GameObject.FindGameObjectWithTag("Character").GetComponent<VRRig>();
         playerRigidbody = GetComponent<Rigidbody>();
         UIManagerScript = GameObject.Find("UIManager").GetComponent<UIManager>();
         storyScrpit = GameObject.Find("Story").GetComponent<StoryScript>();
@@ -239,7 +230,6 @@ public class PlayerControl : MonoBehaviour
         isHaveWeapon = false;
         isDeath = false;
         shieldScript.gameObject.SetActive(false);
-        previousPos = vrRig.head.vrTarget.position;
 
         PlayerStatus();
     }

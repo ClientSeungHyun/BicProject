@@ -1255,6 +1255,7 @@ MonoBehaviour:
   - "\uB108\uB77C\uB3C4 \uD798\uB4E0 \uC2F8\uC6C0\uC774 \uB418\uACA0\uC9C0\uB9CC"
   - "\uB108\uB77C\uBA74 \uAC00\uB2A5\uD560 \uAC70\uB77C\uACE0 \uBBFF\uC5B4!!"
   stageScript: []
+  isStoryComplete: 0
 --- !u!1 &3791253180593127795
 GameObject:
   m_ObjectHideFlags: 0
@@ -5188,8 +5189,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6437028896242929291}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.073, z: 0.44900042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6884,8 +6885,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6437028896624746060}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.073, z: 0.44900042}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12130,7 +12131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982ef5ec741a2f848a38677890902047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStageClear: 0
   playerCamera: {fileID: 6437028895968664592}
   shieldScript: {fileID: 8890702738191545022}
   weaponDissolveScript: {fileID: 0}
