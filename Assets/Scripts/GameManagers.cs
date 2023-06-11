@@ -78,6 +78,7 @@ public class GameManagers : MonoBehaviour
     [SerializeField] private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     [SerializeField] private bool isPlaying;     //플레이가 진행 중인지 확인
     private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
+    public bool isBossDead;
 
     //씬이 변경될 때마다 호출되는 3함수들
     private void OnEnable()
@@ -163,7 +164,7 @@ public class GameManagers : MonoBehaviour
         sceneManagerScript = GameObject.Find("SceneManager").GetComponent<SceneManagers>();
         isPlaying = false;
         isStageClear = false;
-
+        isBossDead = false;
         DontDestroyOnLoad(gameObject);
         
     }
@@ -172,7 +173,7 @@ public class GameManagers : MonoBehaviour
     {
         if (isPlaying)
         {
-            ovrPlayerControl.Acceleration = 0.1f;
+            ovrPlayerControl.Acceleration =  0.1f;
         }
         else
         {

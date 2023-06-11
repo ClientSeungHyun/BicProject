@@ -54,6 +54,13 @@ public class SceneManagers : MonoBehaviour
                     nextSceneName = "Stage03";
                 LoadingSceneManager.LoadScene(nextSceneName);
             }
+
+            if (currentSceneName == "Stage03")
+            {
+                if (gameManagerScript.isBossDead)
+                    nextSceneName = "EndingScene";
+                LoadingSceneManager.LoadScene(nextSceneName);
+            }
         }
 
         return false;  // 클리어 조건이 충족되지 않았을 때 false를 반환

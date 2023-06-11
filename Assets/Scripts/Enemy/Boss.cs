@@ -135,6 +135,7 @@ public class Boss : MonoBehaviour
     {
         isDead = true;
         GameObject.Destroy(this);
+        gameManager.isBossDead = true;
     }
 
     void runToPlayer()
