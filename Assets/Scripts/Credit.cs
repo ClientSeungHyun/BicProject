@@ -5,23 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class Credit : MonoBehaviour
 {
+    private float creditSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        creditSpeed = 0.5f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.Translate(new Vector2(transform.position.x, 0.3f*Time.deltaTime));
-        if (gameObject.transform.position.y > 7.5)
+        if (OVRInput.Get(OVRInput.RawButton.A) || Input.GetKey(KeyCode.A))
         {
-            if(SceneManager.GetActiveScene().name == "OpeningScene")
-                LoadingSceneManager.LoadScene("Stage01");
-            else if(SceneManager.GetActiveScene().name == "EndingScene")
-                LoadingSceneManager.LoadScene("TitleScene");
+            creditSpeed = 1.0f;
+            Debug.Log("adsf");
         }
-            
+        else
+        {
+            creditSpeed = 0.5f;
+        }
+
+        gameObject.transform.Translate(new Vector2(transform.position.x, creditSpeed * Time.deltaTime));
+
+        if (SceneManager.GetActiveScene().name == "OpeningScene" && gameObject.transform.position.y > 7.5)
+            LoadingSceneManager.LoadScene("Stage01");
+        else if (SceneManager.GetActiveScene().name == "EndingScene" && gameObject.transform.position.y > 18f)
+            LoadingSceneManager.LoadScene("TitleScene");
+
+
     }
 }

@@ -32,9 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndingScene.unity
     guid: 9238fdce783737f4688dffea412688c8
-  - enabled: 1
-    path: Assets/Scenes/ExitScene.unity
-    guid: 7473449a73eb44e4aa1b56eba4a9814c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 217d93904f1ae464dbfd57e45a4b262d, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 250ca8acfb81f264c9c1a031dda3d1f0, type: 2}

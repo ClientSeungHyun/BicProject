@@ -22,6 +22,7 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
+        transform.position = bulletStartTransform.position;
         // 총알을 발사하면 일정 시간 후에 자동으로 비활성화합니다.
         Invoke("Deactivate", 2f);
     }
@@ -39,6 +40,7 @@ public class Bullet : MonoBehaviour
     {
         //총 레벨에 따른 색 설정
         SetBulletColor();
+
         // 총알을 앞으로 이동시킵니다.
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
@@ -97,6 +99,7 @@ public class Bullet : MonoBehaviour
                 break;
         }
         SetBulletColor();
+        Invoke("Deactivate", 2f);
     }
 
     private void SetBulletColor()

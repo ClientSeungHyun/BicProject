@@ -28,7 +28,7 @@ public class SceneManagers : MonoBehaviour
         {
             if (currentSceneName == "TitleScene")
             {
-                nextSceneName = "Stage01";
+                nextSceneName = "OpeningScene";
                 LoadingSceneManager.LoadScene(nextSceneName);
             }
 

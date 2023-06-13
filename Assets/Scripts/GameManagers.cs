@@ -66,17 +66,17 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 public class GameManagers : MonoBehaviour
 {
     public PlayerInfor playerInfo;
-    [SerializeField] SceneManagers sceneManagerScript;
-    [SerializeField] StoryScript storyScript;
-    [SerializeField] OVRPlayerController ovrPlayerControl;
-    [SerializeField] MonsterManager monsterManagerScript;
+    SceneManagers sceneManagerScript;
+    StoryScript storyScript;
+    OVRPlayerController ovrPlayerControl;
+    MonsterManager monsterManagerScript;
 
-    [SerializeField] private GameObject player;
-    [SerializeField] private PlayerControl playerScript;
+    private GameObject player;
+    private PlayerControl playerScript;
     public int chooseCard;
     public float subSpeed = 0.0f; //자막 속도
-    [SerializeField] private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
-    [SerializeField] private bool isPlaying;     //플레이가 진행 중인지 확인
+    private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
+    private bool isPlaying;     //플레이가 진행 중인지 확인
     private bool isStageClear;  //스테이지가 클리어 됐나 확인하는 변수
     public bool isBossDead;
 
@@ -130,6 +130,7 @@ public class GameManagers : MonoBehaviour
         {
             isPlaying = false;
             ovrPlayerControl.Acceleration = 0;
+
         }
         if (playerScript.IsDeath())
         {

@@ -20,6 +20,15 @@ public class EnemyRangedAttack : MonoBehaviour
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
     private MonsterManager monsterManagerScript;
 
+    private void OnEnable()
+    {
+        if (GetComponent<CapsuleCollider>() != null)
+            GetComponent<CapsuleCollider>().enabled = true;
+        if (GetComponent<BoxCollider>() != null)
+            GetComponent<BoxCollider>().enabled = true;
+        navMeshAgent.speed = 2;
+    }
+
     private void Start()
     {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
@@ -97,6 +106,11 @@ public class EnemyRangedAttack : MonoBehaviour
         isDeath = true;
         navMeshAgent.speed = 0;
         animator.SetTrigger("Death");
+
+        if (GetComponent<CapsuleCollider>() != null)
+            GetComponent<CapsuleCollider>().enabled = false;
+        if (GetComponent<BoxCollider>() != null)
+            GetComponent<BoxCollider>().enabled = false;
 
         if (SceneManager.GetActiveScene().name != "Stage03" && !isDeath)
             monsterManagerScript.monsterDeathCount++;

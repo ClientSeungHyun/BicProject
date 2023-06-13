@@ -60,15 +60,10 @@ public class GunController : MonoBehaviour
             }
         }
         AttachToHand();
+        Debug.Log("bulletStartTransfor world Position : " + bulletStartTransform.position);
     }
     void FixedUpdate()
     {
-        Vector3 targetPosition = transform.TransformDirection(playerHand.position);
-        Quaternion targetRotation = playerHand.rotation;
-
-        // Rigidbody를 사용하여 손잡이 부착
-        GetComponent<Rigidbody>().MovePosition(playerHand.position + new Vector3(0, 0.07f, 0.3f));
-        GetComponent<Rigidbody>().MoveRotation(targetRotation);
     }
 
     public void AttachToHand()
@@ -121,7 +116,7 @@ public class GunController : MonoBehaviour
         if (currentBulletMagzine >= 1)
         {
             currentBulletMagzine -= 1;
-            bulletStartParticle.transform.position = bulletStartTransform.position;
+            bulletStartParticle.transform.position = new Vector3(bulletStartTransform.position.x, bulletStartTransform.position.y, bulletStartTransform.position.z);
             bulletStartParticle.GetComponent<ParticleSystem>().Play();
             bulletPool.GetObject(bulletStartTransform.position, bulletStartTransform.rotation);
 
@@ -138,8 +133,8 @@ public class GunController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         bulletPool = GameObject.Find("Bullet").GetComponent<ObjectPool>();
-        bulletStartTransform = transform.GetChild(1).transform;
-
+        bulletStartTransform = transform.GetChild(0).transform.GetChild(0).transform;
+       
         bulletStartParticle = GameObject.Find("StartBulletParticle");
 
         isReloading = false;

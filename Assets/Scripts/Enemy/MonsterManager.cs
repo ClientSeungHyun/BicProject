@@ -72,7 +72,7 @@ public class MonsterManager : MonoBehaviour
             {
                 timer += Time.deltaTime;
 
-                if (timer >= 0.8f)
+                if (timer >= 1.5f)
                 {
                     while (true)
                     {
@@ -102,9 +102,9 @@ public class MonsterManager : MonoBehaviour
         monsterSpawnPoints = GameObject.FindGameObjectsWithTag("MonsterSpawnPoint");
 
         if (SceneManager.GetActiveScene().name == "Stage01")
-            monsterSpawnLimit = 180;
+            monsterSpawnLimit = 60;
         else if (SceneManager.GetActiveScene().name == "Stage02")
-            monsterSpawnLimit = 200;
+            monsterSpawnLimit = 80;
         else if (SceneManager.GetActiveScene().name == "Stage03")
         {
             bossScript = GameObject.Find("Boss").GetComponent<Boss>();
