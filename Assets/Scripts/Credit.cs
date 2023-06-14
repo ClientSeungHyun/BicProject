@@ -7,19 +7,12 @@ public class Credit : MonoBehaviour
 {
     private float creditSpeed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        creditSpeed = 0.5f;
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (OVRInput.Get(OVRInput.RawButton.A) || Input.GetKey(KeyCode.A))
         {
             creditSpeed = 1.0f;
-            Debug.Log("adsf");
         }
         else
         {

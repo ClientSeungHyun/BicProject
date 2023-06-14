@@ -30,11 +30,12 @@ public class Missile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Shield")) 
         {
             // 플레이어와 충돌 시 미사일 비활성화
             gameObject.SetActive(false);
         }
+
     }
 
 

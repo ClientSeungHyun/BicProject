@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Layser : MonoBehaviour
 {
-    private GameObject gameManager;
+    private GameManagers gameManager;
+    private SceneManagers sceneManager;
     private LineRenderer layser;        // 레이저
     public Color lineColor;
     private RaycastHit Collided_object; // 충돌된 객체
@@ -19,12 +20,14 @@ public class Layser : MonoBehaviour
     public GameObject Rlayser;
 
     string sceneName = "";
-    int chooseCard = 0;
+    int chooseCard;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManagers>();
+        sceneManager = GameObject.Find("SceneManager").GetComponent<SceneManagers>();
+        chooseCard = 0;
         // 스크립트가 포함된 객체에 라인 렌더러라는 컴포넌트를 넣고있다.
         layser = this.gameObject.GetComponent<LineRenderer>();
         // 라인이 가지개될 색상 표현
@@ -78,7 +81,7 @@ public class Layser : MonoBehaviour
             else sceneName = null;
 
             //충돌한 물체 이름 확인후 강화 선택
-            if (Collided_object.collider.gameObject.name == "CardHP")
+            if (Collided_object.collider.gameObject.name == "CardHP" )
             {
                 chooseCard = 1;
             }
@@ -90,7 +93,7 @@ public class Layser : MonoBehaviour
             {
                 chooseCard = 3;
             }
-            else chooseCard = 0;
+
         }
         else
         {
@@ -109,15 +112,21 @@ public class Layser : MonoBehaviour
             lineColor = Color.magenta;  //레이저 색 변경
             layser.material.color = lineColor;
 
+            if (chooseCard != 0)
+            {
+                if(chooseCard == 1)
+                    gameManager.playerInfo.HPLevelUP(sceneManager.nextSceneName);
+                if (chooseCard == 2)
+                    gameManager.playerInfo.WeaponLeveUP(sceneManager.nextSceneName);
+                if (chooseCard == 3)
+                    gameManager.playerInfo.EnergyLevelUP(sceneManager.nextSceneName);
+                chooseCard = 0;
+            }
+
             //씬이동
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
-            //강화 활성화
-            if(chooseCard != 0)
-            {
-                gameManager.GetComponent<GameManagers>().chooseCard = chooseCard;
-                //다음레벨 이동
-            }
+            
 
         }
         // 오른쪽 트리거 버튼을 누를 경우 + 동시에 눌리는걸 막기
@@ -131,15 +140,14 @@ public class Layser : MonoBehaviour
             {
                 Application.Quit();
             }
+            
+            if(chooseCard != 0)
+                LoadingSceneManager.LoadScene(sceneManager.nextSceneName);
 
             if (sceneName != null)
                 LoadingSceneManager.LoadScene(sceneName);
             //강화 활성화
-            if (chooseCard != 0)
-            {
-                gameManager.GetComponent<GameManagers>().chooseCard = chooseCard;
-                //다음레벨 이동
-            }
+            
         }
 
         //왼쪽 트리거 버튼을 뗄 경우          

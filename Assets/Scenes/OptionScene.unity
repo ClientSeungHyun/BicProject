@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07344056, g: 0.044537973, b: 0.01713273, a: 1}
+  m_IndirectSpecularColor: {r: 0.055962086, g: 0.02996288, b: 0.005508147, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8285,7 +8285,10 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 3d1ecfefa049b244b8d43cb53210071f, type: 2}
   bgmSlider: {fileID: 1009325282}
   sfxSlider: {fileID: 2110732309}
-  subToggle: {fileID: 0}
+  subButtons:
+  - {fileID: 1027824365}
+  - {fileID: 1003964349}
+  - {fileID: 1019869059}
 --- !u!1001 &786235875
 PrefabInstance:
   m_ObjectHideFlags: 0

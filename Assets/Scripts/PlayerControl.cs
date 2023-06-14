@@ -82,16 +82,6 @@ public class PlayerControl : MonoBehaviour
                 UIManagerScript.healths[playerHP].gameObject.SetActive(false);
             }
         }
-
-        //체력 회복
-        if (other.gameObject.tag == "Juice")
-        {
-            if (playerHP < 10)
-            {
-                UIManagerScript.healths[playerHP].gameObject.SetActive(true);
-                playerHP++;
-            }
-        }
     }
 
 
@@ -224,7 +214,7 @@ public class PlayerControl : MonoBehaviour
         storyScrpit = GameObject.Find("Story").GetComponent<StoryScript>();
         ovrPlayerScript = GetComponent<OVRPlayerController>();
 
-        playerHP = maxPlayerHP;
+        
         moveSpeed = 3.0f;
         sightAngle = 80f;
         isHaveWeapon = false;
@@ -232,6 +222,7 @@ public class PlayerControl : MonoBehaviour
         shieldScript.gameObject.SetActive(false);
 
         PlayerStatus();
+        playerHP = maxPlayerHP;
     }
 
     private void PlayerStatus()
@@ -254,6 +245,22 @@ public class PlayerControl : MonoBehaviour
             default:
                 shieldEnergyConsumption = 10f;
                 boostEnergyConsumption = 50f;
+                break;
+        }
+
+        switch (gameManagerScript.playerInfo.HPLV())
+        {
+            case 1:
+                maxPlayerHP = 7;
+                break;
+            case 2:
+                maxPlayerHP = 8;
+                break;
+            case 3:
+                maxPlayerHP = 10;
+                break;
+            default:
+                maxPlayerHP = 7;
                 break;
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneManagers : MonoBehaviour
 {
     private string currentSceneName;
-    private string nextSceneName;
+    public string nextSceneName;
     public int stage = 0;
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
 
@@ -20,11 +20,10 @@ public class SceneManagers : MonoBehaviour
         currentSceneName = SceneManager.GetActiveScene().name;
         CheckClearCondition();
     }
-
-    // 임시 체크용
-    private bool CheckClearCondition()
+    
+    public bool CheckClearCondition()
     {
-        if (Input.GetKeyDown(KeyCode.X) || OVRInput.GetDown(OVRInput.RawButton.A))
+        if ((Input.GetKeyDown(KeyCode.X) || OVRInput.GetDown(OVRInput.RawButton.A)) && currentSceneName != "UpgradeScene")
         {
             if (currentSceneName == "TitleScene")
             {
@@ -46,22 +45,18 @@ public class SceneManagers : MonoBehaviour
 
                 LoadingSceneManager.LoadScene(nextSceneName);
             }
-            if (currentSceneName == "UpgradeScene")
-            {
-                if (stage == 1)
-                    nextSceneName = "Stage02";
-                else if (stage == 2)
-                    nextSceneName = "Stage03";
-                LoadingSceneManager.LoadScene(nextSceneName);
-            }
-
-            if (currentSceneName == "Stage03")
-            {
-                if (gameManagerScript.isBossDead)
-                    nextSceneName = "EndingScene";
-                LoadingSceneManager.LoadScene(nextSceneName);
-            }
+            
         }
+
+        if (currentSceneName == "UpgradeScene")
+        {
+            if (stage == 1)
+                nextSceneName = "Stage02";
+            else if (stage == 2)
+                nextSceneName = "Stage03";
+        }
+
+
 
         return false;  // 클리어 조건이 충족되지 않았을 때 false를 반환
     }

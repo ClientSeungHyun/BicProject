@@ -16,16 +16,15 @@ public class EnemyRangedAttack : MonoBehaviour
 
     private float timer;
     private float timerDuration;
+    private CapsuleCollider monsterCollider;
 
     private GameManagers gameManagerScript;    //게임 매니저 스크립트
     private MonsterManager monsterManagerScript;
 
     private void OnEnable()
     {
-        if (GetComponent<CapsuleCollider>() != null)
-            GetComponent<CapsuleCollider>().enabled = true;
-        if (GetComponent<BoxCollider>() != null)
-            GetComponent<BoxCollider>().enabled = true;
+        if (monsterCollider != null)
+            monsterCollider.enabled = true;
         navMeshAgent.speed = 2;
     }
 
@@ -37,6 +36,7 @@ public class EnemyRangedAttack : MonoBehaviour
         navMeshAgent.enabled = true;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
+        monsterCollider = GetComponent<CapsuleCollider>();
         timer = 0f;
         timerDuration = 5f;
         isDeath = false;
@@ -60,7 +60,10 @@ public class EnemyRangedAttack : MonoBehaviour
         }
         else if (!isDeath)
         {
-            navMeshAgent.speed = 2f;
+            if (player.GetComponent<PlayerControl>().IsDeath())
+                navMeshAgent.speed = 0f;
+            else
+                navMeshAgent.speed = 2f;
             //목적지 도착
             if (distance <= 12f)
             {
@@ -103,17 +106,20 @@ public class EnemyRangedAttack : MonoBehaviour
 
     public void DeathCode()
     {
+        if (SceneManager.GetActiveScene().name != "Stage03" && !isDeath)
+        {
+            monsterManagerScript.monsterDeathCount++;
+            isDeath = true;
+        }
+
         isDeath = true;
         navMeshAgent.speed = 0;
         animator.SetTrigger("Death");
 
-        if (GetComponent<CapsuleCollider>() != null)
-            GetComponent<CapsuleCollider>().enabled = false;
-        if (GetComponent<BoxCollider>() != null)
-            GetComponent<BoxCollider>().enabled = false;
+        if (monsterCollider != null)
+            monsterCollider.enabled = true;
 
-        if (SceneManager.GetActiveScene().name != "Stage03" && !isDeath)
-            monsterManagerScript.monsterDeathCount++;
+        
     }
 
     

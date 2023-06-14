@@ -46,7 +46,7 @@ public class MonsterManager : MonoBehaviour
     //몬스터 스폰 
     public void MonsterSpawn()
     {
-        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear() && monsterSpawnLimit>monsterSpawnCount)
+        if (gameManagerScript.IsPlaying() && !gameManagerScript.IsStageClear() && monsterSpawnLimit+7>monsterSpawnCount && !playerScript.IsDeath())
         {
             if(SceneManager.GetActiveScene().name == "Stage03")
             {
@@ -102,9 +102,9 @@ public class MonsterManager : MonoBehaviour
         monsterSpawnPoints = GameObject.FindGameObjectsWithTag("MonsterSpawnPoint");
 
         if (SceneManager.GetActiveScene().name == "Stage01")
-            monsterSpawnLimit = 60;
+            monsterSpawnLimit = 10;
         else if (SceneManager.GetActiveScene().name == "Stage02")
-            monsterSpawnLimit = 80;
+            monsterSpawnLimit = 10;
         else if (SceneManager.GetActiveScene().name == "Stage03")
         {
             bossScript = GameObject.Find("Boss").GetComponent<Boss>();

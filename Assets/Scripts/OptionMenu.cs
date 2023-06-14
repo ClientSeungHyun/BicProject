@@ -10,7 +10,7 @@ public class OptionMenu : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
-    public Button[] subButtons;
+    public Image[] subButtons;
 
     private GameManagers gameManagerScript;
 
@@ -18,6 +18,7 @@ public class OptionMenu : MonoBehaviour
     void Start()
     {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManagers>();
+        ClickNormal();
     }
 
     public void setBGMSounds()
@@ -38,23 +39,23 @@ public class OptionMenu : MonoBehaviour
     public void ClickSlow()
     {
         gameManagerScript.subSpeed = 0.3f;
-        ButtonColorChange(subButtons[0], Color.red);
-        ButtonColorChange(subButtons[1], Color.white);
-        ButtonColorChange(subButtons[2], Color.white);
+        subButtons[0].color = Color.red;
+        subButtons[1].color = Color.white;
+        subButtons[2].color = Color.white;
     }
     public void ClickNormal()
     {
         gameManagerScript.subSpeed = 0.5f;
-        ButtonColorChange(subButtons[0], Color.white);
-        ButtonColorChange(subButtons[1], Color.red);
-        ButtonColorChange(subButtons[2], Color.white);
+        subButtons[0].color = Color.white;
+        subButtons[1].color = Color.red;
+        subButtons[2].color = Color.white;
     }
     public void ClickFast()
     {
         gameManagerScript.subSpeed = 0.8f;
-        ButtonColorChange(subButtons[0], Color.white);
-        ButtonColorChange(subButtons[1], Color.white);
-        ButtonColorChange(subButtons[2], Color.red);
+        subButtons[0].color = Color.white;
+        subButtons[1].color = Color.white;
+        subButtons[2].color = Color.red;
     }
 
     public void ButtonColorChange(Button b, Color c)

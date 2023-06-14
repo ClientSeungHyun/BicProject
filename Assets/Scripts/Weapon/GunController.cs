@@ -60,7 +60,6 @@ public class GunController : MonoBehaviour
             }
         }
         AttachToHand();
-        Debug.Log("bulletStartTransfor world Position : " + bulletStartTransform.position);
     }
     void FixedUpdate()
     {
@@ -144,34 +143,23 @@ public class GunController : MonoBehaviour
         vibrationStrength = 0.4f;
 
         weaponLV = gameManagerScript.playerInfo.WeaponLV();
-        reloadLV = gameManagerScript.playerInfo.ReloadLV();
         //웨폰 레벨 설정
         switch (weaponLV)
         {
             case 1:
                 reloadTime = 3f;
+                maxBulletMagazine = 50f;
                 audioSource.pitch = 4f;
                 break;
             case 2:
                 reloadTime = 2f;
+                maxBulletMagazine = 75f;
                 audioSource.pitch = 6f;
                 break;
             case 3:
                 reloadTime = 1f;
-                audioSource.pitch = 12f;
-                break;
-        }
-        //재장전 레벨 설정
-        switch (reloadLV)
-        {
-            case 1:
-                maxBulletMagazine = 50f;
-                break;
-            case 2:
-                maxBulletMagazine = 75f;
-                break;
-            case 3:
                 maxBulletMagazine = 100f;
+                audioSource.pitch = 12f;
                 break;
         }
         currentBulletMagzine = maxBulletMagazine;

@@ -14522,6 +14522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918bb549ece642145943d653267b619a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponLV: 0
   speed: 10
   bulletStartTransform: {fileID: 0}
   bulletEndTransform: {fileID: 0}

@@ -15,35 +15,44 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
 {
     private int weaponLV;    //무기 레벨
     private int energyLV;    //에너지소모량 결정하는 레벨
-    private int reloadLV;   //탄창 수를 늘려주는 레벨
+    private int hpLV;   //탄창 수를 늘려주는 레벨
     private bool isMoveAble;    //플레이어가 움직일 수 있는지 변수
 
     public void Init()
     {
         weaponLV = 1;
         energyLV = 1;
-        reloadLV = 1;
+        hpLV = 1;
         isMoveAble = false;
     }
 
-    public void WeaponLeveUP()
+    public void WeaponLeveUP(string name)
     {
-        if (weaponLV <= 3)
+        if (weaponLV < 3)
+        {
             weaponLV++;
+            LoadingSceneManager.LoadScene(name);
+        }
         else
             Debug.Log("강화 최대치 입니다");
     }
-    public void EnergyLevelUP()
+    public void EnergyLevelUP(string name)
     {
-        if (energyLV <= 3)
+        if (energyLV < 3)
+        {
             energyLV++;
+            LoadingSceneManager.LoadScene(name);
+        }
         else
             Debug.Log("강화 최대치 입니다");
     }
-    public void ReloadLevelUP()
+    public void HPLevelUP(string name)
     {
-        if (reloadLV <= 3)
-            reloadLV++;
+        if (hpLV < 3)
+        {
+            hpLV++;
+            LoadingSceneManager.LoadScene(name);
+        }
         else
             Debug.Log("강화 최대치 입니다");
     }
@@ -56,9 +65,9 @@ public class PlayerInfor    //계속해서 플레이어에게 전달되어야 할 정보를 저장할 
     {
         return energyLV;
     }
-    public int ReloadLV()
+    public int HPLV()
     {
-        return reloadLV;
+        return hpLV;
     }
 
 }
@@ -73,7 +82,6 @@ public class GameManagers : MonoBehaviour
 
     private GameObject player;
     private PlayerControl playerScript;
-    public int chooseCard;
     public float subSpeed = 0.0f; //자막 속도
     private string sceneName;   //씬이름을 받아와 현재 어떤 씬인지 확인하기 위한 변수
     private bool isPlaying;     //플레이가 진행 중인지 확인
@@ -117,7 +125,6 @@ public class GameManagers : MonoBehaviour
 
     private void Update()
     {
-        UpgradeStatus();
         SettingGame();
         if(monsterManagerScript)
             isStageClear = monsterManagerScript.isStageClear;
@@ -135,25 +142,6 @@ public class GameManagers : MonoBehaviour
         if (playerScript.IsDeath())
         {
             ovrPlayerControl.Acceleration = 0;
-        }
-    }
-
-    public void UpgradeStatus()
-    {
-        if (chooseCard == 1 && player)
-        {
-            playerInfo.ReloadLevelUP();
-            chooseCard = 0;
-        }
-        else if (chooseCard == 2 && player)
-        {
-            playerInfo.WeaponLeveUP();
-            chooseCard = 0;
-        }
-        else if (chooseCard == 3 && player)
-        {
-            playerInfo.EnergyLevelUP();
-            chooseCard = 0;
         }
     }
 
